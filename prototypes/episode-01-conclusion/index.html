@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 01 Conclusion</title>
+  <style>
+    :root {
+      --phone-w: min(100vw, 430px);
+      --phone-h: min(100dvh, 932px);
+      --ink: #f7fbff;
+      --cyan: #7eeaff;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      color: var(--ink);
+      background: radial-gradient(circle at 50% 8%, rgba(126,234,255,.14), transparent 34%), linear-gradient(160deg, #020409, #07131d 54%, #020409);
+    }
+    .phone {
+      position: relative;
+      width: var(--phone-w);
+      height: var(--phone-h);
+      max-height: 932px;
+      aspect-ratio: 9 / 16;
+      overflow: hidden;
+      background: #05080d;
+      box-shadow: 0 28px 80px rgba(0,0,0,.62);
+      isolation: isolate;
+    }
+    .bg {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(to bottom, rgba(0,0,0,.28), rgba(0,0,0,.66)), url("../../assets/images/mobile/backgrounds/mob-bg-university-computer-lab-v1.png");
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.02);
+      filter: saturate(.9) brightness(.72);
+    }
+    .topbar {
+      position: absolute;
+      top: calc(14px + env(safe-area-inset-top));
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 4;
+    }
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(4,10,16,.48);
+      border: 1px solid rgba(255,255,255,.20);
+      color: rgba(247,251,255,.80);
+      backdrop-filter: blur(12px);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: .05em;
+    }
+    .content {
+      position: absolute;
+      inset: calc(68px + env(safe-area-inset-top)) 18px calc(20px + env(safe-area-inset-bottom));
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .title-block { padding: 6px 2px 0; }
+    .kicker { color: var(--cyan); font-size: 13px; font-weight: 900; letter-spacing: .06em; margin-bottom: 8px; }
+    h1 { margin: 0; font-size: clamp(22px, 6vw, 29px); line-height: 1.22; font-weight: 900; word-break: keep-all; }
+    .summary {
+      min-height: 176px;
+      max-height: 34%;
+      padding: 15px;
+      border-radius: 22px;
+      background: linear-gradient(145deg, rgba(255,255,255,.15), rgba(255,255,255,.055)), rgba(5,10,16,.76);
+      border: 1px solid rgba(255,255,255,.23);
+      box-shadow: 0 18px 38px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.12);
+      backdrop-filter: blur(18px) saturate(1.15);
+      overflow: auto;
+    }
+    .summary-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .summary-title { color: var(--cyan); font-size: 14px; font-weight: 900; }
+    .summary-count { color: rgba(247,251,255,.56); font-size: 12px; font-weight: 800; }
+    .evidence-list { display: grid; gap: 8px; max-height: 210px; overflow-y: auto; padding-right: 3px; overscroll-behavior: contain; }
+    .evidence-item { padding: 10px 11px; border-radius: 14px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); }
+    .evidence-source { color: rgba(247,251,255,.58); font-size: 11px; font-weight: 850; margin-bottom: 5px; }
+    .evidence-text { color: rgba(247,251,255,.90); font-size: 13px; font-weight: 740; line-height: 1.42; word-break: keep-all; }
+    .choices { display: grid; gap: 10px; margin-top: auto; }
+    .choice {
+      min-height: 58px;
+      padding: 0 15px;
+      border: 1px solid rgba(255,255,255,.20);
+      border-radius: 18px;
+      background: linear-gradient(145deg, rgba(34,42,51,.92), rgba(18,25,32,.88));
+      color: var(--ink);
+      text-align: left;
+      box-shadow: 0 12px 25px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.08);
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 850;
+      line-height: 1.32;
+      word-break: keep-all;
+      cursor: pointer;
+    }
+    .choice:active { transform: translateY(1px); }
+    .back {
+      min-height: 42px;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 15px;
+      background: rgba(255,255,255,.06);
+      color: rgba(247,251,255,.78);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 820;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="Episode 1 conclusion submission">
+    <div class="bg"></div>
+    <div class="topbar">
+      <div class="pill">EP.01 FIRST LOGIN</div>
+      <div class="pill">결론 제출</div>
+    </div>
+    <section class="content">
+      <div class="title-block">
+        <div class="kicker">증거 정리</div>
+        <h1>민서 계정에 무슨 일이 있었을까?</h1>
+      </div>
+      <section class="summary">
+        <div class="summary-head">
+          <div class="summary-title">증거 카드</div>
+          <div class="summary-count" id="summaryCount">0개</div>
+        </div>
+        <div class="evidence-list" id="evidenceList"></div>
+      </section>
+      <div class="choices">
+        <button class="choice" type="button" data-conclusion="external-hack">외부 해커가 비밀번호를 알아내 민서 계정에 로그인했다.</button>
+        <button class="choice" type="button" data-conclusion="session-exposed">공용 PC에 남아 있던 세션이 다시 열렸다.</button>
+        <button class="choice" type="button" data-conclusion="wrong-password">민서가 비밀번호를 잘못 입력해서 생긴 단순 오해다.</button>
+        <button class="choice" type="button" data-conclusion="server-error">LMS 서버 오류로 접속 기록이 잘못 남았다.</button>
+        <button class="back" type="button" id="backButton">다시 조사하기</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({
+      bgm: '../../assets/audio/mobile/episode-01/bgm-investigation.mp3',
+      bgmVolume: 0.27,
+      sfx: { click: '../../assets/audio/mobile/common/sfx-click.mp3' }
+    });
+
+    const evidenceMeta = {
+      'ep01-pc-info-cmd-v1.svg': { source: 'PC 정보', text: '현재 실습실 PC의 호스트명이 LAB-PC-14로 확인된다.' },
+      'ep01-homepage-access-01-v1.svg': { source: '홈페이지 접속 기록', text: '최근 접속 구간에 로그인 실패와 로그인 페이지 접근 기록이 보인다.' },
+      'ep01-homepage-access-02-v1.svg': { source: '홈페이지 접속 기록', text: '전날 LAB-PC-14에서 민서 계정 사용 후 명확한 로그아웃 기록이 없다.' },
+      'ep01-homepage-activity-01-v1.svg': { source: '홈페이지 활동 기록', text: '일반 공지와 강의 페이지 조회 기록이 이어진다.' },
+      'ep01-homepage-activity-02-v1.svg': { source: '홈페이지 활동 기록', text: '계정 설정과 비밀번호 변경 요청 관련 활동이 남아 있다.' },
+      'ep01-browser-history-01-v1.svg': { source: '브라우저 기록', text: '오늘 오전 LMS 로그인 페이지와 도움말 페이지 방문 기록이 있다.' },
+      'ep01-browser-history-02-v1.svg': { source: '브라우저 기록', text: '브라우저 복원으로 민서 계정 세션이 다시 열린 기록이 있다.' }
+    };
+    const evidenceIds = JSON.parse(sessionStorage.getItem('ep01Evidence') || '[]');
+    const evidenceList = document.getElementById('evidenceList');
+    const summaryCount = document.getElementById('summaryCount');
+
+    function renderEvidence() {
+      summaryCount.textContent = `${evidenceIds.length}개`;
+      evidenceList.innerHTML = '';
+      if (!evidenceIds.length) {
+        evidenceList.innerHTML = '<div class="evidence-item"><div class="evidence-text">아직 제출할 증거가 없다.</div></div>';
+        return;
+      }
+      evidenceIds.forEach(id => {
+        const item = evidenceMeta[id];
+        if (!item) return;
+        const node = document.createElement('div');
+        node.className = 'evidence-item';
+        node.innerHTML = `<div class="evidence-source">${item.source}</div><div class="evidence-text">${item.text}</div>`;
+        evidenceList.appendChild(node);
+      });
+    }
+
+    document.querySelectorAll('.choice').forEach(button => {
+      button.addEventListener('click', () => {
+        sessionStorage.setItem('ep01Conclusion', button.dataset.conclusion);
+        window.location.href = '../episode-01-result/index.html';
+      });
+    });
+    document.getElementById('backButton').addEventListener('click', () => {
+      window.location.href = '../episode-01-investigation-menu/index.html';
+    });
+    renderEvidence();
+  </script>
+</body>
+</html>

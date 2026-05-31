@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 02 Conclusion</title>
+  <style>
+    :root { --phone-w:min(100vw,430px); --phone-h:min(100dvh,932px); --ink:#f7fbff; --cyan:#7eeaff; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif; }
+    * { box-sizing:border-box; } html,body { height:100%; }
+    body { margin:0; display:grid; place-items:center; overflow:hidden; color:var(--ink); background:radial-gradient(circle at 50% 8%, rgba(126,234,255,.14), transparent 34%), linear-gradient(160deg,#020409,#07131d 54%,#020409); }
+    .phone { position:relative; width:var(--phone-w); height:var(--phone-h); max-height:932px; aspect-ratio:9/16; overflow:hidden; background:#05080d; box-shadow:0 28px 80px rgba(0,0,0,.62); isolation:isolate; }
+    .bg { position:absolute; inset:0; background-image:linear-gradient(to bottom, rgba(0,0,0,.28), rgba(0,0,0,.70)), url("../../assets/images/mobile/backgrounds/mob-bg-home-living-room-v1.png"); background-size:cover; background-position:center; transform:scale(1.02); filter:saturate(.9) brightness(.72); }
+    .topbar { position:absolute; top:calc(14px + env(safe-area-inset-top)); left:16px; right:16px; display:flex; justify-content:space-between; align-items:center; z-index:4; }
+    .pill { padding:8px 12px; border-radius:999px; background:rgba(4,10,16,.48); border:1px solid rgba(255,255,255,.20); color:rgba(247,251,255,.80); backdrop-filter:blur(12px); font-size:12px; font-weight:850; letter-spacing:.05em; }
+    .content { position:absolute; inset:calc(68px + env(safe-area-inset-top)) 18px calc(20px + env(safe-area-inset-bottom)); z-index:3; display:flex; flex-direction:column; gap:12px; min-height:0; }
+    .title-block { padding:6px 2px 0; }
+    .kicker { color:var(--cyan); font-size:13px; font-weight:900; letter-spacing:.06em; margin-bottom:8px; }
+    h1 { margin:0; font-size:clamp(21px,5.6vw,28px); line-height:1.22; font-weight:900; word-break:keep-all; }
+    .summary { flex:0 1 31%; min-height:150px; padding:15px; border-radius:22px; background:linear-gradient(145deg, rgba(255,255,255,.15), rgba(255,255,255,.055)), rgba(5,10,16,.76); border:1px solid rgba(255,255,255,.23); box-shadow:0 18px 38px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(18px) saturate(1.15); overflow:hidden; }
+    .summary-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+    .summary-title { color:var(--cyan); font-size:14px; font-weight:900; } .summary-count { color:rgba(247,251,255,.56); font-size:12px; font-weight:800; }
+    .evidence-list { display:grid; gap:8px; max-height:calc(100% - 28px); overflow-y:auto; padding-right:3px; overscroll-behavior:contain; }
+    .evidence-item { padding:10px 11px; border-radius:14px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); }
+    .evidence-source { color:rgba(247,251,255,.58); font-size:11px; font-weight:850; margin-bottom:5px; } .evidence-text { color:rgba(247,251,255,.90); font-size:13px; font-weight:740; line-height:1.42; word-break:keep-all; }
+    .choices { flex:1 1 auto; display:grid; gap:10px; align-content:end; min-height:0; }
+    .choice { min-height:56px; padding:0 14px; border:1px solid rgba(255,255,255,.20); border-radius:18px; background:linear-gradient(145deg, rgba(34,42,51,.92), rgba(18,25,32,.88)); color:var(--ink); text-align:left; box-shadow:0 12px 25px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.08); font-family:inherit; font-size:14px; font-weight:850; line-height:1.32; word-break:keep-all; cursor:pointer; }
+    .choice:active { transform:translateY(1px); }
+    .back { min-height:42px; border:1px solid rgba(255,255,255,.18); border-radius:15px; background:rgba(255,255,255,.06); color:rgba(247,251,255,.78); font-family:inherit; font-size:13px; font-weight:820; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="Episode 2 conclusion submission">
+    <div class="bg"></div>
+    <div class="topbar"><div class="pill">EP.02 THE LINK AT HOME</div><div class="pill">결론 제출</div></div>
+    <section class="content">
+      <div class="title-block"><div class="kicker">증거 정리</div><h1>피싱 피해는 어디까지 이어졌을까?</h1></div>
+      <section class="summary"><div class="summary-head"><div class="summary-title">증거 카드</div><div class="summary-count" id="summaryCount">0개</div></div><div class="evidence-list" id="evidenceList"></div></section>
+      <div class="choices">
+        <button class="choice" type="button" data-conclusion="phone-hacked">휴대폰 전체가 이미 해킹됐다.</button>
+        <button class="choice" type="button" data-conclusion="card-stolen">카드 정보가 빠져나갔고 결제 피해가 발생했다.</button>
+        <button class="choice" type="button" data-conclusion="scope-limited">피싱 링크에는 접속했지만, 현재 근거상 결제나 앱 설치까지 이어진 흔적은 없다.</button>
+        <button class="choice" type="button" data-conclusion="nothing">아무 문제 없으니 조치할 필요가 없다.</button>
+        <button class="back" type="button" id="backButton">다시 조사하기</button>
+      </div>
+    </section>
+  </main>
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({ bgm:'../../assets/audio/mobile/episode-02/bgm-episode-02.mp3', bgmVolume:0.27, sfx:{ click:'../../assets/audio/mobile/common/sfx-click.mp3' } });
+    const evidenceMeta={
+      'ep02-message-original-01-true.png':{source:'문자 원문',text:'배송 주소 확인을 요구하는 사칭 문자와 외부 링크가 확인된다.'},
+      'ep02-message-original-02-trap.png':{source:'문자 원문',text:'오래된 정상 배송/광고 문자로 이번 사건과 직접 연결되지 않는다.'},
+      'ep02-link-url-01-true.png':{source:'링크 주소',text:'문자에서 열린 외부 배송 확인 도메인이 확인된다.'},
+      'ep02-link-url-02-trap.png':{source:'링크 주소',text:'검색 결과 주소로 피싱 문자 링크의 근거가 아니다.'},
+      'ep02-browser-history-01-true.png':{source:'브라우저 기록',text:'문자 링크와 카드 입력 페이지까지 열린 흔적이 있지만 완료 기록은 없다.'},
+      'ep02-browser-history-02-trap.png':{source:'브라우저 기록',text:'평소 웹 사용 기록으로 피싱 흐름을 설명하지 못한다.'},
+      'ep02-card-alert-01-true.png':{source:'카드 알림',text:'피싱 링크 접속 시간대에 새 결제 승인 알림이 없다.'},
+      'ep02-card-alert-02-trap.png':{source:'카드 알림',text:'오래된 정상/거절 알림으로 이번 사건 시간대 피해 근거가 아니다.'},
+      'ep02-app-install-01-true.png':{source:'앱 설치 기록',text:'링크 이후 새 앱 설치, APK 다운로드, 새 권한 허용이 보이지 않는다.'},
+      'ep02-app-install-02-trap.png':{source:'앱 설치 기록',text:'이전부터 있던 앱/업데이트 기록으로 이번 링크 직후 설치가 아니다.'},
+      'ep02-photo-access-01-sensitive.png':{source:'사진 접근 기록',text:'조사 범위를 벗어난 개인 사진 접근 기록이다.'},
+      'ep02-contact-access-02-sensitive.png':{source:'연락처 접근 기록',text:'조사 범위를 벗어난 개인 연락처 접근 기록이다.'}
+    };
+    const evidenceIds=JSON.parse(sessionStorage.getItem('ep02Evidence') || '[]');
+    const evidenceList=document.getElementById('evidenceList');
+    const summaryCount=document.getElementById('summaryCount');
+    function renderEvidence(){ summaryCount.textContent=`${evidenceIds.length}개`; evidenceList.innerHTML=''; if(!evidenceIds.length){ evidenceList.innerHTML='<div class="evidence-item"><div class="evidence-text">아직 제출할 증거가 없다.</div></div>'; return; } evidenceIds.forEach(id=>{ const item=evidenceMeta[id]; if(!item) return; const node=document.createElement('div'); node.className='evidence-item'; node.innerHTML=`<div class="evidence-source">${item.source}</div><div class="evidence-text">${item.text}</div>`; evidenceList.appendChild(node); }); }
+    document.querySelectorAll('.choice').forEach(button=>button.addEventListener('click',()=>{ sessionStorage.setItem('ep02Conclusion', button.dataset.conclusion); window.location.href='../episode-02-result/index.html'; }));
+    document.getElementById('backButton').addEventListener('click',()=>{ window.location.href='../episode-02-investigation-menu/index.html'; });
+    renderEvidence();
+  </script>
+</body>
+</html>

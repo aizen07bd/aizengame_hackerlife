@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 05 Cafe VN Scene</title>
+  <style>
+    :root { --phone-w:min(100vw,430px); --phone-h:min(100dvh,932px); --ink:#f7fbff; --cyan:#7eeaff; --gold:#ffe18a; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif; }
+    * { box-sizing:border-box; } html,body { height:100%; }
+    body { margin:0; display:grid; place-items:center; overflow:hidden; color:var(--ink); background:radial-gradient(circle at 50% 8%, rgba(126,234,255,.12), transparent 34%), linear-gradient(160deg,#020409,#07131d 54%,#020409); }
+    .phone { position:relative; width:var(--phone-w); height:var(--phone-h); max-height:932px; aspect-ratio:9/16; overflow:hidden; background:#05080d; box-shadow:0 28px 80px rgba(0,0,0,.62); user-select:none; isolation:isolate; }
+    .bg { position:absolute; inset:0; background-image:linear-gradient(to bottom,rgba(0,0,0,.08),rgba(0,0,0,.28) 43%,rgba(0,0,0,.72)),url("../../assets/images/mobile/backgrounds/mob-bg-campus-cafe-v1.png"); background-size:cover; background-position:center; transform:scale(1.035); filter:saturate(.92) brightness(.82); }
+    .scene-vignette { position:absolute; inset:0; background:radial-gradient(circle at 50% 43%,transparent 0 29%,rgba(0,0,0,.25) 63%,rgba(0,0,0,.62) 100%),linear-gradient(to bottom,rgba(2,6,10,.10),transparent 28%,rgba(2,6,10,.42)); pointer-events:none; }
+    .topbar { position:absolute; top:calc(14px + env(safe-area-inset-top)); left:16px; right:16px; display:flex; justify-content:space-between; align-items:center; gap:10px; z-index:12; opacity:.95; }
+    .chapter,.ghost-button { border:1px solid rgba(255,255,255,.20); border-radius:999px; background:rgba(4,10,16,.40); color:rgba(247,251,255,.80); backdrop-filter:blur(10px); font-weight:850; }
+    .chapter { max-width:calc(100% - 176px); padding:8px 12px; font-size:12px; letter-spacing:.06em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .small-actions { display:flex; gap:6px; } .ghost-button { padding:8px 9px; font-size:11px; cursor:pointer; } .ghost-button.on { border-color:rgba(126,234,255,.44); background:rgba(126,234,255,.14); color:#e9fbff; }
+    .focus-dim { position:absolute; inset:0; background:rgba(0,0,0,.14); opacity:0; transition:opacity 260ms ease; pointer-events:none; z-index:3; } .focus-dim.on { opacity:1; }
+    .info-card { position:absolute; left:26px; right:26px; top:calc(106px + env(safe-area-inset-top)); padding:14px 15px; border-radius:20px; background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.055)),rgba(5,10,16,.74); border:1px solid rgba(255,255,255,.22); box-shadow:0 20px 40px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(18px) saturate(1.16); z-index:10; opacity:0; transform:translateY(-12px); transition:opacity 300ms ease, transform 300ms ease; pointer-events:none; }
+    .info-card.show { opacity:1; transform:translateY(0); } .info-title { color:var(--cyan); font-size:12px; font-weight:950; letter-spacing:.08em; margin-bottom:8px; } .info-lines { display:grid; gap:7px; } .info-line { padding:8px 9px; border-radius:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); color:rgba(247,251,255,.86); font-size:12px; font-weight:720; line-height:1.36; word-break:keep-all; }
+    .char { position:absolute; bottom:148px; width:min(48vw,210px); aspect-ratio:312/793; background-repeat:no-repeat; background-size:contain; background-position:center bottom; opacity:0; filter:drop-shadow(0 28px 24px rgba(0,0,0,.50)); transition:opacity 320ms ease, transform 420ms cubic-bezier(.18,.84,.26,1), background-image 140ms step-end; z-index:5; pointer-events:none; }
+    .char.left { left:27%; transform:translateX(-50%) translateY(16px) scale(.985); } .char.right { left:73%; transform:translateX(-50%) translateY(16px) scale(.985); } .char.center { left:50%; transform:translateX(-50%) translateY(16px) scale(.985); }
+    .char.show.left,.char.show.right,.char.show.center { opacity:1; transform:translateX(-50%) translateY(0) scale(1); }
+    .char.off-left { left:-24%; transform:translateX(-50%) translateY(16px) scale(.985); } .char.off-right { left:124%; transform:translateX(-50%) translateY(16px) scale(.985); }
+    .haein.expr-0 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-0.png"); } .haein.expr-1 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-1.png"); } .haein.expr-2 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-2.png"); } .haein.expr-3 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-3.png"); } .haein.expr-4 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-4.png"); } .haein.expr-5 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-5.png"); }
+    .junwoo.expr-0 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-0.png"); } .junwoo.expr-1 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-1.png"); } .junwoo.expr-2 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-2.png"); } .junwoo.expr-3 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-3.png"); } .junwoo.expr-4 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-4.png"); } .junwoo.expr-5 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-5.png"); }
+    .minseo { aspect-ratio:330.2/793; background-size:600% 100%; background-image:url("../../assets/images/characters/han-minseo/expression-sheet-knee-up-transparent-v3.png"); }
+    .minseo.expr-0 { background-position:0% 0%; } .minseo.expr-1 { background-position:20% 0%; } .minseo.expr-2 { background-position:40% 0%; } .minseo.expr-3 { background-position:60% 0%; } .minseo.expr-4 { background-position:80% 0%; } .minseo.expr-5 { background-position:100% 0%; }
+    .dialogue-box { position:absolute; left:22px; right:22px; bottom:calc(22px + env(safe-area-inset-bottom)); min-height:136px; padding:15px 16px; border-radius:22px; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.07) 42%,rgba(7,18,27,.38)); border:1px solid rgba(255,255,255,.30); box-shadow:0 18px 36px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.18); backdrop-filter:blur(18px) saturate(1.24); z-index:13; cursor:pointer; }
+    .name-row { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; } .speaker { color:var(--cyan); font-size:13px; font-weight:900; letter-spacing:.02em; } .counter { color:rgba(247,251,255,.44); font-size:12px; font-weight:800; }
+    .line { min-height:62px; color:#f8fcff; font-size:clamp(16px,4.2vw,20px); font-weight:690; line-height:1.48; word-break:keep-all; text-shadow:0 2px 10px rgba(0,0,0,.72); } .line.muted { color:rgba(247,251,255,.84); font-style:italic; }
+    .next-mark { position:absolute; right:20px; bottom:13px; width:10px; height:10px; border-right:2px solid rgba(126,234,255,.78); border-bottom:2px solid rgba(126,234,255,.78); transform:rotate(45deg); animation:bob 850ms ease-in-out infinite; }
+    .end-panel { position:absolute; inset:0; z-index:30; display:grid; place-items:end center; padding:0 22px calc(24px + env(safe-area-inset-bottom)); background:linear-gradient(to bottom,rgba(2,6,10,.10),rgba(2,6,10,.76)); opacity:0; pointer-events:none; transition:opacity 360ms ease; }
+    .end-panel.show { opacity:1; pointer-events:auto; } .end-card { width:100%; padding:20px 17px 17px; border-radius:24px; background:linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.065)),rgba(5,10,16,.82); border:1px solid rgba(255,255,255,.26); box-shadow:0 22px 48px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(20px) saturate(1.18); }
+    .end-kicker { color:var(--cyan); font-size:13px; font-weight:950; letter-spacing:.08em; margin-bottom:8px; } .end-title { font-size:clamp(22px,5.8vw,29px); font-weight:940; line-height:1.22; margin-bottom:10px; word-break:keep-all; } .end-copy { color:rgba(247,251,255,.72); font-size:13px; font-weight:720; line-height:1.45; margin-bottom:14px; word-break:keep-all; }
+    .end-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; } .end-button { min-height:48px; border:1px solid rgba(255,255,255,.20); border-radius:15px; background:rgba(255,255,255,.07); color:var(--ink); font-family:inherit; font-size:13px; font-weight:850; cursor:pointer; } .end-button.primary { border-color:rgba(126,234,255,.42); background:rgba(126,234,255,.11); }
+    @keyframes bob { 0%,100% { translate:0 0; opacity:.55; } 50% { translate:0 4px; opacity:1; } }
+  </style>
+</head>
+<body>
+  <main class="phone" id="phone" aria-label="Episode 5 cafe visual novel scene">
+    <div class="bg"></div><div class="scene-vignette"></div><div class="focus-dim" id="focusDim"></div>
+    <div class="topbar"><div class="chapter">EP.05 FIRST LOOK</div><div class="small-actions"><button class="ghost-button" id="autoBtn" type="button">AUTO</button><button class="ghost-button" id="hintBtn" type="button">HINT</button><button class="ghost-button" id="skipBtn" type="button">SKIP</button></div></div>
+    <section class="info-card" id="infoCard"><div class="info-title" id="infoTitle">FIRST LOOK</div><div class="info-lines" id="infoLines"></div></section>
+    <div class="char haein off-left" id="haein"></div><div class="char minseo off-right" id="minseo"></div><div class="char junwoo off-left" id="junwoo"></div>
+    <section class="dialogue-box" id="dialogueBox"><div class="name-row"><div class="speaker" id="speaker">강지호</div><div class="counter" id="counter">1 / 1</div></div><div class="line" id="line"></div><div class="next-mark"></div></section>
+    <section class="end-panel" id="endPanel"><div class="end-card"><div class="end-kicker">EP.05 READY</div><div class="end-title">1차 분석 범위를 정했다.</div><div class="end-copy">다음 단계는 해인 선배의 노트북에서 최근 실행 기록, 시작 프로그램, 이벤트 로그, 브라우저 설정, 다운로드 기록, 사용자 폴더 변경 기록을 확인하는 조사다.</div><div class="end-actions"><button class="end-button" id="replayButton" type="button">다시 보기</button><button class="end-button primary" id="nextButton" type="button">조사 준비</button></div></div></section>
+  </main>
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({ sfx:{ click:'../../assets/audio/mobile/common/sfx-click.mp3', card:'../../assets/audio/mobile/common/sfx-card.mp3' } });
+    const beats=[
+      { type:'narration', speaker:' ', text:'컨퍼런스가 끝난 뒤, 해인 선배는 학교 근처 조용한 카페로 지호를 불렀다.', chars:{} },
+      { type:'narration', speaker:' ', text:'테이블 위에는 식어 가는 커피와 얇은 노트북이 놓여 있었다.', chars:{}, info:{title:'LOCATION', lines:['학교 근처 카페','해인 선배 개인 노트북','사용자 동의 하에 확인']} },
+      { type:'dialogue', speaker:'서해인', text:'와 줘서 고마워. 동아리방에서 말하기엔 조금 애매해서 여기로 불렀어.', chars:{ haein:['center',1] } },
+      { type:'dialogue', speaker:'강지호', text:'괜찮아요. 그런데 선배가 직접 부를 정도면 꽤 신경 쓰이는 일인가요?', chars:{ haein:['center',1] } },
+      { type:'dialogue', speaker:'서해인', text:'큰 사고는 아니야. 파일이 사라진 것도 아니고, 백신 경고가 뜬 것도 아니고.', chars:{ haein:['center',2] } },
+      { type:'dialogue', speaker:'서해인', text:'그런데 며칠 전부터 이 노트북이 내 컴퓨터 같지가 않아.', chars:{ haein:['center',2] } },
+      { type:'dialogue', speaker:'강지호', text:'어떤 점이 달라졌는데요?', chars:{ haein:['center',2] } },
+      { type:'dialogue', speaker:'서해인', text:'로그인하고 나면 가끔 검은 창이 아주 잠깐 떴다가 사라져. 1초나 2초 정도.', chars:{ haein:['center',1] }, info:{title:'사용자 진술', lines:['로그온 직후 짧은 검은 창','반복 여부 불확실','정확한 원인 미확인']} },
+      { type:'dialogue', speaker:'서해인', text:'브라우저 첫 화면도 가끔 낯설게 바뀌어 있고. 내가 건드린 기억은 없어.', chars:{ haein:['center',1] }, info:{title:'사용자 진술', lines:['브라우저 시작 화면 변화','사용자 기억과 불일치','단정 금지']} },
+      { type:'dialogue', speaker:'강지호', text:'파일이 유출됐다는 느낌은요?', chars:{ haein:['center',1] } },
+      { type:'dialogue', speaker:'서해인', text:'그건 모르겠어. 그래서 더 조심스러워. 불안하다고 해서 침해라고 말하면 안 되니까.', chars:{ haein:['center',2] } },
+      { type:'dialogue', speaker:'강지호', text:'컨퍼런스에서 했던 이야기랑 비슷하네요. 느낌은 단서가 될 수 있지만, 결론은 아니죠.', chars:{ haein:['center',1] } },
+      { type:'dialogue', speaker:'서해인', text:'맞아. 그래서 네가 봐 줬으면 해. 단, 고쳐 달라는 게 아니라 먼저 범위를 정해 줬으면 좋겠어.', chars:{ haein:['center',4] } },
+      { type:'dialogue', speaker:'강지호', text:'범위요?', chars:{ haein:['center',4] } },
+      { type:'dialogue', speaker:'서해인', text:'응. 지금 단계에서 확인할 수 있는 것과, 아직 말하면 안 되는 것을 나눠 줘.', chars:{ haein:['center',1] } },
+      { type:'dialogue', speaker:'강지호', text:'그러면 1차 분석으로 잡겠습니다. 침해 여부 확정이 아니라 이상 징후가 있는지 보는 단계로요.', chars:{ haein:['center',1] }, info:{title:'분석 범위', lines:['1차 분석','침해 확정 아님','이상 징후와 추가 확인 지점 분리']} },
+      { type:'dialogue', speaker:'서해인', text:'좋아. 그리고 내 개인 파일 내용은 열지 말아 줘. 필요한 건 기록이지 내용이 아니니까.', chars:{ haein:['center',2] } },
+      { type:'dialogue', speaker:'강지호', text:'동의받은 범위 안에서만 볼게요. 최근 실행 기록, 시작 프로그램, 이벤트 로그부터요.', chars:{ haein:['center',1] }, info:{title:'허용 범위', lines:['최근 실행 기록','시작 프로그램','이벤트 로그','브라우저 설정']} },
+      { type:'dialogue', speaker:'서해인', text:'다운로드 기록도 봐도 돼. 요즘 발표 자료를 많이 내려받아서 뭐가 섞였는지 모르겠어.', chars:{ haein:['center',1] } },
+      { type:'dialogue', speaker:'강지호', text:'사용자 폴더 접근 기록도 확인해도 될까요? 파일 내용은 열지 않고, 시간과 프로세스만요.', chars:{ haein:['center',1] } },
+      { type:'dialogue', speaker:'서해인', text:'그 정도면 괜찮아. 대신 이상한 게 나와도 바로 해킹이라고 말하지 말자.', chars:{ haein:['center',2] } },
+      { type:'dialogue', speaker:'강지호', text:'네. 이번 목표는 결론이 아니라 다음 분석 방향을 찾는 거니까요.', chars:{ haein:['center',4] } },
+      { type:'narration', speaker:' ', text:'지호는 노트북을 자기 쪽으로 조금 돌렸다. 화면에는 평범한 바탕화면이 떠 있었다.', chars:{}, info:{title:'FIRST LOOK', lines:['평범한 바탕화면','명확한 경고 없음','기록 확인 필요']} },
+      { type:'dialogue', speaker:'강지호', text:'겉으로는 평범해 보이네요. 그래서 기록을 시간순으로 맞춰 봐야겠어요.', chars:{ haein:['center',1] } },
+      { type:'dialogue', speaker:'서해인', text:'내가 제일 불안한 건, 정확히 뭐가 바뀐 건지 설명을 못 하겠다는 거야.', chars:{ haein:['center',2] } },
+      { type:'dialogue', speaker:'강지호', text:'그럴 때는 사용자의 기억을 기준점으로 삼고, 시스템 기록이 그 기억을 지지하는지 보는 게 좋겠죠.', chars:{ haein:['center',1] } },
+      { type:'dialogue', speaker:'서해인', text:'그래. 내가 기억하는 건 어제 밤 9시 반쯤 로그인했고, 검은 창은 그 직후였어.', chars:{ haein:['center',1] }, info:{title:'기준 시간', lines:['어젯밤 21:30 이후','로그온 직후 이상 징후','사용자 기억: 검은 창']} },
+      { type:'dialogue', speaker:'강지호', text:'그럼 그 시간대의 실행 기록, 이벤트 로그, 시작 항목을 먼저 보겠습니다.', chars:{ haein:['center',1] } },
+      { type:'dialogue', speaker:'서해인', text:'브라우저도 봐 줘. 시작 페이지가 가끔 바뀐 게 제일 찝찝해.', chars:{ haein:['center',2] } },
+      { type:'dialogue', speaker:'강지호', text:'브라우저 설정과 다운로드 기록까지 같이 보면 유입 경로가 보일 수도 있어요.', chars:{ haein:['center',1] }, info:{title:'조사 항목', lines:['최근 실행 기록','시작 프로그램','이벤트 로그','브라우저 설정','다운로드 기록','사용자 폴더 변경 기록']} },
+      { type:'dialogue', speaker:'서해인', text:'만약 아무것도 안 나오면?', chars:{ haein:['center',2] } },
+      { type:'dialogue', speaker:'강지호', text:'그것도 결과예요. 증거가 없으면 없다고 말해야 하고, 부족하면 부족하다고 말해야죠.', chars:{ haein:['center',1] } },
+      { type:'dialogue', speaker:'서해인', text:'좋아. 그 말이 듣고 싶었어.', chars:{ haein:['center',4] } },
+      { type:'narration', speaker:' ', text:'지호는 손가락을 키보드 위에 올렸다. 이번 분석은 답을 맞히는 일이 아니었다.', chars:{} },
+      { type:'narration', speaker:' ', text:'해인 선배의 PC에서, 말할 수 있는 것과 말하면 안 되는 것을 구분해야 했다.', chars:{}, info:{title:'EP.05 핵심', lines:['이상 징후 확인','침해 단정 금지','2차 분석 필요 여부 판단']} },
+      { type:'narration', speaker:' ', text:'1차 분석을 시작한다.', chars:{}, end:true }
+    ];
+    const ids=['haein','minseo','junwoo'];
+    const els=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]));
+    const focusDim=document.getElementById('focusDim'), speaker=document.getElementById('speaker'), line=document.getElementById('line'), counter=document.getElementById('counter'), dialogueBox=document.getElementById('dialogueBox'), autoBtn=document.getElementById('autoBtn'), hintBtn=document.getElementById('hintBtn'), skipBtn=document.getElementById('skipBtn'), infoCard=document.getElementById('infoCard'), infoTitle=document.getElementById('infoTitle'), infoLines=document.getElementById('infoLines'), endPanel=document.getElementById('endPanel');
+    let index=0, auto=false, hintOn=false, currentInfo=null, autoTimer=null, typeTimer=null, isTyping=false, currentText='';
+    function stopTyping(){ if(typeTimer) clearInterval(typeTimer); typeTimer=null; isTyping=false; }
+    function completeText(){ stopTyping(); line.textContent=currentText; }
+    function typeText(text){ stopTyping(); currentText=text; line.textContent=''; let i=0; isTyping=true; typeTimer=setInterval(()=>{ line.textContent += text[i] || ''; i += 1; if(i > text.length) stopTyping(); }, 18); }
+    function offClass(id){ return id==='haein'||id==='junwoo'?'off-left':'off-right'; }
+    function applyCharacters(chars){ let shown=false; ids.forEach(id=>{ const el=els[id]; el.className='char '+id+' '+offClass(id); if(chars[id]){ const [slot,expr]=chars[id]; el.className='char '+id+' '+slot+' show expr-'+expr; shown=true; } }); focusDim.classList.toggle('on', shown); }
+    function renderHint(){ infoLines.innerHTML=''; if(!hintOn || !currentInfo){ infoCard.classList.remove('show'); return; } infoTitle.textContent=currentInfo.title; currentInfo.lines.forEach(text=>{ const node=document.createElement('div'); node.className='info-line'; node.textContent=text; infoLines.appendChild(node); }); infoCard.classList.add('show'); }
+    function applyInfo(info){ currentInfo=info || null; renderHint(); }
+    function finish(){ endPanel.classList.add('show'); }
+    function showBeat(){ const beat=beats[index]; if(!beat) return; clearTimeout(autoTimer); stopTyping(); applyCharacters(beat.chars || {}); applyInfo(beat.info); speaker.textContent=beat.speaker || ' '; counter.textContent=`${index+1} / ${beats.length}`; line.classList.toggle('muted', beat.type==='narration'); typeText(beat.text); if(beat.end) autoTimer=setTimeout(finish,1300); if(auto && !beat.end) autoTimer=setTimeout(next, Math.max(1500, beat.text.length * 85)); }
+    function next(){ if(isTyping){ completeText(); return; } if(index < beats.length - 1){ index += 1; showBeat(); return; } finish(); }
+    dialogueBox.addEventListener('click', next);
+    document.getElementById('phone').addEventListener('click', e=>{ if(e.target.closest('button') || e.target.closest('.dialogue-box')) return; next(); });
+    autoBtn.addEventListener('click',()=>{ auto=!auto; autoBtn.textContent=auto?'AUTO ON':'AUTO'; autoBtn.classList.toggle('on', auto); if(auto) showBeat(); else clearTimeout(autoTimer); });
+    hintBtn.addEventListener('click',()=>{ hintOn=!hintOn; hintBtn.textContent=hintOn?'HINT ON':'HINT'; hintBtn.classList.toggle('on', hintOn); renderHint(); });
+    skipBtn.addEventListener('click',()=>{ stopTyping(); index=beats.length-1; showBeat(); completeText(); });
+    document.getElementById('replayButton').addEventListener('click',()=>location.reload());
+    document.getElementById('nextButton').addEventListener('click',()=>{ window.location.href='../episode-05-investigation-menu/index.html'; });
+    showBeat();
+  </script>
+</body>
+</html>

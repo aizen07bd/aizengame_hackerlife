@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Credits</title>
+  <style>
+    :root {
+      --phone-w:min(100vw,430px);
+      --phone-h:min(100dvh,932px);
+      --ink:#f7fbff;
+      --cyan:#7eeaff;
+      --muted:rgba(247,251,255,.68);
+      font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+    }
+    * { box-sizing:border-box; }
+    html,body { height:100%; }
+    body {
+      margin:0;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      color:var(--ink);
+      background:radial-gradient(circle at 50% 8%, rgba(126,234,255,.16), transparent 34%), linear-gradient(160deg,#020409,#07131d 54%,#020409);
+    }
+    .phone {
+      position:relative;
+      width:var(--phone-w);
+      height:var(--phone-h);
+      max-height:932px;
+      aspect-ratio:9/16;
+      overflow:hidden;
+      background:#02050a;
+      box-shadow:0 28px 80px rgba(0,0,0,.62);
+      isolation:isolate;
+    }
+    .panel {
+      position:absolute;
+      inset:0;
+      overflow:hidden;
+      border:0 solid rgba(255,255,255,.96);
+      filter:drop-shadow(0 18px 16px rgba(0,0,0,.58));
+      opacity:0;
+      transform-origin:center;
+      will-change:transform,opacity;
+    }
+    .panel::before {
+      content:"";
+      position:absolute;
+      inset:-16px;
+      background-size:cover;
+      background-position:center;
+      filter:saturate(.88) brightness(.56);
+      transform:scale(1.02);
+    }
+    .panel::after {
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg,rgba(0,0,0,.58),rgba(0,0,0,.22) 52%,rgba(0,0,0,.70));
+    }
+    .panel-1 {
+      clip-path:polygon(0 0,100% 0,100% 25%,0 31%);
+      border-bottom-width:6px;
+      animation:panelFromLeft 980ms cubic-bezier(.18,.94,.2,1) 140ms forwards;
+    }
+    .panel-1::before { background-image:url("../../assets/images/mobile/start-page/main-cast-mobile-title-v3.png"); }
+    .panel-2 {
+      clip-path:polygon(0 30%,100% 24%,100% 50%,0 45%);
+      border-top-width:6px;
+      border-bottom-width:6px;
+      animation:panelFromRight 1040ms cubic-bezier(.18,.94,.2,1) 760ms forwards;
+    }
+    .panel-2::before { background-image:url("../../assets/images/mobile/episode-15/ep15-final-report-prologue-comic-v1.png"); background-position:center 35%; }
+    .panel-3 {
+      clip-path:polygon(0 44%,100% 49%,100% 72%,0 77%);
+      border-top-width:6px;
+      border-bottom-width:6px;
+      animation:panelFromLowerLeft 1080ms cubic-bezier(.18,.94,.2,1) 1380ms forwards;
+    }
+    .panel-3::before { background-image:url("../../assets/images/mobile/episode-14/ep14-malware-analysis-epilogue-comic-v1.png"); background-position:center 45%; }
+    .panel-4 {
+      clip-path:polygon(0 76%,100% 71%,100% 100%,0 100%);
+      border-top-width:6px;
+      animation:panelFromLowerRight 1120ms cubic-bezier(.18,.94,.2,1) 2000ms forwards;
+    }
+    .panel-4::before { background-image:url("../../assets/images/mobile/episode-15/ep15-final-report-epilogue-comic-v1.png"); background-position:center bottom; }
+    .scanline {
+      position:absolute;
+      inset:0;
+      background:repeating-linear-gradient(0deg,rgba(255,255,255,.055) 0 1px,transparent 1px 5px);
+      opacity:.11;
+      mix-blend-mode:screen;
+      pointer-events:none;
+      z-index:10;
+    }
+    .content {
+      position:absolute;
+      inset:0;
+      z-index:12;
+      pointer-events:none;
+    }
+    .block {
+      position:absolute;
+      max-width:78%;
+      text-shadow:0 3px 14px rgba(0,0,0,.94), 0 0 18px rgba(126,234,255,.18);
+      word-break:keep-all;
+      opacity:0;
+      transform:translateY(10px);
+      animation:blockIn 520ms ease forwards;
+    }
+    .block-1 { left:28px; top:calc(42px + env(safe-area-inset-top)); animation-delay:880ms; }
+    .block-2 { right:26px; top:31%; text-align:right; max-width:74%; animation-delay:1500ms; pointer-events:auto; }
+    .block-3 { left:28px; top:54%; max-width:72%; animation-delay:2120ms; }
+    .block-4 { right:26px; bottom:calc(104px + env(safe-area-inset-bottom)); text-align:right; max-width:78%; animation-delay:2740ms; }
+    .eyebrow {
+      color:var(--cyan);
+      font-size:12px;
+      font-weight:950;
+      letter-spacing:.12em;
+      margin-bottom:8px;
+    }
+    .title {
+      font-size:clamp(35px,10vw,48px);
+      line-height:.92;
+      font-weight:950;
+      letter-spacing:.02em;
+    }
+    .subtitle {
+      margin-top:10px;
+      color:rgba(247,251,255,.74);
+      font-size:13px;
+      font-weight:800;
+      letter-spacing:.10em;
+    }
+    .label {
+      color:var(--cyan);
+      font-size:13px;
+      font-weight:950;
+      letter-spacing:.08em;
+      margin-bottom:8px;
+    }
+    .names {
+      font-size:clamp(20px,5.7vw,27px);
+      line-height:1.22;
+      font-weight:940;
+    }
+    .desc {
+      margin-top:7px;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:760;
+      line-height:1.42;
+    }
+    .blog {
+      display:inline-block;
+      margin-top:7px;
+      color:rgba(226,250,255,.86);
+      font-size:13px;
+      font-weight:820;
+      text-decoration:none;
+      border-bottom:1px solid rgba(126,234,255,.42);
+    }
+    .future {
+      display:grid;
+      gap:6px;
+      justify-items:end;
+      font-size:clamp(18px,5.1vw,24px);
+      font-weight:920;
+      line-height:1.18;
+    }
+    .title-button {
+      position:absolute;
+      left:24px;
+      right:24px;
+      bottom:calc(22px + env(safe-area-inset-bottom));
+      z-index:20;
+      min-height:52px;
+      border:1px solid rgba(126,234,255,.38);
+      border-radius:17px;
+      background:linear-gradient(145deg,rgba(126,234,255,.18),rgba(255,255,255,.07)),rgba(5,12,18,.58);
+      color:#effcff;
+      font-family:inherit;
+      font-size:15px;
+      font-weight:900;
+      box-shadow:0 18px 40px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.14);
+      backdrop-filter:blur(18px) saturate(1.18);
+      cursor:pointer;
+      opacity:0;
+      transform:translateY(12px);
+      animation:buttonIn 520ms ease 3320ms forwards;
+    }
+    .title-button:active { transform:translateY(1px) scale(.992); }
+    @keyframes panelFromLeft { 0%{opacity:0;transform:translateX(-112%) translateY(-8%) rotate(-7deg) scale(.985)} 72%{opacity:1;transform:translateX(2.4%) rotate(.8deg) scale(1)} 100%{opacity:1;transform:translateX(0) rotate(0)} }
+    @keyframes panelFromRight { 0%{opacity:0;transform:translateX(112%) translateY(-4%) rotate(7deg) scale(.985)} 72%{opacity:1;transform:translateX(-2.4%) rotate(-.8deg) scale(1)} 100%{opacity:1;transform:translateX(0) rotate(0)} }
+    @keyframes panelFromLowerLeft { 0%{opacity:0;transform:translateX(-112%) translateY(30%) rotate(6deg) scale(.985)} 72%{opacity:1;transform:translateX(2.2%) translateY(-.8%) rotate(-.8deg) scale(1)} 100%{opacity:1;transform:translateX(0) translateY(0) rotate(0)} }
+    @keyframes panelFromLowerRight { 0%{opacity:0;transform:translateX(112%) translateY(30%) rotate(-6deg) scale(.985)} 72%{opacity:1;transform:translateX(-2.2%) translateY(-.8%) rotate(.8deg) scale(1)} 100%{opacity:1;transform:translateX(0) translateY(0) rotate(0)} }
+    @keyframes blockIn { to { opacity:1; transform:translateY(0); } }
+    @keyframes buttonIn { to { opacity:1; transform:translateY(0); } }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="Hacker Life Trace credits">
+    <section class="panel panel-1"></section>
+    <section class="panel panel-2"></section>
+    <section class="panel panel-3"></section>
+    <section class="panel panel-4"></section>
+    <div class="scanline"></div>
+    <section class="content">
+      <div class="block block-1">
+        <div class="eyebrow">CREDITS</div>
+        <div class="title">HACKER<br>LIFE: TRACE</div>
+        <div class="subtitle">SEASON 1 MOBILE</div>
+      </div>
+      <div class="block block-2">
+        <div class="label">기획 / 제작 / 연출 / 전문가 의견</div>
+        <div class="names">aizen07bd</div>
+        <a class="blog" href="https://aizen07bd.github.io" target="_blank" rel="noopener noreferrer">https://aizen07bd.github.io</a>
+      </div>
+      <div class="block block-3">
+        <div class="label">이미지 / 사운드</div>
+        <div class="names">AI</div>
+        <div class="desc">visual assets, music and sound effects</div>
+      </div>
+      <div class="block block-4">
+        <div class="label">향후 계획</div>
+        <div class="future">
+          <div>시즌 1 PC 버전</div>
+          <div>시즌 2 Coming Soon</div>
+        </div>
+      </div>
+    </section>
+    <button class="title-button" id="titleButton" type="button">타이틀로</button>
+  </main>
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({ bgm:'../../assets/audio/mobile/episode-01/bgm-title.mp3', bgmVolume:.20, sfx:{ click:'../../assets/audio/mobile/common/sfx-click.mp3', whoosh:'../../assets/audio/mobile/common/sfx-panel-whoosh.mp3', clear:'../../assets/audio/mobile/common/sfx-clear.mp3' } });
+    [140,760,1380,2000].forEach(delay => window.setTimeout(() => window.HLTAudio.play('whoosh'), delay));
+    window.setTimeout(() => window.HLTAudio.play('clear'), 3200);
+    document.getElementById('titleButton').addEventListener('click', () => {
+      window.HLTAudio.play('click');
+      window.location.href = '../mobile-start/index.html';
+    });
+  </script>
+</body>
+</html>

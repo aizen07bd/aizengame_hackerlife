@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 08 Whiteboard Puzzle</title>
+  <style>
+    :root { --phone-w:min(100vw,430px); --phone-h:min(100dvh,932px); --ink:#f7fbff; --cyan:#7eeaff; --green:#5fe2ad; --red:#ff8f9b; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif; }
+    * { box-sizing:border-box; } html,body { height:100%; }
+    body { margin:0; display:grid; place-items:center; overflow:hidden; color:var(--ink); background:radial-gradient(circle at 50% 8%, rgba(126,234,255,.13), transparent 34%), linear-gradient(160deg,#020409,#07131d 54%,#020409); }
+    .phone { position:relative; width:var(--phone-w); height:var(--phone-h); max-height:932px; aspect-ratio:9/16; overflow:hidden; background:#05080d; box-shadow:0 28px 80px rgba(0,0,0,.62); isolation:isolate; user-select:none; }
+    .topbar { position:absolute; top:calc(12px + env(safe-area-inset-top)); left:14px; right:14px; display:flex; justify-content:space-between; align-items:center; gap:8px; z-index:30; }
+    .pill,.ghost { border:1px solid rgba(255,255,255,.20); border-radius:999px; background:rgba(4,10,16,.46); color:rgba(247,251,255,.82); backdrop-filter:blur(12px); font-weight:850; }
+    .pill { max-width:calc(100% - 104px); padding:8px 12px; font-size:12px; letter-spacing:.05em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .ghost { padding:8px 10px; font-size:11px; cursor:pointer; }
+    .board-wrap { position:absolute; top:0; left:0; right:0; height:59%; overflow:hidden; background:#071018; }
+    .board-bg { position:absolute; inset:0; background-image:linear-gradient(to bottom,rgba(0,0,0,.04),rgba(0,0,0,.22)),url("../../assets/images/mobile/episode-08/ep08-club-whiteboard-empty-v1.png"); background-size:cover; background-position:center; filter:saturate(.94) brightness(.88); transform:scale(1.03); }
+    .board-vignette { position:absolute; inset:0; background:linear-gradient(to bottom,rgba(2,6,10,.22),transparent 18%,rgba(2,6,10,.10) 70%,rgba(2,6,10,.64)); pointer-events:none; }
+    .board-layer { position:absolute; left:22px; right:22px; top:calc(66px + env(safe-area-inset-top)); bottom:18px; z-index:5; border:2px dashed rgba(126,234,255,.0); border-radius:14px; transition:border-color 160ms ease, background 160ms ease, box-shadow 160ms ease; }
+    .board-layer::before { content:"아래 포스트잇을 이 화이트보드 위로 끌어다 놓기"; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); color:rgba(8,22,30,.38); font-size:13px; font-weight:950; letter-spacing:.02em; white-space:nowrap; pointer-events:none; }
+    .board-layer.has-cards::before { display:none; }
+    .board-layer.drag-over { border-color:rgba(126,234,255,.72); background:rgba(126,234,255,.08); box-shadow:0 0 0 999px rgba(0,0,0,.08), inset 0 0 28px rgba(126,234,255,.16); }
+    .tray { position:absolute; left:0; right:0; bottom:0; height:45%; padding:15px 16px calc(78px + env(safe-area-inset-bottom)); background:linear-gradient(to bottom,rgba(4,9,14,.18),rgba(4,9,14,.94) 16%,#04090e 100%); z-index:10; }
+    .prompt { margin:0 0 10px; color:rgba(247,251,255,.70); font-size:12px; line-height:1.42; font-weight:720; word-break:keep-all; }
+    .card-pool { height:100%; overflow-y:auto; display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:1px 2px 8px 0; overscroll-behavior:contain; }
+    .postit { position:relative; min-height:78px; padding:12px 10px 10px; border:0; border-radius:7px 9px 8px 7px; color:#172026; text-align:left; font-family:inherit; font-size:12px; font-weight:850; line-height:1.28; word-break:keep-all; cursor:grab; touch-action:none; box-shadow:0 11px 20px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.45); transform:rotate(var(--rot)); }
+    .postit:active { cursor:grabbing; }
+    .postit.yellow { background:linear-gradient(145deg,#fff5a7,#f6dd6e); }
+    .postit.cyan { background:linear-gradient(145deg,#c9f5ff,#82ddea); }
+    .postit.pink { background:linear-gradient(145deg,#ffd4e5,#f39bbb); }
+    .postit.green { background:linear-gradient(145deg,#d7ffd1,#9fe59b); }
+    .postit::after { content:""; position:absolute; inset:0; border-radius:inherit; background:linear-gradient(135deg,rgba(255,255,255,.30),transparent 38%,rgba(0,0,0,.08)); pointer-events:none; }
+    .board-layer .postit { position:absolute; width:118px; min-height:86px; padding:16px 9px 8px; font-size:10px; line-height:1.24; transform:rotate(var(--rot)); }
+    .order-badge { position:absolute; left:6px; top:5px; min-width:18px; height:18px; display:grid; place-items:center; border-radius:999px; background:rgba(7,18,27,.82); color:#f7fbff; font-size:10px; font-weight:950; box-shadow:0 3px 8px rgba(0,0,0,.25); }
+    .dragging { position:fixed !important; z-index:80 !important; width:180px !important; min-height:82px !important; pointer-events:none; opacity:.96; transform:rotate(var(--rot)) scale(1.07) !important; }
+    .postit.on-board { cursor:pointer; }
+    .actions { position:absolute; left:16px; right:16px; bottom:calc(12px + env(safe-area-inset-bottom)); z-index:25; display:grid; grid-template-columns:1fr 1fr; gap:9px; padding:8px; border-radius:22px; background:rgba(2,8,13,.72); border:1px solid rgba(126,234,255,.18); backdrop-filter:blur(18px); }
+    .action { min-height:44px; border:1px solid rgba(255,255,255,.18); border-radius:15px; background:rgba(255,255,255,.06); color:var(--ink); font-family:inherit; font-size:13px; font-weight:850; cursor:pointer; }
+    .action.primary { border-color:rgba(126,234,255,.44); background:rgba(126,234,255,.12); }
+    .toast,.result { position:absolute; left:20px; right:20px; z-index:90; border-radius:22px; background:linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.06)),rgba(5,10,16,.86); border:1px solid rgba(255,255,255,.25); box-shadow:0 22px 48px rgba(0,0,0,.42); backdrop-filter:blur(20px) saturate(1.18); opacity:0; transform:translateY(14px); pointer-events:none; transition:opacity 240ms ease,transform 240ms ease; }
+    .toast { bottom:calc(76px + env(safe-area-inset-bottom)); padding:15px 16px; }
+    .toast.show,.result.show { opacity:1; transform:translateY(0); pointer-events:auto; }
+    .toast-name,.result-kicker { color:var(--cyan); font-size:13px; font-weight:950; margin-bottom:8px; }
+    .toast-line { color:#f8fcff; font-size:15px; font-weight:760; line-height:1.45; word-break:keep-all; }
+    .result { top:calc(82px + env(safe-area-inset-top)); padding:18px 17px 16px; }
+    .result-title { margin:0 0 10px; font-size:clamp(22px,5.7vw,29px); line-height:1.22; font-weight:940; word-break:keep-all; }
+    .result-list { display:grid; gap:8px; max-height:260px; overflow:auto; margin-bottom:14px; }
+    .result-item { padding:10px 11px; border-radius:14px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); color:rgba(247,251,255,.88); font-size:13px; font-weight:720; line-height:1.4; word-break:keep-all; }
+    .result-actions { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+  </style>
+</head>
+<body>
+  <main class="phone" id="phone" aria-label="Episode 8 whiteboard puzzle">
+    <section class="board-wrap" id="boardWrap"><div class="board-bg"></div><div class="board-vignette"></div><div class="board-layer" id="boardLayer"></div></section>
+    <div class="topbar"><div class="pill">EP.08 CLUB BRIEFING</div><button class="ghost" id="hintButton" type="button">HINT</button></div>
+    <section class="tray"><p class="prompt">아래 포스트잇을 손가락/마우스로 끌어서 위 화이트보드에 붙이자. 붙인 순서가 브리핑 순서가 된다.</p><div class="card-pool" id="cardPool"></div></section>
+    <div class="actions"><button class="action" id="resetButton" type="button">초기화</button><button class="action primary" id="checkButton" type="button">결과 확인</button></div>
+    <section class="toast" id="toast"><div class="toast-name" id="toastName">서해인</div><div class="toast-line" id="toastLine"></div></section>
+    <section class="result" id="result"><div class="result-kicker" id="resultKicker">RESULT</div><h1 class="result-title" id="resultTitle">브리핑 결과</h1><div class="result-list" id="resultList"></div><div class="result-actions"><button class="action" id="closeResult" type="button">계속 정리</button><button class="action primary" id="nextButton" type="button">다음</button></div></section>
+  </main>
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({ sfx:{ click:'../../assets/audio/mobile/common/sfx-click.mp3', card:'../../assets/audio/mobile/common/sfx-card.mp3', clear:'../../assets/audio/mobile/common/sfx-clear.mp3' } });
+    const correctOrder=['club-trace','haein-first','external-tip','timeline','browser-change','no-exfil','similarity','defer','plan'];
+    const cards=[
+      {id:'club-trace', text:'동아리 PC 문제 해결 중 note 계열 흔적 발견', color:'yellow'},
+      {id:'haein-first', text:'해인 PC 1차 분석에서 CloudNote Helper 이상 징후 확인', color:'cyan'},
+      {id:'external-tip', text:'외부 제보에서 CloudNote Helper / note-sync 증상 반복 확인', color:'pink'},
+      {id:'timeline', text:'해인 PC 2차 분석에서 21:31~21:33 타임라인 정리', color:'green'},
+      {id:'browser-change', text:'시작 페이지가 note-sync 계열로 변경된 흐름 확인', color:'yellow'},
+      {id:'no-exfil', text:'문서 접근은 있었지만 외부 전송은 미확정', color:'cyan'},
+      {id:'similarity', text:'동아리 PC와 해인 PC 흐름이 닮았다는 점 발견', color:'pink'},
+      {id:'defer', text:'같은 패턴 가능성은 있지만 공격자 귀속은 보류', color:'green'},
+      {id:'plan', text:'동아리 PC 원본 보존 및 추가 비교 계획 수립', color:'yellow'},
+      {id:'trap-blackkite', text:'blackkite가 이번 사건의 범인이라고 발표', color:'pink', trap:true},
+      {id:'trap-stolen', text:'문서 접근 기록을 유출 확정으로 보고', color:'cyan', trap:true},
+      {id:'trap-junwoo', text:'준우가 설치한 확장 프로그램이 전부 원인', color:'green', trap:true},
+      {id:'trap-wipe', text:'동아리 PC 초기화 먼저 진행', color:'yellow', trap:true},
+      {id:'trap-rumor', text:'커뮤니티 루머를 최종 근거로 사용', color:'pink', trap:true},
+      {id:'trap-update', text:'정상 업데이트 기록을 핵심 원인으로 둠', color:'cyan', trap:true}
+    ];
+    const boardWrap=document.getElementById('boardWrap'), boardLayer=document.getElementById('boardLayer'), pool=document.getElementById('cardPool'), toast=document.getElementById('toast'), toastLine=document.getElementById('toastLine'), result=document.getElementById('result'), resultKicker=document.getElementById('resultKicker'), resultTitle=document.getElementById('resultTitle'), resultList=document.getElementById('resultList');
+    const rotations=['-1.2deg','.8deg','-0.6deg','1.1deg','-1deg','.7deg'];
+    let dragEl=null, originalParent=null, pointerOffsetX=0, pointerOffsetY=0;
+    let boardOrder=[];
+    function cardInfo(id){ return cards.find(card=>card.id===id); }
+    function cardNode(card, i){ const node=document.createElement('button'); node.type='button'; node.className=`postit ${card.color}`; node.dataset.id=card.id; node.style.setProperty('--rot', rotations[i%rotations.length]); node.textContent=card.text; node.addEventListener('pointerdown', startDrag); node.addEventListener('click', event=>{ if(node.classList.contains('dragging') || node.dataset.suppressClick==='1') return; if(node.parentElement===boardLayer) removeFromBoard(node); }); return node; }
+    function renderCards(){ pool.innerHTML=''; [...cards].sort(()=>Math.random()-.5).forEach((card,i)=>pool.appendChild(cardNode(card,i))); boardOrder=[]; updateBadges(); }
+    function showToast(text, name='서해인'){ document.getElementById('toastName').textContent=name; toastLine.textContent=text; toast.classList.add('show'); clearTimeout(showToast.t); showToast.t=setTimeout(()=>toast.classList.remove('show'),2600); }
+    function updateBadges(){ boardLayer.classList.toggle('has-cards', boardOrder.length>0); [...boardLayer.querySelectorAll('.postit')].forEach(node=>{ let badge=node.querySelector('.order-badge'); if(!badge){ badge=document.createElement('span'); badge.className='order-badge'; node.appendChild(badge); } badge.textContent=String(boardOrder.indexOf(node.dataset.id)+1); }); }
+    function removeFromBoard(node){ boardOrder=boardOrder.filter(id=>id!==node.dataset.id); node.classList.remove('on-board'); node.style.left=''; node.style.top=''; const badge=node.querySelector('.order-badge'); if(badge) badge.remove(); pool.appendChild(node); updateBadges(); window.HLTAudio.play('click'); }
+    function placeOnBoard(node, clientX, clientY){ const id=node.dataset.id; const wasOnBoard=boardOrder.includes(id); const nextOrder=boardOrder.filter(existingId=>existingId!==id); if(!wasOnBoard && nextOrder.length>=correctOrder.length){ node.classList.remove('on-board'); if(originalParent) originalParent.appendChild(node); updateBadges(); showToast('화이트보드에는 브리핑에 쓸 9개 메모만 올리자.'); window.HLTAudio.play('click'); return; } const rect=boardLayer.getBoundingClientRect(); const w=118, h=86; const x=Math.max(0, Math.min(rect.width-w, clientX-rect.left-pointerOffsetX)); const y=Math.max(0, Math.min(rect.height-h, clientY-rect.top-pointerOffsetY)); boardOrder=nextOrder; node.classList.add('on-board'); node.style.left=x+'px'; node.style.top=y+'px'; boardLayer.appendChild(node); boardOrder.push(id); updateBadges(); window.HLTAudio.play('card'); }
+    function isOverBoard(event){ const rect=boardLayer.getBoundingClientRect(); return event.clientX>=rect.left && event.clientX<=rect.right && event.clientY>=rect.top && event.clientY<=rect.bottom; }
+    function startDrag(event){ event.preventDefault(); const node=event.currentTarget; dragEl=node; originalParent=node.parentElement; const rect=node.getBoundingClientRect(); pointerOffsetX=event.clientX-rect.left; pointerOffsetY=event.clientY-rect.top; node.classList.add('dragging'); node.style.left=rect.left+'px'; node.style.top=rect.top+'px'; document.body.appendChild(node); moveDrag(event); document.addEventListener('pointermove', moveDrag); document.addEventListener('pointerup', endDrag, {once:true}); document.addEventListener('pointercancel', cancelDrag, {once:true}); }
+    function moveDrag(event){ if(!dragEl) return; event.preventDefault(); dragEl.style.left=(event.clientX-pointerOffsetX)+'px'; dragEl.style.top=(event.clientY-pointerOffsetY)+'px'; boardLayer.classList.toggle('drag-over', isOverBoard(event)); }
+    function endDrag(event){ if(!dragEl) return; event.preventDefault(); const trayRect=pool.getBoundingClientRect(); const overBoard=isOverBoard(event); const overTray=event.clientX>=trayRect.left && event.clientX<=trayRect.right && event.clientY>=trayRect.top && event.clientY<=trayRect.bottom; const node=dragEl; const parent=originalParent; cleanupDrag(node); node.dataset.suppressClick='1'; setTimeout(()=>{ delete node.dataset.suppressClick; },120); if(overBoard){ placeOnBoard(node,event.clientX,event.clientY); return; } if(overTray && parent===boardLayer){ removeFromBoard(node); return; } if(parent){ parent.appendChild(node); updateBadges(); } }
+    function cancelDrag(){ if(!dragEl) return; const node=dragEl; const parent=originalParent; cleanupDrag(node); if(parent) parent.appendChild(node); updateBadges(); }
+    function cleanupDrag(node){ document.removeEventListener('pointermove', moveDrag); boardLayer.classList.remove('drag-over'); node.classList.remove('dragging'); node.style.left=''; node.style.top=''; dragEl=null; originalParent=null; }
+    function renderResult(success, items){ const nextButton=document.getElementById('nextButton'); nextButton.style.display=success?'block':'none'; resultKicker.textContent=success?'BRIEFING SUCCESS':'BRIEFING FAILED'; resultKicker.style.color=success?'var(--green)':'var(--red)'; resultTitle.textContent=success?'설명 가능한 순서가 됐다.':'브리핑 순서를 다시 잡아야 한다.'; resultList.innerHTML=''; items.forEach(text=>{ const item=document.createElement('div'); item.className='result-item'; item.textContent=text; resultList.appendChild(item); }); result.classList.add('show'); window.HLTAudio.play(success?'clear':'card'); }
+    function checkBoard(){ const problems=[]; const trap=boardOrder.find(id=>cardInfo(id)?.trap); if(boardOrder.length<9) problems.push('화이트보드에 9개 타임라인 카드가 모두 붙지 않았다.'); if(trap) problems.push('결론이 앞서거나 근거 범위를 넘는 메모가 포함됐다.'); correctOrder.forEach((id,i)=>{ if(boardOrder[i]!==id) problems.push(`${i+1}번째로 붙인 포스트잇의 순서가 맞지 않는다.`); }); if(problems.length){ renderResult(false, problems.slice(0,6)); return; } renderResult(true, ['동아리 PC와 해인 PC의 공통 패턴을 시간순으로 설명했다.','유출과 공격자 귀속을 보류했다.','동아리 PC 원본 보존과 추가 비교 계획까지 포함했다.']); }
+    document.getElementById('hintButton').addEventListener('click',()=>showToast('화이트보드에 붙인 순서가 브리핑 순서야. 발견 → 비교 → 보류 → 계획 순서로 붙여 봐.'));
+    document.getElementById('resetButton').addEventListener('click',()=>{ boardLayer.innerHTML=''; renderCards(); result.classList.remove('show'); });
+    document.getElementById('checkButton').addEventListener('click',checkBoard);
+    document.getElementById('closeResult').addEventListener('click',()=>result.classList.remove('show'));
+    document.getElementById('nextButton').addEventListener('click',()=>window.location.href='../episode-08-ending-comic-animation/index.html');
+    renderCards();
+  </script>
+</body>
+</html>

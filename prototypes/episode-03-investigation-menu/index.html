@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 03 Investigation</title>
+  <style>
+    :root { --phone-w:min(100vw,430px); --phone-h:min(100dvh,932px); --ink:#f7fbff; --cyan:#7eeaff; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif; }
+    * { box-sizing:border-box; } html,body { height:100%; }
+    body { margin:0; display:grid; place-items:center; overflow:hidden; color:var(--ink); background:radial-gradient(circle at 50% 8%, rgba(126,234,255,.14), transparent 34%), linear-gradient(160deg,#020409,#07131d 54%,#020409); }
+    .phone { position:relative; width:var(--phone-w); height:var(--phone-h); max-height:932px; aspect-ratio:9/16; overflow:hidden; background:#05080d; box-shadow:0 28px 80px rgba(0,0,0,.62); isolation:isolate; }
+    .topbar { position:absolute; top:calc(14px + env(safe-area-inset-top)); left:16px; right:16px; display:flex; justify-content:space-between; z-index:20; pointer-events:none; }
+    .pill { padding:8px 12px; border-radius:999px; background:rgba(4,10,16,.52); border:1px solid rgba(255,255,255,.20); color:rgba(247,251,255,.80); backdrop-filter:blur(12px); font-size:12px; font-weight:850; letter-spacing:.05em; }
+    .top-visual { position:absolute; top:calc(68px + env(safe-area-inset-top)); left:0; right:0; height:39%; overflow:hidden; background:#071018; }
+    .top-visual::before { content:""; position:absolute; inset:0; background-image:linear-gradient(to bottom,rgba(1,6,10,.02),rgba(1,6,10,.28)),url("../../assets/images/mobile/investigation/episode-03/top/club-pc-monitor-closeup-v1.png"); background-size:cover; background-position:center 47%; transform:scale(1.03); }
+    .top-visual::after { content:""; position:absolute; inset:0; background:repeating-linear-gradient(0deg, rgba(255,255,255,.055) 0 1px, transparent 1px 5px); opacity:.18; mix-blend-mode:screen; }
+    .menu-panel { position:absolute; left:0; right:0; bottom:0; height:56%; padding:24px 20px calc(24px + env(safe-area-inset-bottom)); background:linear-gradient(to bottom,rgba(5,10,16,0),rgba(5,10,16,.70) 10%,rgba(4,9,14,.96) 35%,#04090e 100%); z-index:8; }
+    .kicker { color:var(--cyan); font-size:13px; font-weight:900; letter-spacing:.06em; margin-bottom:8px; }
+    h1 { margin:0 0 9px; max-width:330px; font-size:clamp(17px,4.7vw,21px); line-height:1.34; font-weight:820; word-break:keep-all; }
+    .prompt { margin:0 0 14px; color:rgba(247,251,255,.66); font-size:13px; font-weight:640; line-height:1.45; word-break:keep-all; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:8px 10px; }
+    .menu-card { min-height:54px; padding:0 13px; border:1px solid rgba(255,255,255,.20); border-radius:17px; background:linear-gradient(145deg, rgba(34,42,51,.92), rgba(18,25,32,.88)); color:var(--ink); box-shadow:0 12px 25px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.08); text-align:left; cursor:pointer; overflow:hidden; contain:paint; }
+    .menu-card:hover { border-color:rgba(126,234,255,.42); } .card-title { display:block; font-size:15px; font-weight:850; line-height:1.25; }
+    .finish-wrap { margin-top:14px; display:grid; grid-template-columns:1fr; }
+    .finish-button { min-height:52px; border:1px solid rgba(126,234,255,.38); border-radius:17px; background:linear-gradient(145deg, rgba(126,234,255,.18), rgba(18,30,38,.88)); color:var(--ink); box-shadow:0 14px 30px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.12); font-family:inherit; font-size:15px; font-weight:900; cursor:pointer; }
+    .finish-button:active { transform:translateY(1px); }
+    .viewer { position:absolute; inset:0; z-index:30; background:radial-gradient(circle at 50% 7%,rgba(126,234,255,.10),transparent 34%),linear-gradient(180deg,#071019,#03070c 74%); opacity:0; pointer-events:none; transform:translateY(18px); transition:opacity 220ms ease, transform 260ms ease; }
+    .viewer.show { opacity:1; pointer-events:auto; transform:translateY(0); }
+    .viewer-head { position:absolute; top:calc(58px + env(safe-area-inset-top)); left:18px; right:18px; height:42px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .back,.nav { border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.08); color:var(--ink); border-radius:999px; backdrop-filter:blur(14px); font-family:inherit; font-weight:820; cursor:pointer; }
+    .back { width:42px; height:36px; font-size:18px; } .title { flex:1; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:14px; font-weight:900; color:rgba(247,251,255,.86); } .count { min-width:42px; text-align:right; color:rgba(247,251,255,.58); font-size:12px; font-weight:800; }
+    .image-wrap { position:absolute; left:18px; right:18px; top:calc(112px + env(safe-area-inset-top)); bottom:calc(104px + env(safe-area-inset-bottom)); display:grid; place-items:center; }
+    .evidence-img { width:min(100%,390px); max-height:100%; object-fit:contain; border-radius:24px; box-shadow:0 24px 58px rgba(0,0,0,.46); background:#111923; cursor:zoom-in; }
+    .viewer-actions { position:absolute; left:18px; right:18px; bottom:calc(22px + env(safe-area-inset-bottom)); display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .nav { min-height:52px; border-radius:17px; font-size:15px; background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(255,255,255,.055)); box-shadow:0 12px 25px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.10); }
+    .nav.primary { border-color:rgba(126,234,255,.34); }
+    .zoom-viewer { position:absolute; inset:0; z-index:60; background:rgba(2,6,10,.94); opacity:0; pointer-events:none; transition:opacity 180ms ease; }
+    .zoom-viewer.show { opacity:1; pointer-events:auto; }
+    .zoom-stage { position:absolute; inset:calc(72px + env(safe-area-inset-top)) 0 calc(92px + env(safe-area-inset-bottom)); overflow:hidden; touch-action:none; cursor:grab; }
+    .zoom-stage.dragging { cursor:grabbing; }
+    .zoom-img { position:absolute; left:50%; top:50%; width:min(96vw,620px); height:auto; border-radius:18px; box-shadow:0 28px 80px rgba(0,0,0,.58); transform:translate(-50%,-50%) scale(1); transform-origin:center; will-change:transform; user-select:none; -webkit-user-drag:none; }
+    .zoom-head { position:absolute; top:calc(16px + env(safe-area-inset-top)); left:16px; right:16px; display:flex; align-items:center; justify-content:space-between; gap:10px; z-index:2; }
+    .zoom-title { min-width:0; flex:1; color:rgba(247,251,255,.86); font-size:13px; font-weight:900; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .zoom-close,.zoom-button { border:1px solid rgba(255,255,255,.24); border-radius:999px; background:rgba(255,255,255,.09); color:var(--ink); backdrop-filter:blur(14px); font-family:inherit; font-weight:900; cursor:pointer; }
+    .zoom-close { width:42px; height:38px; font-size:18px; }
+    .zoom-controls { position:absolute; left:18px; right:18px; bottom:calc(20px + env(safe-area-inset-bottom)); display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px; z-index:2; }
+    .zoom-button { min-height:46px; font-size:14px; }
+
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="Episode 3 investigation">
+    <div class="top-visual"></div><div class="topbar"><div class="pill">EP.03 CLUBROOM GHOST TRACE</div><div class="pill">조사 모드</div></div>
+    <section class="menu-panel"><div class="kicker">동아리 PC 조사</div><h1>어떤 기록부터 확인해볼까?</h1><p class="prompt">모든 항목은 볼 가치가 있다. 다만 각 화면 안에서 진짜 근거와 함정을 구분해야 한다.</p><div class="grid">
+      <button class="menu-card" data-target="extension"><span class="card-title">확장 프로그램</span></button>
+      <button class="menu-card" data-target="browser"><span class="card-title">브라우저 설정</span></button>
+      <button class="menu-card" data-target="autostart"><span class="card-title">자동 실행 항목</span></button>
+      <button class="menu-card" data-target="downloads"><span class="card-title">다운로드 기록</span></button>
+      <button class="menu-card" data-target="system"><span class="card-title">시스템 상태</span></button>
+      <button class="menu-card" data-target="network"><span class="card-title">네트워크 기록</span></button>
+    </div><div class="finish-wrap"><button class="finish-button" id="finishInvestigation" type="button">결론 제출</button></div></section>
+    <section class="viewer" id="viewer"><div class="viewer-head"><button class="back" id="back" type="button">‹</button><div class="title" id="title">기록 조회</div><div class="count" id="count">1/2</div></div><div class="image-wrap"><img class="evidence-img" id="evidenceImage" alt="에피소드3 증거 화면" /></div><div class="viewer-actions"><button class="nav" id="prev" type="button">이전</button><button class="nav primary" id="next" type="button">다음</button></div></section>
+    <section class="zoom-viewer" id="zoomViewer" aria-label="증거 이미지 확대 보기"><div class="zoom-head"><div class="zoom-title" id="zoomTitle">증거 확대</div><button class="zoom-close" id="zoomClose" type="button">×</button></div><div class="zoom-stage" id="zoomStage"><img class="zoom-img" id="zoomImage" alt="확대된 증거 화면" /></div><div class="zoom-controls"><button class="zoom-button" id="zoomOut" type="button">-</button><button class="zoom-button" id="zoomReset" type="button">초기화</button><button class="zoom-button" id="zoomIn" type="button">+</button></div></section>
+  </main>
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({ bgm:'../../assets/audio/mobile/episode-03/bgm-episode-03.mp3', bgmVolume:0.29, sfx:{ click:'../../assets/audio/mobile/common/sfx-click.mp3' } });
+    const base='../../assets/images/mobile/investigation/episode-03/photo-evidence-v1/';
+    const sets={
+      extension:[['확장 프로그램',base+'ep03-extension-01-true.png'],['확장 프로그램',base+'ep03-extension-02-trap.png']],
+      browser:[['브라우저 설정',base+'ep03-browser-settings-01-true.png'],['브라우저 설정',base+'ep03-browser-settings-02-trap.png']],
+      autostart:[['자동 실행 항목',base+'ep03-autostart-01-true.png'],['자동 실행 항목',base+'ep03-autostart-02-trap.png']],
+      downloads:[['다운로드 기록',base+'ep03-downloads-01-true.png'],['다운로드 기록',base+'ep03-downloads-02-trap.png']],
+      system:[['시스템 상태',base+'ep03-system-01-true.png'],['시스템 상태',base+'ep03-system-02-trap.png']],
+      network:[['네트워크 기록',base+'ep03-network-01-note.png'],['네트워크 기록',base+'ep03-network-02-trap.png']]
+    };
+    const viewer=document.getElementById('viewer'), title=document.getElementById('title'), count=document.getElementById('count'), img=document.getElementById('evidenceImage');
+    const zoomViewer=document.getElementById('zoomViewer'), zoomStage=document.getElementById('zoomStage'), zoomImage=document.getElementById('zoomImage'), zoomTitle=document.getElementById('zoomTitle');
+    let queue=[], index=0;
+    let zoomScale=1.6, zoomX=0, zoomY=0, dragging=false, dragStartX=0, dragStartY=0, originX=0, originY=0;
+    function render(){ const item=queue[index]; if(!item) return; title.textContent=item[0]; img.src=item[1]; count.textContent=`${index+1}/${queue.length}`; }
+    function openSet(key){ queue=sets[key] || []; index=0; render(); viewer.classList.add('show'); }
+    function applyZoom(){ zoomImage.style.transform=`translate(calc(-50% + ${zoomX}px), calc(-50% + ${zoomY}px)) scale(${zoomScale})`; }
+    function resetZoom(){ zoomScale=1.6; zoomX=0; zoomY=0; applyZoom(); }
+    function openZoom(){ const item=queue[index]; if(!item) return; zoomImage.src=item[1]; zoomTitle.textContent=`${item[0]} 확대`; resetZoom(); zoomViewer.classList.add('show'); }
+    function closeZoom(){ zoomViewer.classList.remove('show'); zoomStage.classList.remove('dragging'); dragging=false; }
+    document.querySelectorAll('.menu-card').forEach(button=>button.addEventListener('click',()=>openSet(button.dataset.target)));
+    document.getElementById('back').addEventListener('click',()=>viewer.classList.remove('show'));
+    document.getElementById('prev').addEventListener('click',()=>{ index=Math.max(0,index-1); render(); });
+    document.getElementById('next').addEventListener('click',()=>{ index=Math.min(queue.length-1,index+1); render(); });
+    document.getElementById('finishInvestigation').addEventListener('click',()=>{ window.location.href='../episode-03-conclusion/index.html'; });
+    img.addEventListener('click',openZoom);
+    document.getElementById('zoomClose').addEventListener('click',closeZoom);
+    document.getElementById('zoomIn').addEventListener('click',()=>{ zoomScale=Math.min(4, zoomScale+.35); applyZoom(); });
+    document.getElementById('zoomOut').addEventListener('click',()=>{ zoomScale=Math.max(1, zoomScale-.35); applyZoom(); });
+    document.getElementById('zoomReset').addEventListener('click',resetZoom);
+    zoomStage.addEventListener('pointerdown',event=>{ dragging=true; zoomStage.setPointerCapture(event.pointerId); zoomStage.classList.add('dragging'); dragStartX=event.clientX; dragStartY=event.clientY; originX=zoomX; originY=zoomY; });
+    zoomStage.addEventListener('pointermove',event=>{ if(!dragging) return; zoomX=originX + event.clientX - dragStartX; zoomY=originY + event.clientY - dragStartY; applyZoom(); });
+    zoomStage.addEventListener('pointerup',()=>{ dragging=false; zoomStage.classList.remove('dragging'); });
+    zoomStage.addEventListener('pointercancel',()=>{ dragging=false; zoomStage.classList.remove('dragging'); });
+    zoomViewer.addEventListener('click',event=>{ if(event.target===zoomViewer) closeZoom(); });
+  </script>
+</body>
+</html>

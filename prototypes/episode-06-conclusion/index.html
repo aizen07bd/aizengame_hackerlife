@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 06 Conclusion</title>
+  <style>
+    :root { --phone-w:min(100vw,430px); --phone-h:min(100dvh,932px); --ink:#f7fbff; --cyan:#7eeaff; --red:#ff8f9b; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif; }
+    * { box-sizing:border-box; } html,body { height:100%; }
+    body { margin:0; display:grid; place-items:center; overflow:hidden; color:var(--ink); background:radial-gradient(circle at 50% 8%, rgba(126,234,255,.14), transparent 34%), linear-gradient(160deg,#020409,#07131d 54%,#020409); }
+    .phone { position:relative; width:var(--phone-w); height:var(--phone-h); max-height:932px; aspect-ratio:9/16; overflow:hidden; background:#05080d; box-shadow:0 28px 80px rgba(0,0,0,.62); isolation:isolate; }
+    .bg { position:absolute; inset:0; background-image:linear-gradient(to bottom,rgba(0,0,0,.20),rgba(0,0,0,.80)),url("../../assets/images/mobile/backgrounds/mob-bg-campus-cafe-v1.png"); background-size:cover; background-position:center; filter:saturate(.9) brightness(.66); transform:scale(1.03); }
+    .topbar { position:absolute; top:calc(14px + env(safe-area-inset-top)); left:16px; right:16px; display:flex; justify-content:space-between; z-index:5; gap:10px; }
+    .pill { padding:8px 12px; border-radius:999px; background:rgba(4,10,16,.48); border:1px solid rgba(255,255,255,.20); color:rgba(247,251,255,.82); backdrop-filter:blur(12px); font-size:12px; font-weight:850; letter-spacing:.05em; white-space:nowrap; }
+    .content { position:absolute; inset:calc(68px + env(safe-area-inset-top)) 18px calc(18px + env(safe-area-inset-bottom)); z-index:3; display:flex; flex-direction:column; gap:9px; min-height:0; overflow:hidden; }
+    .kicker { color:var(--cyan); font-size:13px; font-weight:900; letter-spacing:.06em; margin-bottom:7px; }
+    h1 { margin:0; font-size:clamp(18px,5vw,24px); line-height:1.22; font-weight:930; word-break:keep-all; }
+    .card { border-radius:22px; background:linear-gradient(145deg,rgba(255,255,255,.15),rgba(255,255,255,.055)),rgba(5,10,16,.78); border:1px solid rgba(255,255,255,.23); box-shadow:0 18px 38px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(18px) saturate(1.15); }
+    .summary { flex:0 0 auto; padding:12px; max-height:188px; overflow:hidden; }
+    .summary-title { color:var(--cyan); font-size:12px; font-weight:900; margin-bottom:7px; }
+    .evidence-list { display:grid; gap:7px; max-height:128px; overflow-y:auto; padding-right:3px; overscroll-behavior:contain; }
+    .evidence { padding:8px 10px; border-radius:13px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); }
+    .source { color:rgba(247,251,255,.56); font-size:10px; font-weight:850; margin-bottom:4px; }
+    .evidence-text { color:rgba(247,251,255,.88); font-size:11px; font-weight:720; line-height:1.36; word-break:keep-all; }
+    .empty { color:rgba(247,251,255,.70); font-size:13px; font-weight:720; line-height:1.45; word-break:keep-all; }
+    .choices { flex:1 1 auto; display:grid; gap:8px; align-content:start; min-height:0; overflow-y:auto; padding:2px 2px 8px 0; overscroll-behavior:contain; }
+    .choice { min-height:48px; padding:0 13px; border:1px solid rgba(255,255,255,.20); border-radius:16px; background:linear-gradient(145deg,rgba(34,42,51,.92),rgba(18,25,32,.88)); color:var(--ink); text-align:left; box-shadow:0 12px 25px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.08); font-family:inherit; font-size:13px; font-weight:850; line-height:1.33; word-break:keep-all; cursor:pointer; }
+    .choice:active,.back:active { transform:translateY(1px) scale(.99); }
+    .choice[disabled] { opacity:.46; cursor:not-allowed; }
+    .back { min-height:44px; border:1px solid rgba(255,255,255,.18); border-radius:15px; background:rgba(255,255,255,.06); color:rgba(247,251,255,.78); font-family:inherit; font-size:13px; font-weight:820; cursor:pointer; }
+    .warning { color:var(--red); font-size:12px; font-weight:850; line-height:1.4; padding:10px 12px; border-radius:14px; background:rgba(255,143,155,.10); border:1px solid rgba(255,143,155,.24); }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="Episode 6 context conclusion submission">
+    <div class="bg"></div>
+    <div class="topbar"><div class="pill">EP.06 A CALL DURING THE BREAK</div><div class="pill">결론 제출</div></div>
+    <section class="content">
+      <div><div class="kicker">증거 카드 요약</div><h1>이 외부 자료들로 어디까지 말할 수 있을까?</h1></div>
+      <section class="card summary"><div class="summary-title">수집한 외부 자료</div><div class="evidence-list" id="evidenceList"></div></section>
+      <div class="warning" id="emptyWarning" hidden>기록한 외부 자료가 없다. 먼저 조사 화면에서 판단할 자료를 수집해야 한다.</div>
+      <div class="choices">
+        <button class="choice" type="button" data-conclusion="context-direction">CloudNote Helper 관련 증상과 note-sync 계열 주소가 여러 출처에서 반복된다. 다만 문서 유출이나 해커 단체 귀속은 아직 확인되지 않았으므로, 해인 PC 2차 분석 방향으로만 사용한다.</button>
+        <button class="choice" type="button" data-conclusion="compromise-confirmed">외부 제보가 반복되었으니 해인 선배 PC는 이미 해킹당했다.</button>
+        <button class="choice" type="button" data-conclusion="blackkite-confirmed">blackkite 해커 단체가 이번 사건의 범인이다.</button>
+        <button class="choice" type="button" data-conclusion="rumor-enough">조회수와 댓글이 많으니 커뮤니티 루머도 증거로 충분하다.</button>
+        <button class="choice" type="button" data-conclusion="normal-app-safe">정상 앱 리뷰가 있으니 CloudNote Helper 관련 의심은 모두 해소됐다.</button>
+        <button class="choice" type="button" data-conclusion="ignore-context">외부 자료는 확정 증거가 아니므로 모두 무시한다.</button>
+        <button class="back" type="button" id="backButton">다시 조사하기</button>
+      </div>
+    </section>
+  </main>
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({ sfx:{ click:'../../assets/audio/mobile/common/sfx-click.mp3' } });
+    const evidenceMeta={
+      'ep06-repeated-symptoms-01-true.png':{source:'반복 증상 제보',text:'CloudNote Helper, 로그인 직후 콘솔 창, 시작 페이지 변경이 여러 출처에서 반복된다.'},
+      'ep06-note-sync-addresses-01-true.png':{source:'note-sync 주소',text:'note-sync.example 계열 주소가 서로 다른 제보에서 반복 등장한다.'},
+      'ep06-symptom-cluster-01-true.png':{source:'증상 묶음 정리',text:'브라우저 시작 페이지 변경과 로그인 직후 짧은 콘솔 창이 함께 보고된다.'},
+      'ep06-public-thread-01-true.png':{source:'공개 기술 스레드',text:'외부 맥락은 2차 분석 방향을 잡는 데 도움이 되지만 로컬 기록 대조가 필요하다.'},
+      'ep06-rumor-overclaim-02-trap.png':{source:'커뮤니티 루머',text:'CloudNote 사용만으로 무조건 해킹을 단정하는 과장글이다.'},
+      'ep06-high-view-rumor-02-trap.png':{source:'조회수 높은 루머',text:'조회수와 댓글은 많지만 직접 근거가 없는 소문이다.'},
+      'ep06-baseless-attribution-02-trap.png':{source:'근거 없는 단체 귀속',text:'익명 댓글만으로 blackkite 소행을 단정한다.'},
+      'ep06-normal-app-review-02-trap.png':{source:'정상 앱 리뷰',text:'일반적인 앱 사용 후기이며 이번 증상 묶음과 직접 관련이 없다.'},
+      'ep06-old-unrelated-issue-02-trap.png':{source:'오래된 무관 이슈',text:'비슷한 이름의 다른 프로그램 이슈로 현재 CloudNote Helper와 다르다.'},
+      'ep06-similar-domain-service-02-trap.png':{source:'이름만 비슷한 서비스',text:'도메인 이름만 유사하고 CloudNote Helper 증상과 무관한 서비스다.'}
+    };
+    const evidenceList=document.getElementById('evidenceList');
+    const warning=document.getElementById('emptyWarning');
+    const collected=JSON.parse(sessionStorage.getItem('ep06Evidence') || '[]').filter(id=>evidenceMeta[id]);
+    function renderEvidence(){
+      evidenceList.innerHTML='';
+      if(!collected.length){
+        const empty=document.createElement('div');
+        empty.className='empty';
+        empty.textContent='아직 수집한 자료가 없다.';
+        evidenceList.appendChild(empty);
+        warning.hidden=false;
+        document.querySelectorAll('.choice').forEach(button=>button.disabled=true);
+        return;
+      }
+      collected.forEach(id=>{
+        const item=evidenceMeta[id];
+        const div=document.createElement('div');
+        div.className='evidence';
+        div.innerHTML=`<div class="source">${item.source}</div><div class="evidence-text">${item.text}</div>`;
+        evidenceList.appendChild(div);
+      });
+    }
+    document.querySelectorAll('.choice').forEach(button=>button.addEventListener('click',()=>{
+      if(button.disabled) return;
+      sessionStorage.setItem('ep06Conclusion', button.dataset.conclusion);
+      window.location.href='../episode-06-result/index.html';
+    }));
+    document.getElementById('backButton').addEventListener('click',()=>{ window.location.href='../episode-06-investigation-menu/index.html'; });
+    renderEvidence();
+  </script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Mobile Start</title>
+  <style>
+    :root {
+      --phone-w: min(100vw, 430px);
+      --phone-h: min(100dvh, 932px);
+      --ink: #f7fbff;
+      --cyan: #7eeaff;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 50% 10%, rgba(126,234,255,.13), transparent 36%),
+        linear-gradient(160deg, #020409, #07131d 54%, #020409);
+    }
+
+    .phone {
+      position: relative;
+      width: var(--phone-w);
+      height: var(--phone-h);
+      max-height: 932px;
+      aspect-ratio: 9 / 16;
+      overflow: hidden;
+      background: #03070c;
+      box-shadow: 0 28px 80px rgba(0,0,0,.62);
+      isolation: isolate;
+    }
+
+    .poster {
+      position: absolute;
+      inset: 0;
+      background-image: url("../../assets/images/mobile/start-page/main-cast-mobile-title-v2.png");
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.01);
+    }
+
+    .start-hit {
+      position: absolute;
+      left: 50%;
+      bottom: calc(54px + env(safe-area-inset-bottom));
+      width: min(72%, 292px);
+      height: 62px;
+      transform: translateX(-50%);
+      border: 1px solid rgba(255,255,255,.24);
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      color: transparent;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      opacity: .02;
+    }
+    .start-hit:focus-visible {
+      opacity: 1;
+      color: #eafcff;
+      background: rgba(6,18,27,.62);
+      outline: 2px solid var(--cyan);
+      outline-offset: 3px;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .fade {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      background: #020409;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 520ms ease;
+    }
+    .fade.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="Hacker Life: Trace mobile start page">
+    <div class="poster" aria-hidden="true"></div>
+    <button class="start-hit" id="startButton" type="button">시작</button>
+    <div class="fade" id="fade"></div>
+  </main>
+
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({
+      bgm: '../../assets/audio/mobile/episode-01/bgm-title.mp3',
+      bgmVolume: 0.34,
+      sfx: {
+        click: '../../assets/audio/mobile/common/sfx-click.mp3',
+        start: '../../assets/audio/mobile/common/sfx-start.mp3'
+      }
+    });
+
+    const startButton = document.getElementById('startButton');
+    const fade = document.getElementById('fade');
+    function startGame() {
+      window.HLTAudio.enable();
+      window.HLTAudio.play('start');
+      sessionStorage.removeItem('ep01Evidence');
+      sessionStorage.removeItem('ep01Conclusion');
+      sessionStorage.removeItem('ep02Evidence');
+      sessionStorage.removeItem('ep02Conclusion');
+      sessionStorage.removeItem('ep03Evidence');
+      sessionStorage.removeItem('ep03Conclusion');
+      sessionStorage.removeItem('ep04Evidence');
+      sessionStorage.removeItem('ep04Conclusion');
+      sessionStorage.removeItem('ep05Evidence');
+      sessionStorage.removeItem('ep05Conclusion');
+      sessionStorage.removeItem('ep06Evidence');
+      sessionStorage.removeItem('ep06Conclusion');
+      sessionStorage.removeItem('ep07Evidence');
+      sessionStorage.removeItem('ep07Conclusion');
+      sessionStorage.removeItem('ep08Evidence');
+      sessionStorage.removeItem('ep08Conclusion');
+      sessionStorage.removeItem('ep09Evidence');
+      sessionStorage.removeItem('ep09Conclusion');
+      sessionStorage.removeItem('ep10Evidence');
+      sessionStorage.removeItem('ep10Conclusion');
+      sessionStorage.removeItem('ep11Evidence');
+      sessionStorage.removeItem('ep11Conclusion');
+      sessionStorage.removeItem('ep12Evidence');
+      sessionStorage.removeItem('ep12Conclusion');
+      sessionStorage.removeItem('ep13Evidence');
+      sessionStorage.removeItem('ep13Conclusion');
+      fade.classList.add('show');
+      window.setTimeout(() => {
+        window.location.href = '../prologue-comic-animation/index-inline-text.html';
+      }, 540);
+    }
+    startButton.addEventListener('click', startGame);
+    window.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') startGame();
+    });
+  </script>
+</body>
+</html>

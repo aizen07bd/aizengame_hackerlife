@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 01 Recap</title>
+  <style>
+    :root {
+      --phone-w: min(100vw, 430px);
+      --phone-h: min(100dvh, 932px);
+      --ink: #f7fbff;
+      --cyan: #7eeaff;
+      --bg: #03070c;
+      --image: url("../../assets/images/mobile/episode-01-ending/ep01-recap-comic-v2.png");
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 10%, rgba(126,234,255,.13), transparent 32%),
+        linear-gradient(160deg, #020409, #07131d 54%, #020409);
+      color: var(--ink);
+    }
+
+    .phone {
+      position: relative;
+      width: var(--phone-w);
+      height: var(--phone-h);
+      max-height: 932px;
+      aspect-ratio: 9 / 16;
+      overflow: hidden;
+      background: var(--bg);
+      box-shadow: 0 28px 80px rgba(0,0,0,.62);
+      isolation: isolate;
+    }
+
+    .stage {
+      position: absolute;
+      inset: 0;
+      background: #02050a;
+    }
+
+    .panel {
+      position: absolute;
+      inset: 0;
+      background-image: var(--image);
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transform-origin: center;
+      filter: drop-shadow(0 20px 18px rgba(0,0,0,.62));
+      will-change: transform, opacity;
+    }
+
+    /* Clip paths are tuned to ep01-recap-comic-v2.png. */
+    .panel-1 {
+      clip-path: polygon(0 0, 100% 0, 100% 19.4%, 0 25.8%);
+      animation: panelFromLeft 980ms cubic-bezier(.18,.94,.2,1) 180ms forwards;
+    }
+    .panel-2 {
+      clip-path: polygon(0 24.8%, 100% 18.3%, 100% 40.8%, 0 47.4%);
+      animation: panelFromRight 1080ms cubic-bezier(.18,.94,.2,1) 1010ms forwards;
+    }
+    .panel-3 {
+      clip-path: polygon(0 46.4%, 100% 39.6%, 100% 61.8%, 0 68.4%);
+      animation: panelFromLeftLow 1080ms cubic-bezier(.18,.94,.2,1) 1880ms forwards;
+    }
+    .panel-4 {
+      clip-path: polygon(0 67.2%, 100% 60.7%, 100% 100%, 0 100%);
+      animation: panelFromRightLow 1160ms cubic-bezier(.18,.94,.2,1) 2760ms forwards;
+    }
+
+    .full-page {
+      position: absolute;
+      inset: 0;
+      background-image: var(--image);
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transform: scale(1.015);
+      pointer-events: none;
+      animation: revealFull 780ms ease 4480ms forwards;
+    }
+
+    .scanline {
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0 1px, transparent 1px 5px),
+        linear-gradient(90deg, transparent, rgba(126,234,255,.10), transparent);
+      opacity: .10;
+      mix-blend-mode: screen;
+      animation: scan 1200ms steps(2, end) infinite;
+      pointer-events: none;
+    }
+
+    .flash {
+      position: absolute;
+      inset: 0;
+      background: #e6fbff;
+      opacity: 0;
+      pointer-events: none;
+      animation: finalFlash 900ms ease 4260ms forwards;
+    }
+
+    .clear-panel {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: calc(22px + env(safe-area-inset-bottom));
+      z-index: 24;
+      padding: 18px 16px 16px;
+      border-radius: 24px;
+      background: linear-gradient(145deg, rgba(255,255,255,.16), rgba(255,255,255,.06)), rgba(5,10,16,.78);
+      border: 1px solid rgba(255,255,255,.24);
+      box-shadow: 0 22px 48px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.12);
+      backdrop-filter: blur(20px) saturate(1.18);
+      opacity: 0;
+      transform: translateY(16px);
+      pointer-events: none;
+      animation: showClear 520ms ease 5600ms forwards;
+    }
+    .clear-title {
+      color: var(--cyan);
+      font-size: 13px;
+      font-weight: 950;
+      letter-spacing: .08em;
+      margin-bottom: 8px;
+    }
+    .clear-line {
+      color: #f7fbff;
+      font-size: clamp(20px, 5.4vw, 27px);
+      font-weight: 930;
+      line-height: 1.22;
+      margin-bottom: 14px;
+      word-break: keep-all;
+    }
+    .clear-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .clear-action {
+      min-height: 46px;
+      border: 1px solid rgba(255,255,255,.20);
+      border-radius: 15px;
+      background: rgba(255,255,255,.07);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+    .clear-action.primary { border-color: rgba(126,234,255,.42); background: rgba(126,234,255,.11); }
+
+    .controls {
+      position: absolute;
+      right: 14px;
+      top: calc(14px + env(safe-area-inset-top));
+      z-index: 20;
+      display: flex;
+      gap: 8px;
+    }
+    .control {
+      border: 1px solid rgba(255,255,255,.24);
+      border-radius: 999px;
+      color: rgba(247,251,255,.82);
+      background: rgba(0,0,0,.28);
+      padding: 8px 11px;
+      font-size: 12px;
+      font-weight: 850;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+    }
+
+    @keyframes panelFromLeft {
+      0% { opacity: 0; transform: translateX(-118%) translateY(-8%) rotate(-7deg) scale(.985); }
+      72% { opacity: 1; transform: translateX(2.2%) rotate(.9deg) scale(1); }
+      100% { opacity: 1; transform: translateX(0) rotate(0); }
+    }
+    @keyframes panelFromRight {
+      0% { opacity: 0; transform: translateX(118%) translateY(-4%) rotate(7deg) scale(.985); }
+      72% { opacity: 1; transform: translateX(-2.2%) rotate(-.9deg) scale(1); }
+      100% { opacity: 1; transform: translateX(0) rotate(0); }
+    }
+    @keyframes panelFromLeftLow {
+      0% { opacity: 0; transform: translateX(-116%) translateY(14%) rotate(6deg) scale(.985); }
+      72% { opacity: 1; transform: translateX(2.2%) translateY(-.8%) rotate(-.9deg) scale(1); }
+      100% { opacity: 1; transform: translateX(0) translateY(0) rotate(0); }
+    }
+    @keyframes panelFromRightLow {
+      0% { opacity: 0; transform: translateX(116%) translateY(18%) rotate(-6deg) scale(.985); }
+      72% { opacity: 1; transform: translateX(-2.2%) translateY(-.8%) rotate(.9deg) scale(1); }
+      100% { opacity: 1; transform: translateX(0) translateY(0) rotate(0); }
+    }
+    @keyframes revealFull {
+      0% { opacity: 0; transform: scale(1.015); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes scan {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(5px); }
+    }
+    @keyframes finalFlash {
+      0%, 100% { opacity: 0; }
+      45% { opacity: .48; }
+    }
+    @keyframes showClear {
+      to { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .panel, .full-page, .flash { animation-duration: 1ms !important; animation-delay: 0ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="Episode 1 incident recap animation">
+    <section class="stage" id="stage">
+      <div class="panel panel-1"></div>
+      <div class="panel panel-2"></div>
+      <div class="panel panel-3"></div>
+      <div class="panel panel-4"></div>
+      <div class="full-page"></div>
+      <div class="scanline"></div>
+      <div class="flash"></div>
+      <section class="clear-panel" id="clearPanel">
+        <div class="clear-title">EP.01 CLEAR</div>
+        <div class="clear-line">첫 번째 흔적을 정리했다.</div>
+        <div class="clear-actions">
+          <button class="clear-action" id="replayStory" type="button">다시 보기</button>
+          <button class="clear-action primary" id="backTitle" type="button">다음 에피소드</button>
+        </div>
+      </section>
+      <div class="controls">
+        <button class="control" id="replay" type="button">REPLAY</button>
+        <button class="control" id="skip" type="button">SKIP</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({
+      bgm: '../../assets/audio/mobile/episode-01/bgm-result-success.mp3',
+      bgmVolume: 0.30,
+      sfx: {
+        click: '../../assets/audio/mobile/common/sfx-click.mp3',
+        whoosh: '../../assets/audio/mobile/common/sfx-panel-whoosh.mp3',
+        clear: '../../assets/audio/mobile/common/sfx-clear.mp3'
+      }
+    });
+
+    const stage = document.getElementById('stage');
+    const replay = document.getElementById('replay');
+    const skip = document.getElementById('skip');
+    const replayStory = document.getElementById('replayStory');
+    const backTitle = document.getElementById('backTitle');
+
+    function scheduleAudio() {
+      [180, 1010, 1880, 2760].forEach(at => {
+        window.setTimeout(() => window.HLTAudio.play('whoosh'), at);
+      });
+      window.setTimeout(() => window.HLTAudio.play('clear'), 5600);
+    }
+
+    function replayAnimation() {
+      stage.classList.remove('restart');
+      void stage.offsetWidth;
+      stage.classList.add('restart');
+      window.location.reload();
+    }
+
+    function skipAnimation() {
+      for (const el of stage.querySelectorAll('.panel, .full-page, .flash')) {
+        el.style.animationDelay = '0ms';
+        el.style.animationDuration = '1ms';
+      }
+    }
+
+    replay.addEventListener('click', replayAnimation);
+    skip.addEventListener('click', skipAnimation);
+    replayStory.addEventListener('click', () => window.location.href = '../episode-01-result/index.html');
+    backTitle.addEventListener('click', () => {
+      sessionStorage.removeItem('ep02Evidence');
+      sessionStorage.removeItem('ep02Conclusion');
+      sessionStorage.removeItem('ep03Conclusion');
+      window.location.href = '../episode-02-comic-animation/index.html';
+    });
+    scheduleAudio();
+  </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Bridge 01 Night Commute</title>
+  <style>
+    :root { --phone-w:min(100vw,430px); --phone-h:min(100dvh,932px); --ink:#f7fbff; --cyan:#7eeaff; --muted:rgba(247,251,255,.68); font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif; }
+    * { box-sizing:border-box; } html,body { height:100%; }
+    body { margin:0; display:grid; place-items:center; overflow:hidden; color:var(--ink); background:radial-gradient(circle at 50% 8%, rgba(126,234,255,.13), transparent 34%), linear-gradient(160deg,#020409,#07131d 54%,#020409); }
+    .phone { position:relative; width:var(--phone-w); height:var(--phone-h); max-height:932px; aspect-ratio:9/16; overflow:hidden; background:#05080d; box-shadow:0 28px 80px rgba(0,0,0,.62); isolation:isolate; user-select:none; }
+    .bg { position:absolute; inset:0; background-image:linear-gradient(to bottom,rgba(0,0,0,.12),rgba(0,0,0,.28) 43%,rgba(0,0,0,.72)),url("../../assets/images/mobile/backgrounds/mob-bg-night-commute-v1.png"); background-size:cover; background-position:center; transform:scale(1.02); filter:saturate(.92) brightness(.82); }
+    .rain { position:absolute; inset:-20%; opacity:.16; background-image:linear-gradient(115deg,transparent 0 47%,rgba(214,244,255,.55) 48% 50%,transparent 51% 100%); background-size:42px 88px; animation:rain 850ms linear infinite; mix-blend-mode:screen; }
+    .vignette { position:absolute; inset:0; background:radial-gradient(circle at 50% 36%, transparent 0 28%, rgba(0,0,0,.24) 63%, rgba(0,0,0,.64) 100%), linear-gradient(to bottom,rgba(2,6,10,.16),transparent 28%,rgba(2,6,10,.44)); pointer-events:none; }
+    .topbar { position:absolute; top:calc(14px + env(safe-area-inset-top)); left:16px; right:16px; display:flex; justify-content:space-between; align-items:center; gap:10px; z-index:12; }
+    .pill,.ghost-button { border:1px solid rgba(255,255,255,.20); border-radius:999px; background:rgba(4,10,16,.42); color:rgba(247,251,255,.80); backdrop-filter:blur(12px); font-weight:850; }
+    .pill { max-width:calc(100% - 176px); padding:8px 12px; font-size:12px; letter-spacing:.06em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .actions-top { display:flex; gap:6px; } .ghost-button { padding:8px 9px; font-size:11px; cursor:pointer; } .ghost-button.on { border-color:rgba(126,234,255,.44); background:rgba(126,234,255,.14); color:#e9fbff; }
+    .thought { position:absolute; left:26px; right:26px; top:calc(118px + env(safe-area-inset-top)); min-height:108px; padding:18px 18px 18px 20px; border-left:3px solid rgba(126,234,255,.78); background:linear-gradient(90deg,rgba(2,8,13,.60),rgba(2,8,13,.20),transparent); color:#f7fbff; font-size:clamp(19px,5.3vw,27px); line-height:1.36; font-weight:890; word-break:keep-all; text-shadow:0 3px 14px rgba(0,0,0,.72); opacity:0; transform:translateY(10px); transition:opacity 320ms ease, transform 320ms ease; z-index:8; }
+    .thought.show { opacity:1; transform:translateY(0); }
+    .memo-card { position:absolute; left:30px; right:30px; top:calc(280px + env(safe-area-inset-top)); padding:16px; border-radius:20px; background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.06)),rgba(5,10,16,.70); border:1px solid rgba(255,255,255,.24); box-shadow:0 22px 44px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(18px) saturate(1.16); opacity:0; transform:translateY(18px) scale(.985); transition:opacity 360ms ease, transform 360ms cubic-bezier(.18,.84,.26,1); z-index:9; }
+    .memo-card.show { opacity:1; transform:translateY(0) scale(1); }
+    .memo-head { display:flex; justify-content:space-between; align-items:center; color:var(--cyan); font-size:12px; font-weight:950; letter-spacing:.08em; margin-bottom:10px; }
+    .memo-body { display:grid; gap:8px; }
+    .memo-line { padding:10px 11px; border-radius:13px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.13); color:rgba(247,251,255,.88); font-family:Menlo,Consolas,"Apple SD Gothic Neo",monospace; font-size:12px; line-height:1.42; word-break:break-word; }
+    .notice { position:absolute; left:28px; right:28px; top:calc(266px + env(safe-area-inset-top)); padding:14px 16px; border-radius:20px; background:rgba(237,248,255,.90); color:#12202d; box-shadow:0 20px 42px rgba(0,0,0,.34); opacity:0; transform:translateY(-18px); transition:opacity 320ms ease, transform 320ms ease; z-index:11; }
+    .notice.show { opacity:1; transform:translateY(0); } .notice-title { font-size:12px; font-weight:900; color:#0e6474; margin-bottom:5px; } .notice-text { font-size:15px; font-weight:850; }
+    .dialogue-box { position:absolute; left:22px; right:22px; bottom:calc(22px + env(safe-area-inset-bottom)); min-height:142px; padding:16px; border-radius:22px; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.07) 42%,rgba(7,18,27,.38)); border:1px solid rgba(255,255,255,.30); box-shadow:0 18px 36px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.18); backdrop-filter:blur(18px) saturate(1.24); z-index:13; cursor:pointer; }
+    .name-row { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; } .speaker { color:var(--cyan); font-size:13px; font-weight:900; letter-spacing:.02em; } .counter { color:rgba(247,251,255,.46); font-size:12px; font-weight:800; }
+    .line { min-height:64px; color:#f8fcff; font-size:clamp(16px,4.25vw,20px); font-weight:700; line-height:1.48; word-break:keep-all; text-shadow:0 2px 10px rgba(0,0,0,.72); }
+    .next-mark { position:absolute; right:20px; bottom:13px; width:10px; height:10px; border-right:2px solid rgba(126,234,255,.78); border-bottom:2px solid rgba(126,234,255,.78); transform:rotate(45deg); animation:bob 850ms ease-in-out infinite; }
+    .end-panel { position:absolute; inset:0; z-index:30; display:grid; place-items:end center; padding:0 22px calc(26px + env(safe-area-inset-bottom)); background:linear-gradient(to bottom,rgba(2,6,10,.12),rgba(2,6,10,.78)); opacity:0; pointer-events:none; transition:opacity 360ms ease; }
+    .end-panel.show { opacity:1; pointer-events:auto; }
+    .end-card { width:100%; padding:20px 17px 17px; border-radius:24px; background:linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.065)),rgba(5,10,16,.82); border:1px solid rgba(255,255,255,.26); box-shadow:0 22px 48px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(20px) saturate(1.18); }
+    .end-kicker { color:var(--cyan); font-size:13px; font-weight:950; letter-spacing:.08em; margin-bottom:8px; } .end-title { font-size:clamp(22px,5.8vw,29px); font-weight:940; line-height:1.22; margin-bottom:10px; word-break:keep-all; } .end-copy { color:rgba(247,251,255,.72); font-size:13px; font-weight:720; line-height:1.45; margin-bottom:14px; word-break:keep-all; }
+    .end-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; } .end-button { min-height:48px; border:1px solid rgba(255,255,255,.20); border-radius:15px; background:rgba(255,255,255,.07); color:var(--ink); font-family:inherit; font-size:13px; font-weight:850; cursor:pointer; } .end-button.primary { border-color:rgba(126,234,255,.42); background:rgba(126,234,255,.11); }
+    @keyframes rain { to{ transform:translate3d(-42px,88px,0); } } @keyframes bob { 0%,100% { translate:0 0; opacity:.55; } 50% { translate:0 4px; opacity:1; } }
+  </style>
+</head>
+<body>
+  <main class="phone" id="phone" aria-label="Bridge 01 Night Commute">
+    <div class="bg"></div><div class="rain"></div><div class="vignette"></div>
+    <div class="topbar"><div class="pill">BRIDGE 01 NIGHT COMMUTE</div><div class="actions-top"><button class="ghost-button" id="autoBtn" type="button">AUTO</button><button class="ghost-button" id="hintBtn" type="button">HINT</button><button class="ghost-button" id="skipBtn" type="button">SKIP</button></div></div>
+    <div class="thought" id="thought"></div>
+    <section class="memo-card" id="memoCard" aria-label="남겨둔 단서 메모"><div class="memo-head"><span>OBSERVATION MEMO</span><span>EP.03</span></div><div class="memo-body"><div class="memo-line">remote tag: blackkite</div><div class="memo-line">beacon retry x3 / direct cause: unconfirmed</div><div class="memo-line">note: 확장 프로그램 사건과 직접 연결 미확인</div></div></section>
+    <section class="notice" id="notice"><div class="notice-title">일정 알림</div><div class="notice-text">내일 10:00 보안 컨퍼런스</div></section>
+    <section class="dialogue-box" id="dialogueBox"><div class="name-row"><div class="speaker" id="speaker">강지호</div><div class="counter" id="counter">1 / 1</div></div><div class="line" id="line"></div><div class="next-mark"></div></section>
+    <section class="end-panel" id="endPanel"><div class="end-card"><div class="end-kicker">BRIDGE 01 CLEAR</div><div class="end-title">단서는 아직 끝나지 않았다.</div><div class="end-copy">다음 흐름은 보안 컨퍼런스에서 이어진다. `blackkite`는 아직 결론이 아니라, 다시 확인해야 할 이름이다.</div><div class="end-actions"><button class="end-button" id="replayButton" type="button">다시 보기</button><button class="end-button primary" id="titleButton" type="button">다음 에피소드</button></div></div></section>
+  </main>
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({ sfx:{ click:'../../assets/audio/mobile/common/sfx-click.mp3', card:'../../assets/audio/mobile/common/sfx-card.mp3' } });
+    const beats=[
+      { speaker:'강지호', text:'동아리 PC 문제는 정리됐다. 원인은 수상한 확장 프로그램과 자동 실행 항목.', thought:'동아리방의 불빛이 아직 눈에 남아 있었다.' },
+      { speaker:'강지호', text:'그런데 하나가 계속 마음에 걸렸다.', thought:'해결된 사건. 하지만 남은 기록.' },
+      { speaker:'강지호', text:'`blackkite`. 직접 원인은 아니었다. 하지만 그냥 지나치기엔 이상한 이름이었다.', memo:true },
+      { speaker:'강지호', text:'누군가 바깥에서 계속 두드린 흔적. 아직 사건이라고 부르기엔 부족하다.', memo:true },
+      { speaker:'강지호', text:'그래서 결론에 넣지 않았다. 대신 메모로 남겼다. 나중에 같은 흔적이 나오면 비교할 수 있게.', memo:true },
+      { speaker:'강지호', text:'분석은 맞히는 일이 아니라, 단정하지 않는 일일지도 모른다.', thought:'기록하지 않으면 이어지지 않는다.' },
+      { speaker:'휴대폰 알림', text:'내일 10:00 보안 컨퍼런스.', notice:true },
+      { speaker:'강지호', text:'그 이름을 다시 듣게 되는 건, 다음 날이었다.', thought:'다음 날, 컨퍼런스장에서.' }
+    ];
+    const speaker=document.getElementById('speaker'), line=document.getElementById('line'), counter=document.getElementById('counter'), dialogueBox=document.getElementById('dialogueBox'), thought=document.getElementById('thought'), memoCard=document.getElementById('memoCard'), notice=document.getElementById('notice'), endPanel=document.getElementById('endPanel'), autoBtn=document.getElementById('autoBtn'), hintBtn=document.getElementById('hintBtn');
+    let index=0, auto=false, hintOn=false, currentBeat=null, autoTimer=null, typeTimer=null, isTyping=false, currentText='';
+    function stopTyping(){ if(typeTimer) clearInterval(typeTimer); typeTimer=null; isTyping=false; }
+    function completeText(){ stopTyping(); line.textContent=currentText; }
+    function typeText(text){ stopTyping(); currentText=text; line.textContent=''; let i=0; isTyping=true; typeTimer=setInterval(()=>{ line.textContent += text[i] || ''; i += 1; if(i>text.length) stopTyping(); }, 20); }
+    function renderHint(){ const beat=currentBeat; memoCard.classList.toggle('show', Boolean(hintOn && beat && beat.memo)); notice.classList.toggle('show', Boolean(hintOn && beat && beat.notice)); }
+    function showBeat(){ const beat=beats[index]; currentBeat=beat; clearTimeout(autoTimer); stopTyping(); speaker.textContent=beat.speaker; counter.textContent=`${index+1} / ${beats.length}`; thought.textContent=beat.thought || ''; thought.classList.toggle('show', Boolean(beat.thought)); renderHint(); if(hintOn && beat.notice) window.HLTAudio.play('card'); typeText(beat.text); if(auto) autoTimer=setTimeout(next, Math.max(1600, beat.text.length*90)); }
+    function finish(){ endPanel.classList.add('show'); }
+    function next(){ if(isTyping){ completeText(); return; } if(index<beats.length-1){ index+=1; showBeat(); return; } finish(); }
+    dialogueBox.addEventListener('click',next);
+    document.getElementById('phone').addEventListener('click',event=>{ if(event.target.closest('button') || event.target.closest('.dialogue-box')) return; next(); });
+    autoBtn.addEventListener('click',()=>{ auto=!auto; autoBtn.textContent=auto?'AUTO ON':'AUTO'; autoBtn.classList.toggle('on', auto); if(auto) showBeat(); else clearTimeout(autoTimer); });
+    hintBtn.addEventListener('click',()=>{ hintOn=!hintOn; hintBtn.textContent=hintOn?'HINT ON':'HINT'; hintBtn.classList.toggle('on', hintOn); renderHint(); });
+    document.getElementById('skipBtn').addEventListener('click',()=>{ stopTyping(); index=beats.length-1; showBeat(); completeText(); });
+    document.getElementById('replayButton').addEventListener('click',()=>location.reload());
+    document.getElementById('titleButton').addEventListener('click',()=>{ sessionStorage.removeItem('ep04Evidence'); sessionStorage.removeItem('ep04Conclusion'); window.location.href='../episode-04-comic-animation/index.html'; });
+    showBeat();
+  </script>
+</body>
+</html>

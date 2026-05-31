@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 10 Yuna PC VN</title>
+  <style>
+    :root { --phone-w:min(100vw,430px); --phone-h:min(100dvh,932px); --ink:#f7fbff; --cyan:#7eeaff; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif; }
+    * { box-sizing:border-box; } html,body { height:100%; }
+    body { margin:0; display:grid; place-items:center; overflow:hidden; color:var(--ink); background:radial-gradient(circle at 50% 8%, rgba(126,234,255,.12), transparent 34%), linear-gradient(160deg,#020409,#07131d 54%,#020409); }
+    .phone { position:relative; width:var(--phone-w); height:var(--phone-h); max-height:932px; aspect-ratio:9/16; overflow:hidden; background:#05080d; box-shadow:0 28px 80px rgba(0,0,0,.62); user-select:none; isolation:isolate; }
+    .bg { position:absolute; inset:0; background-image:linear-gradient(to bottom,rgba(0,0,0,.02),rgba(0,0,0,.16) 42%,rgba(0,0,0,.66)),url("../../assets/images/mobile/backgrounds/mob-bg-campus-cafe-v1.png"); background-size:cover; background-position:center; transform:scale(1.025); filter:saturate(.94) brightness(.88); }
+    .scene-vignette { position:absolute; inset:0; background:radial-gradient(circle at 50% 42%,transparent 0 32%,rgba(0,0,0,.16) 66%,rgba(0,0,0,.52) 100%),linear-gradient(to bottom,rgba(2,6,10,.04),transparent 30%,rgba(2,6,10,.36)); pointer-events:none; }
+    .topbar { position:absolute; top:calc(14px + env(safe-area-inset-top)); left:16px; right:16px; display:flex; justify-content:space-between; align-items:center; gap:10px; z-index:18; opacity:.95; }
+    .chapter,.ghost-button { border:1px solid rgba(255,255,255,.20); border-radius:999px; background:rgba(4,10,16,.40); color:rgba(247,251,255,.80); backdrop-filter:blur(10px); font-weight:850; }
+    .chapter { max-width:calc(100% - 176px); padding:8px 12px; font-size:12px; letter-spacing:.06em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .small-actions { display:flex; gap:6px; } .ghost-button { padding:8px 9px; font-size:11px; cursor:pointer; } .ghost-button.on { border-color:rgba(126,234,255,.44); background:rgba(126,234,255,.14); color:#e9fbff; }
+    .focus-dim { position:absolute; inset:0; background:rgba(0,0,0,.14); opacity:0; transition:opacity 260ms ease; pointer-events:none; z-index:3; } .focus-dim.on { opacity:1; }
+    .info-card { position:absolute; left:26px; right:26px; top:calc(106px + env(safe-area-inset-top)); padding:14px 15px; border-radius:20px; background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.055)),rgba(5,10,16,.76); border:1px solid rgba(255,255,255,.22); box-shadow:0 20px 40px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(18px) saturate(1.16); z-index:15; opacity:0; transform:translateY(-12px); transition:opacity 300ms ease, transform 300ms ease; pointer-events:none; }
+    .info-card.show { opacity:1; transform:translateY(0); } .info-title { color:var(--cyan); font-size:12px; font-weight:950; letter-spacing:.08em; margin-bottom:8px; } .info-lines { display:grid; gap:7px; } .info-line { padding:8px 9px; border-radius:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); color:rgba(247,251,255,.86); font-size:12px; font-weight:720; line-height:1.36; word-break:keep-all; }
+    .char { position:absolute; bottom:148px; width:min(43vw,188px); aspect-ratio:312/793; background-repeat:no-repeat; background-size:contain; background-position:center bottom; opacity:0; filter:drop-shadow(0 28px 24px rgba(0,0,0,.50)); transition:opacity 320ms ease, transform 420ms cubic-bezier(.18,.84,.26,1), background-image 140ms step-end; z-index:5; pointer-events:none; }
+    .char.left { left:27%; transform:translateX(-50%) translateY(16px) scale(.985); } .char.right { left:73%; transform:translateX(-50%) translateY(16px) scale(.985); } .char.center { left:50%; transform:translateX(-50%) translateY(16px) scale(.985); }
+    .char.show.left,.char.show.right,.char.show.center { opacity:1; transform:translateX(-50%) translateY(0) scale(1); } .char.off-left { left:-24%; transform:translateX(-50%) translateY(16px) scale(.985); } .char.off-right { left:124%; transform:translateX(-50%) translateY(16px) scale(.985); }
+    .haein.expr-0 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-0.png"); } .haein.expr-1 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-1.png"); } .haein.expr-2 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-2.png"); } .haein.expr-3 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-3.png"); } .haein.expr-4 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-4.png"); } .haein.expr-5 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-5.png"); }
+    .minseo,.yuna { aspect-ratio:330.2/793; background-size:600% 100%; } .minseo { background-image:url("../../assets/images/characters/han-minseo/expression-sheet-knee-up-transparent-v3.png"); } .yuna { background-image:url("../../assets/images/characters/lee-yuna/expression-sheet-knee-up-transparent-v3.png"); }
+    .minseo.expr-0,.yuna.expr-0 { background-position:0% 0%; } .minseo.expr-1,.yuna.expr-1 { background-position:20% 0%; } .minseo.expr-2,.yuna.expr-2 { background-position:40% 0%; } .minseo.expr-3,.yuna.expr-3 { background-position:60% 0%; } .minseo.expr-4,.yuna.expr-4 { background-position:80% 0%; } .minseo.expr-5,.yuna.expr-5 { background-position:100% 0%; }
+    .dialogue-box { position:absolute; left:22px; right:22px; bottom:calc(22px + env(safe-area-inset-bottom)); min-height:136px; padding:15px 16px; border-radius:22px; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.07) 42%,rgba(7,18,27,.38)); border:1px solid rgba(255,255,255,.30); box-shadow:0 18px 36px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.18); backdrop-filter:blur(18px) saturate(1.24); z-index:13; cursor:pointer; }
+    .name-row { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; } .speaker { color:var(--cyan); font-size:13px; font-weight:900; letter-spacing:.02em; } .counter { color:rgba(247,251,255,.44); font-size:12px; font-weight:800; }
+    .line { min-height:62px; color:#f8fcff; font-size:clamp(16px,4.2vw,20px); font-weight:690; line-height:1.48; word-break:keep-all; text-shadow:0 2px 10px rgba(0,0,0,.72); } .line.muted { color:rgba(247,251,255,.84); font-style:italic; }
+    .next-mark { position:absolute; right:20px; bottom:13px; width:10px; height:10px; border-right:2px solid rgba(126,234,255,.78); border-bottom:2px solid rgba(126,234,255,.78); transform:rotate(45deg); animation:bob 850ms ease-in-out infinite; }
+    .end-panel { position:absolute; inset:0; z-index:30; display:grid; place-items:end center; padding:0 22px calc(24px + env(safe-area-inset-bottom)); background:linear-gradient(to bottom,rgba(2,6,10,.10),rgba(2,6,10,.76)); opacity:0; pointer-events:none; transition:opacity 360ms ease; }
+    .end-panel.show { opacity:1; pointer-events:auto; } .end-card { width:100%; padding:20px 17px 17px; border-radius:24px; background:linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.065)),rgba(5,10,16,.82); border:1px solid rgba(255,255,255,.26); box-shadow:0 22px 48px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(20px) saturate(1.18); }
+    .end-kicker { color:var(--cyan); font-size:13px; font-weight:950; letter-spacing:.08em; margin-bottom:8px; } .end-title { font-size:clamp(22px,5.8vw,29px); font-weight:940; line-height:1.22; margin-bottom:10px; word-break:keep-all; } .end-copy { color:rgba(247,251,255,.72); font-size:13px; font-weight:720; line-height:1.45; margin-bottom:14px; word-break:keep-all; }
+    .end-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; } .end-button { min-height:48px; border:1px solid rgba(255,255,255,.20); border-radius:15px; background:rgba(255,255,255,.07); color:var(--ink); font-family:inherit; font-size:13px; font-weight:850; cursor:pointer; } .end-button.primary { border-color:rgba(126,234,255,.42); background:rgba(126,234,255,.11); }
+    @keyframes bob { 0%,100% { translate:0 0; opacity:.55; } 50% { translate:0 4px; opacity:1; } }
+  </style>
+</head>
+<body>
+  <main class="phone" id="phone" aria-label="Episode 10 yuna personal pc visual novel scene">
+    <div class="bg"></div><div class="scene-vignette"></div><div class="focus-dim" id="focusDim"></div>
+    <div class="topbar"><div class="chapter">EP.10 YUNA'S PERSONAL PC</div><div class="small-actions"><button class="ghost-button" id="autoBtn" type="button">AUTO</button><button class="ghost-button" id="hintBtn" type="button">HINT</button><button class="ghost-button" id="skipBtn" type="button">SKIP</button></div></div>
+    <section class="info-card" id="infoCard"><div class="info-title" id="infoTitle">FIELD NOTE</div><div class="info-lines" id="infoLines"></div></section>
+    <div class="char haein off-left" id="haein"></div><div class="char minseo off-right" id="minseo"></div><div class="char yuna off-right" id="yuna"></div>
+    <section class="dialogue-box" id="dialogueBox"><div class="name-row"><div class="speaker" id="speaker">강지호</div><div class="counter" id="counter">1 / 1</div></div><div class="line" id="line"></div><div class="next-mark"></div></section>
+    <section class="end-panel" id="endPanel"><div class="end-card"><div class="end-kicker">EP.10</div><div class="end-title">분석 범위가 먼저다.</div><div class="end-copy">유나의 개인 PC는 허가된 항목만 확인한다. 증거를 찾는 것보다 먼저, 보지 말아야 할 것을 정해야 한다.</div><div class="end-actions"><button class="end-button" id="replayButton" type="button">다시 보기</button><button class="end-button primary" id="nextButton" type="button">조사 시작</button></div></div></section>
+  </main>
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({ bgm:'../../assets/audio/mobile/episode-01/bgm-lab-dialogue.mp3', bgmVolume:.22, sfx:{ click:'../../assets/audio/mobile/common/sfx-click.mp3', card:'../../assets/audio/mobile/common/sfx-card.mp3' } });
+    const beats=[
+      { type:'narration', speaker:' ', text:'브릿지에서 들은 소문은 결론이 아니었다. 다만 다음에 확인해야 할 방향을 분명하게 만들었다.', chars:{} },
+      { type:'dialogue', speaker:'이유나', text:'오늘은 회사 이야기가 아니라 제 개인 PC예요. 이상한 일이 몇 번 있었고, 허락한 범위 안에서만 봐 줬으면 해요.', chars:{yuna:['right',2],haein:['left',1]} },
+      { type:'dialogue', speaker:'강지호', text:'먼저 범위를 정해야 합니다. 분석할 수 있는 항목과 열면 안 되는 항목을 나눌게요.', chars:{yuna:['right',2],haein:['left',1]} },
+      { type:'dialogue', speaker:'서해인', text:'좋아. 이건 실력 문제가 아니라 절차 문제야. 허가받은 항목만 보는 게 이번 사건의 핵심이야.', chars:{haein:['left',1],yuna:['right',1]}, info:{title:'원칙', lines:['개인 PC는 범위 합의 우선','내용 열람보다 메타데이터 확인','회사 자료와 개인 대화는 제외']} },
+      { type:'dialogue', speaker:'한민서', text:'그럼 파일 이름이나 기록은 볼 수 있어도, 문서 내용이나 메신저 내용은 보면 안 되는 거지?', chars:{minseo:['right',1],haein:['left',1]} },
+      { type:'dialogue', speaker:'서해인', text:'맞아. 필요하면 “접근 기록이 있다”까지만 말하고, 내용을 열어 확인하진 않아.', chars:{minseo:['right',0],haein:['left',4]} },
+      { type:'dialogue', speaker:'이유나', text:'저도 그 선이면 괜찮아요. 브라우저 설정, 시작 프로그램, 최근 실행 기록, 네트워크 요약 정도는 확인해도 됩니다.', chars:{yuna:['right',1],haein:['left',1]}, info:{title:'허가 항목', lines:['브라우저 설정','시작 프로그램','최근 실행 기록','네트워크 요약','파일 접근 메타데이터']} },
+      { type:'dialogue', speaker:'강지호', text:'저장된 비밀번호, 메신저 대화, 개인 문서 내용, 회사 폴더 내용은 보지 않겠습니다.', chars:{yuna:['right',1],haein:['left',4]}, info:{title:'제외 항목', lines:['저장된 비밀번호','메신저 대화','개인 문서 내용','회사 관련 폴더 내용']} },
+      { type:'dialogue', speaker:'이유나', text:'고마워요. 사실 며칠 전부터 브라우저 첫 화면이 낯선 페이지로 바뀌었어요.', chars:{yuna:['right',2],haein:['left',1]} },
+      { type:'dialogue', speaker:'한민서', text:'또 시작 페이지 변경이네. 근데 이번엔 유나 선배 PC에서 직접 확인하는 거니까 무게가 달라.', chars:{minseo:['right',1],yuna:['left',2]} },
+      { type:'dialogue', speaker:'강지호', text:'바로 결론 내리진 않을게. 시작 페이지, 실행 기록, 네트워크 흔적이 같은 시간대에 맞물리는지 보겠습니다.', chars:{minseo:['right',0],yuna:['left',1]} },
+      { type:'dialogue', speaker:'서해인', text:'좋아. 그리고 문서 접근 흔적이 나와도 유출이라고 단정하지 마. 외부 전송 근거가 따로 있어야 해.', chars:{haein:['left',1],yuna:['right',1]} },
+      { type:'dialogue', speaker:'이유나', text:'만약 회사랑 관련된 폴더가 보이면요?', chars:{yuna:['right',2],haein:['left',1]} },
+      { type:'dialogue', speaker:'강지호', text:'열지 않습니다. 이번 건은 개인 PC에서 허가된 로컬 흔적만 보는 거니까요.', chars:{yuna:['right',1],haein:['left',4]} },
+      { type:'dialogue', speaker:'한민서', text:'에피소드1 때랑 다르게 이번엔 “뭘 보면 안 되는지”를 틀리면 바로 실패겠네.', chars:{minseo:['right',1],haein:['left',1]} },
+      { type:'dialogue', speaker:'서해인', text:'맞아. 보안 분석은 더 많이 보는 게임이 아니야. 필요한 것만 보는 기술이기도 해.', chars:{minseo:['right',0],haein:['left',4]} },
+      { type:'dialogue', speaker:'강지호', text:'그럼 시작하겠습니다. 먼저 허가 범위부터 기록하고, 그 다음 시작 프로그램과 브라우저 설정을 확인할게요.', chars:{yuna:['right',1],haein:['left',1]}, info:{title:'조사 순서', lines:['허가 범위 기록','시작 프로그램 확인','브라우저 설정 확인','네트워크/설정 파일 대조','문서 접근과 유출 구분']} },
+      { type:'narration', speaker:' ', text:'지호는 노트북 앞에 앉았다. 이번 조사는 침투보다 절제가 먼저였다.', chars:{}, end:true }
+    ];
+    const ids=['haein','minseo','yuna'];
+    const els=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]));
+    const focusDim=document.getElementById('focusDim'), speaker=document.getElementById('speaker'), line=document.getElementById('line'), counter=document.getElementById('counter'), dialogueBox=document.getElementById('dialogueBox'), autoBtn=document.getElementById('autoBtn'), hintBtn=document.getElementById('hintBtn'), skipBtn=document.getElementById('skipBtn'), infoCard=document.getElementById('infoCard'), infoTitle=document.getElementById('infoTitle'), infoLines=document.getElementById('infoLines'), endPanel=document.getElementById('endPanel');
+    let index=0, auto=false, hintOn=false, currentInfo=null, autoTimer=null, typeTimer=null, isTyping=false, currentText='';
+    function stopTyping(){ if(typeTimer) clearInterval(typeTimer); typeTimer=null; isTyping=false; }
+    function completeText(){ stopTyping(); line.textContent=currentText; }
+    function typeText(text){ stopTyping(); currentText=text; line.textContent=''; let i=0; isTyping=true; typeTimer=setInterval(()=>{ line.textContent += text[i] || ''; i += 1; if(i > text.length) stopTyping(); }, 18); }
+    function offClass(id){ return id==='haein'?'off-left':'off-right'; }
+    function applyCharacters(chars){ let shown=false; ids.forEach(id=>{ const el=els[id]; el.className='char '+id+' '+offClass(id); if(chars[id]){ const [slot,expr]=chars[id]; el.className='char '+id+' '+slot+' show expr-'+expr; shown=true; } }); focusDim.classList.toggle('on', shown); }
+    function renderHint(){ infoLines.innerHTML=''; if(!hintOn || !currentInfo){ infoCard.classList.remove('show'); return; } infoTitle.textContent=currentInfo.title; currentInfo.lines.forEach(text=>{ const node=document.createElement('div'); node.className='info-line'; node.textContent=text; infoLines.appendChild(node); }); infoCard.classList.add('show'); }
+    function applyInfo(info){ currentInfo=info || null; renderHint(); }
+    function finish(){ endPanel.classList.add('show'); }
+    function showBeat(){ const beat=beats[index]; if(!beat) return; clearTimeout(autoTimer); stopTyping(); applyCharacters(beat.chars || {}); applyInfo(beat.info); speaker.textContent=beat.speaker || ' '; counter.textContent=`${index+1} / ${beats.length}`; line.classList.toggle('muted', beat.type==='narration'); typeText(beat.text); if(beat.end) autoTimer=setTimeout(finish,1300); if(auto && !beat.end) autoTimer=setTimeout(next, Math.max(1500, beat.text.length * 85)); }
+    function next(){ if(isTyping){ completeText(); return; } if(index < beats.length - 1){ index += 1; showBeat(); return; } finish(); }
+    dialogueBox.addEventListener('click', next);
+    document.getElementById('phone').addEventListener('click', e=>{ if(e.target.closest('button') || e.target.closest('.dialogue-box')) return; next(); });
+    autoBtn.addEventListener('click',()=>{ auto=!auto; autoBtn.textContent=auto?'AUTO ON':'AUTO'; autoBtn.classList.toggle('on', auto); if(auto) showBeat(); else clearTimeout(autoTimer); });
+    hintBtn.addEventListener('click',()=>{ hintOn=!hintOn; hintBtn.textContent=hintOn?'HINT ON':'HINT'; hintBtn.classList.toggle('on', hintOn); renderHint(); });
+    skipBtn.addEventListener('click',()=>{ stopTyping(); index=beats.length-1; showBeat(); completeText(); });
+    document.getElementById('replayButton').addEventListener('click',()=>location.reload());
+    document.getElementById('nextButton').addEventListener('click',()=>window.location.href='../episode-10-investigation-menu/index.html');
+    showBeat();
+  </script>
+</body>
+</html>

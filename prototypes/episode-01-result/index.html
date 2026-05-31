@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 01 Result</title>
+  <style>
+    :root {
+      --phone-w: min(100vw, 430px);
+      --phone-h: min(100dvh, 932px);
+      --ink: #f7fbff;
+      --cyan: #7eeaff;
+      --red: #ff8f9b;
+      --green: #5fe2ad;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      color: var(--ink);
+      background: radial-gradient(circle at 50% 8%, rgba(126,234,255,.14), transparent 34%), linear-gradient(160deg, #020409, #07131d 54%, #020409);
+    }
+    .phone {
+      position: relative;
+      width: var(--phone-w);
+      height: var(--phone-h);
+      max-height: 932px;
+      aspect-ratio: 9 / 16;
+      overflow: hidden;
+      background: #05080d;
+      box-shadow: 0 28px 80px rgba(0,0,0,.62);
+      isolation: isolate;
+    }
+    .bg {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(to bottom, rgba(0,0,0,.22), rgba(0,0,0,.72)), url("../../assets/images/mobile/backgrounds/mob-bg-university-computer-lab-v1.png");
+      background-size: cover;
+      background-position: center;
+      filter: saturate(.9) brightness(.68);
+      transform: scale(1.02);
+    }
+    .topbar {
+      position: absolute;
+      top: calc(14px + env(safe-area-inset-top));
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 8;
+    }
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(4,10,16,.48);
+      border: 1px solid rgba(255,255,255,.20);
+      color: rgba(247,251,255,.80);
+      backdrop-filter: blur(12px);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: .05em;
+    }
+    .minseo {
+      position: absolute;
+      left: 50%;
+      bottom: 150px;
+      width: min(45vw, 205px);
+      aspect-ratio: 330 / 793;
+      background-image: url("../../assets/images/characters/han-minseo/expression-sheet-knee-up-transparent-v3.png");
+      background-size: 600% 100%;
+      background-position: 60% 0%;
+      filter: drop-shadow(0 28px 26px rgba(0,0,0,.52));
+      transform: translateX(-50%);
+      z-index: 4;
+    }
+    .dialogue {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: calc(22px + env(safe-area-inset-bottom));
+      min-height: 136px;
+      padding: 16px;
+      border-radius: 22px;
+      background: linear-gradient(145deg, rgba(255,255,255,.18), rgba(255,255,255,.07) 42%, rgba(7,18,27,.42));
+      border: 1px solid rgba(255,255,255,.30);
+      box-shadow: 0 18px 36px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.16);
+      backdrop-filter: blur(18px) saturate(1.24);
+      z-index: 9;
+      cursor: pointer;
+    }
+    .speaker { color: var(--cyan); font-size: 13px; font-weight: 900; margin-bottom: 10px; }
+    .line { color: #f8fcff; font-size: clamp(17px, 4.5vw, 21px); font-weight: 760; line-height: 1.48; word-break: keep-all; }
+    .next-mark { position: absolute; right: 20px; bottom: 13px; width: 10px; height: 10px; border-right: 2px solid rgba(126,234,255,.78); border-bottom: 2px solid rgba(126,234,255,.78); transform: rotate(45deg); }
+    .result {
+      position: absolute;
+      inset: calc(68px + env(safe-area-inset-top)) 18px calc(20px + env(safe-area-inset-bottom));
+      z-index: 12;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 0;
+    }
+    .result.show { display: flex; }
+    .result-card {
+      padding: 15px 14px;
+      border-radius: 22px;
+      background: linear-gradient(145deg, rgba(255,255,255,.16), rgba(255,255,255,.06)), rgba(5,10,16,.82);
+      border: 1px solid rgba(255,255,255,.24);
+      box-shadow: 0 20px 44px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.12);
+      backdrop-filter: blur(20px) saturate(1.15);
+    }
+    .status { font-size: 13px; font-weight: 950; letter-spacing: .08em; margin-bottom: 8px; }
+    .status.success { color: var(--green); }
+    .status.fail { color: var(--red); }
+    h1 { margin: 0; font-size: clamp(21px, 5.6vw, 28px); line-height: 1.22; font-weight: 930; word-break: keep-all; }
+    .section-title { color: var(--cyan); font-size: 13px; font-weight: 900; margin: 2px 0 8px; }
+    .list { display: grid; gap: 8px; }
+    .scroll-list { overflow-y: auto; padding-right: 3px; overscroll-behavior: contain; }
+    #detailList.scroll-list { max-height: 180px; }
+    #evidenceList.scroll-list { max-height: 230px; }
+    #evidenceBlock { min-height: 0; flex: 1 1 auto; overflow: hidden; }
+    .item { padding: 10px 11px; border-radius: 14px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); color: rgba(247,251,255,.88); font-size: 13px; font-weight: 720; line-height: 1.42; word-break: keep-all; }
+    .actions { flex: 0 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .action { min-height: 50px; border: 1px solid rgba(255,255,255,.20); border-radius: 16px; background: rgba(255,255,255,.07); color: var(--ink); font-family: inherit; font-size: 14px; font-weight: 850; cursor: pointer; }
+    .action.primary { border-color: rgba(126,234,255,.42); background: rgba(126,234,255,.11); }
+    .stamp {
+      position: absolute;
+      left: 50%;
+      top: 43%;
+      z-index: 40;
+      width: min(82vw, 350px);
+      height: auto;
+      transform: translate(-50%, -50%) rotate(-37deg) scale(2.1);
+      opacity: 0;
+      pointer-events: none;
+      filter: drop-shadow(0 22px 26px rgba(0,0,0,.38));
+      mix-blend-mode: screen;
+    }
+    .stamp.show { animation: stampHit 2600ms cubic-bezier(.18,.84,.26,1) forwards; }
+    @keyframes stampHit {
+      0% { opacity: 0; transform: translate(-50%, -50%) rotate(-37deg) scale(2.1); filter: blur(2px) drop-shadow(0 22px 26px rgba(0,0,0,.38)); }
+      13% { opacity: 1; transform: translate(-50%, -50%) rotate(-37deg) scale(.92); filter: blur(0) drop-shadow(0 22px 26px rgba(0,0,0,.38)); }
+      19% { transform: translate(-50%, -50%) rotate(-34deg) scale(1.03); }
+      24% { transform: translate(-50%, -50%) rotate(-39deg) scale(.99); }
+      31% { transform: translate(-50%, -50%) rotate(-37deg) scale(1); }
+      72% { opacity: 1; }
+      100% { opacity: 0; transform: translate(-50%, -50%) rotate(-37deg) scale(1.04); }
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="Episode 1 result">
+    <div class="bg"></div>
+    <div class="topbar"><div class="pill">EP.01 FIRST LOGIN</div><div class="pill" id="modePill">분석 결과</div></div>
+
+    <section id="rebuttalScene">
+      <div class="minseo"></div>
+      <div class="dialogue" id="dialogueBox">
+        <div class="speaker">한민서</div>
+        <div class="line" id="rebuttalLine"></div>
+        <div class="next-mark"></div>
+      </div>
+    </section>
+
+    <img class="stamp" id="stamp" src="../../assets/images/mobile/ui/result-stamp-failed-v1.png" alt="" aria-hidden="true" />
+
+    <section class="result" id="resultView">
+      <div class="result-card">
+        <div class="status" id="statusText">RESULT</div>
+        <h1 id="headline">분석 결과</h1>
+      </div>
+      <div class="result-card">
+        <div class="section-title" id="detailTitle">판정 근거</div>
+        <div class="list scroll-list" id="detailList"></div>
+      </div>
+      <div class="result-card" id="evidenceBlock">
+        <div class="section-title">사용한 증거</div>
+        <div class="list scroll-list" id="evidenceList"></div>
+      </div>
+      <div class="actions" id="actions"></div>
+    </section>
+  </main>
+
+  <script src="../shared-audio.js"></script>
+  <script>
+    const required = ['ep01-pc-info-cmd-v1.svg','ep01-homepage-access-02-v1.svg','ep01-homepage-activity-02-v1.svg','ep01-browser-history-02-v1.svg'];
+    const trap = 'ep01-homepage-access-01-v1.svg';
+    const evidenceMeta = {
+      'ep01-pc-info-cmd-v1.svg': { source: 'PC 정보', text: '현재 실습실 PC의 호스트명이 LAB-PC-14로 확인된다.' },
+      'ep01-homepage-access-01-v1.svg': { source: '홈페이지 접속 기록', text: '최근 접속 구간에 로그인 실패와 로그인 페이지 접근 기록이 보인다.' },
+      'ep01-homepage-access-02-v1.svg': { source: '홈페이지 접속 기록', text: '전날 LAB-PC-14에서 민서 계정 사용 후 명확한 로그아웃 기록이 없다.' },
+      'ep01-homepage-activity-01-v1.svg': { source: '홈페이지 활동 기록', text: '일반 공지와 강의 페이지 조회 기록이 이어진다.' },
+      'ep01-homepage-activity-02-v1.svg': { source: '홈페이지 활동 기록', text: '계정 설정과 비밀번호 변경 요청 관련 활동이 남아 있다.' },
+      'ep01-browser-history-01-v1.svg': { source: '브라우저 기록', text: '오늘 오전 LMS 로그인 페이지와 도움말 페이지 방문 기록이 있다.' },
+      'ep01-browser-history-02-v1.svg': { source: '브라우저 기록', text: '브라우저 복원으로 민서 계정 세션이 다시 열린 기록이 있다.' }
+    };
+    const evidence = JSON.parse(sessionStorage.getItem('ep01Evidence') || '[]');
+    const conclusion = sessionStorage.getItem('ep01Conclusion') || '';
+    const evidenceSet = new Set(evidence);
+    const isSuccess = conclusion === 'session-exposed' && required.every(id => evidenceSet.has(id)) && !evidenceSet.has(trap);
+    window.HLTAudio.init({
+      bgm: isSuccess ? '../../assets/audio/mobile/episode-01/bgm-result-success.mp3' : '../../assets/audio/mobile/episode-01/bgm-result-fail.mp3',
+      bgmVolume: isSuccess ? 0.31 : 0.29,
+      sfx: {
+        click: '../../assets/audio/mobile/common/sfx-click.mp3',
+        stamp: '../../assets/audio/mobile/common/sfx-stamp.mp3'
+      }
+    });
+
+    const rebuttalScene = document.getElementById('rebuttalScene');
+    const resultView = document.getElementById('resultView');
+    const rebuttalLine = document.getElementById('rebuttalLine');
+    const dialogueBox = document.getElementById('dialogueBox');
+    const statusText = document.getElementById('statusText');
+    const headline = document.getElementById('headline');
+    const detailTitle = document.getElementById('detailTitle');
+    const detailList = document.getElementById('detailList');
+    const evidenceList = document.getElementById('evidenceList');
+    const actions = document.getElementById('actions');
+    const modePill = document.getElementById('modePill');
+    const stamp = document.getElementById('stamp');
+
+    function conclusionText() {
+      return {
+        'external-hack': '외부 해커가 비밀번호를 알아내 로그인했다',
+        'session-exposed': '공용 PC에 남아 있던 세션이 다시 열렸다',
+        'wrong-password': '비밀번호 입력 실수로 생긴 단순 오해다',
+        'server-error': 'LMS 서버 오류로 기록이 잘못 남았다'
+      }[conclusion] || '결론 없음';
+    }
+
+    function failureCategories() {
+      const list = [];
+      if (conclusion !== 'session-exposed') list.push('선택한 결론이 수집한 기록보다 앞서 나갔다.');
+      if (evidenceSet.has(trap)) list.push('무서워 보이는 접속 실패 기록에 과도하게 기대고 있다.');
+      if (!evidenceSet.has('ep01-pc-info-cmd-v1.svg')) list.push('문제가 된 공용 PC를 특정하는 근거가 부족하다.');
+      if (!evidenceSet.has('ep01-homepage-access-02-v1.svg')) list.push('세션이 어디서 시작됐는지 설명하는 타임라인 근거가 부족하다.');
+      if (!evidenceSet.has('ep01-browser-history-02-v1.svg')) list.push('새 로그인 없이 세션이 다시 열린 근거가 부족하다.');
+      if (!evidenceSet.has('ep01-homepage-activity-02-v1.svg')) list.push('실제로 계정 내부 어디까지 열렸는지 보여주는 피해 범위 근거가 부족하다.');
+      if (!list.length) list.push('근거 조합은 가까워졌지만 결론 표현이 아직 정확하지 않다.');
+      return list;
+    }
+
+    function rebuttalText() {
+      if (conclusion === 'external-hack') return '그 기록만으로 누가 밖에서 들어왔다고 단정할 수 있어? 무서워 보이는 기록이랑 실제 원인은 다를 수 있잖아.';
+      if (conclusion === 'wrong-password') return '그럼 계정 설정 쪽에 남은 흔적은 어떻게 설명할 거야? 단순 실수라고 하기엔 이상한 부분이 남아 있어.';
+      if (conclusion === 'server-error') return '서버 오류라고 말하려면 같은 시간대에 다른 계정도 이상했어야 하지 않을까? 지금 기록은 내 계정 흐름에 더 가까워 보여.';
+      return '설명은 맞는 방향 같은데, 지금 근거만으로는 아직 빈 곳이 보여.';
+    }
+
+    function renderList(target, items) {
+      target.innerHTML = '';
+      items.forEach(text => {
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.textContent = text;
+        target.appendChild(div);
+      });
+    }
+
+    function renderEvidence() {
+      evidenceList.innerHTML = '';
+      evidence.forEach(id => {
+        const item = evidenceMeta[id];
+        if (!item) return;
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.textContent = `${item.source}: ${item.text}`;
+        evidenceList.appendChild(div);
+      });
+      if (!evidenceList.children.length) renderList(evidenceList, ['제출된 증거가 없다.']);
+    }
+
+    function playStamp(success) {
+      window.HLTAudio.play('stamp');
+      stamp.src = success
+        ? '../../assets/images/mobile/ui/result-stamp-success-v1.png'
+        : '../../assets/images/mobile/ui/result-stamp-failed-v1.png';
+      stamp.className = 'stamp';
+      void stamp.offsetWidth;
+      stamp.classList.add('show');
+    }
+
+    function showResult() {
+      rebuttalScene.classList.add('hidden');
+      resultView.classList.add('show');
+      renderEvidence();
+      playStamp(isSuccess);
+      if (isSuccess) {
+        modePill.textContent = 'CLEAR';
+        statusText.textContent = 'ANALYSIS SUCCESS';
+        statusText.className = 'status success';
+        headline.textContent = '공용 PC 세션 노출로 정리된다.';
+        detailTitle.textContent = '정답 근거';
+        renderList(detailList, [
+          '문제가 된 장비는 LAB-PC-14로 특정된다.',
+          '전날 민서 계정이 LAB-PC-14에서 사용됐고 로그아웃 기록이 명확하지 않다.',
+          '다음 날 브라우저 복원으로 기존 세션이 다시 열린 흔적이 있다.',
+          '계정 설정과 비밀번호 변경 요청 흔적이 있어 실제 노출 범위가 확인된다.'
+        ]);
+        actions.innerHTML = '<button class="action" type="button" id="backInvestigation">기록 다시 보기</button><button class="action primary" type="button" id="recapButton">사건 재현 보기</button>';
+        document.getElementById('backInvestigation').addEventListener('click', () => window.location.href = '../episode-01-investigation-menu/index.html');
+        document.getElementById('recapButton').addEventListener('click', () => window.location.href = '../episode-01-recap-animation/index.html');
+      } else {
+        modePill.textContent = 'FAILED';
+        statusText.textContent = 'ANALYSIS FAILED';
+        statusText.className = 'status fail';
+        headline.textContent = '결론을 다시 세워야 한다.';
+        detailTitle.textContent = '부족한 부분';
+        renderList(detailList, failureCategories());
+        actions.innerHTML = '<button class="action" type="button" id="retryFull">처음부터 다시</button><button class="action primary" type="button" id="retryInvestigation">다시 조사하기</button>';
+        document.getElementById('retryInvestigation').addEventListener('click', () => window.location.href = '../episode-01-investigation-menu/index.html');
+        document.getElementById('retryFull').addEventListener('click', () => {
+          sessionStorage.removeItem('ep01Evidence');
+          sessionStorage.removeItem('ep01Conclusion');
+          window.location.href = '../episode-01-vn-scene/index.html';
+        });
+      }
+    }
+
+    if (isSuccess) {
+      rebuttalScene.classList.add('hidden');
+      showResult();
+    } else {
+      rebuttalLine.textContent = rebuttalText();
+      dialogueBox.addEventListener('click', showResult);
+    }
+  </script>
+</body>
+</html>

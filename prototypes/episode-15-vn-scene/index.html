@@ -1,0 +1,883 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 15 Final Report</title>
+  <style>
+    :root { --phone-w:min(100vw,430px); --phone-h:min(100dvh,932px); --ink:#f7fbff; --cyan:#7eeaff; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif; }
+    * { box-sizing:border-box; } html,body { height:100%; }
+    body { margin:0; display:grid; place-items:center; overflow:hidden; color:var(--ink); background:radial-gradient(circle at 50% 8%, rgba(126,234,255,.12), transparent 34%), linear-gradient(160deg,#020409,#07131d 54%,#020409); }
+    .phone { position:relative; width:var(--phone-w); height:var(--phone-h); max-height:932px; aspect-ratio:9/16; overflow:hidden; background:#05080d; box-shadow:0 28px 80px rgba(0,0,0,.62); user-select:none; isolation:isolate; }
+    .bg { position:absolute; inset:0; background-image:linear-gradient(to bottom,rgba(0,0,0,.02),rgba(0,0,0,.13) 40%,rgba(0,0,0,.62)),url("../../assets/images/mobile/backgrounds/mob-bg-forensic-lab-v1.png"); background-size:cover; background-position:center; transform:scale(1.025); filter:saturate(.96) brightness(.94); }
+    .scene-vignette { position:absolute; inset:0; background:radial-gradient(circle at 50% 42%,transparent 0 32%,rgba(0,0,0,.14) 66%,rgba(0,0,0,.50) 100%),linear-gradient(to bottom,rgba(2,6,10,.04),transparent 30%,rgba(2,6,10,.34)); pointer-events:none; }
+    .topbar { position:absolute; top:calc(14px + env(safe-area-inset-top)); left:16px; right:16px; display:flex; justify-content:space-between; align-items:center; gap:10px; z-index:18; opacity:.95; }
+    .chapter,.ghost-button { border:1px solid rgba(255,255,255,.20); border-radius:999px; background:rgba(4,10,16,.40); color:rgba(247,251,255,.80); backdrop-filter:blur(10px); font-weight:850; }
+    .chapter { max-width:calc(100% - 176px); padding:8px 12px; font-size:12px; letter-spacing:.06em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .small-actions { display:flex; gap:6px; } .ghost-button { padding:8px 9px; font-size:11px; cursor:pointer; } .ghost-button.on { border-color:rgba(126,234,255,.44); background:rgba(126,234,255,.14); color:#e9fbff; }
+    .focus-dim { position:absolute; inset:0; background:rgba(0,0,0,.14); opacity:0; transition:opacity 260ms ease; pointer-events:none; z-index:3; } .focus-dim.on { opacity:1; }
+    .info-card { position:absolute; left:26px; right:26px; top:calc(106px + env(safe-area-inset-top)); padding:14px 15px; border-radius:20px; background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.055)),rgba(5,10,16,.76); border:1px solid rgba(255,255,255,.22); box-shadow:0 20px 40px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(18px) saturate(1.16); z-index:15; opacity:0; transform:translateY(-12px); transition:opacity 300ms ease, transform 300ms ease; pointer-events:none; }
+    .info-card.show { opacity:1; transform:translateY(0); } .info-title { color:var(--cyan); font-size:12px; font-weight:950; letter-spacing:.08em; margin-bottom:8px; } .info-lines { display:grid; gap:7px; } .info-line { padding:8px 9px; border-radius:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); color:rgba(247,251,255,.86); font-size:12px; font-weight:720; line-height:1.36; word-break:keep-all; }
+    .char { position:absolute; bottom:148px; width:min(43vw,188px); aspect-ratio:312/793; background-repeat:no-repeat; background-size:contain; background-position:center bottom; opacity:0; filter:drop-shadow(0 28px 24px rgba(0,0,0,.50)); transition:opacity 320ms ease, transform 420ms cubic-bezier(.18,.84,.26,1), background-image 140ms step-end; z-index:5; pointer-events:none; }
+    .char.left { left:27%; transform:translateX(-50%) translateY(16px) scale(.985); } .char.right { left:73%; transform:translateX(-50%) translateY(16px) scale(.985); } .char.center { left:50%; transform:translateX(-50%) translateY(16px) scale(.985); }
+    .char.show.left,.char.show.right,.char.show.center { opacity:1; transform:translateX(-50%) translateY(0) scale(1); } .char.off-left { left:-24%; transform:translateX(-50%) translateY(16px) scale(.985); } .char.off-right { left:124%; transform:translateX(-50%) translateY(16px) scale(.985); }
+    .haein.expr-0 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-0.png"); } .haein.expr-1 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-1.png"); } .haein.expr-2 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-2.png"); } .haein.expr-3 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-3.png"); } .haein.expr-4 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-4.png"); } .haein.expr-5 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-5.png"); }
+    .junwoo.expr-0 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-0.png"); } .junwoo.expr-1 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-1.png"); } .junwoo.expr-2 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-2.png"); } .junwoo.expr-3 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-3.png"); } .junwoo.expr-4 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-4.png"); } .junwoo.expr-5 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-5.png"); }
+    .taeyoon.expr-0 { background-image:url("../../assets/images/characters/choi-taeyoon/cutins/expr-0.png"); } .taeyoon.expr-1 { background-image:url("../../assets/images/characters/choi-taeyoon/cutins/expr-1.png"); } .taeyoon.expr-2 { background-image:url("../../assets/images/characters/choi-taeyoon/cutins/expr-2.png"); } .taeyoon.expr-3 { background-image:url("../../assets/images/characters/choi-taeyoon/cutins/expr-3.png"); } .taeyoon.expr-4 { background-image:url("../../assets/images/characters/choi-taeyoon/cutins/expr-4.png"); } .taeyoon.expr-5 { background-image:url("../../assets/images/characters/choi-taeyoon/cutins/expr-5.png"); }
+    .minseo,.yuna { aspect-ratio:330.2/793; background-size:600% 100%; }
+    .minseo { background-image:url("../../assets/images/characters/han-minseo/expression-sheet-knee-up-transparent-v3.png"); } .yuna { background-image:url("../../assets/images/characters/lee-yuna/expression-sheet-knee-up-transparent-v3.png"); }
+    .minseo.expr-0,.yuna.expr-0 { background-position:0% 0%; } .minseo.expr-1,.yuna.expr-1 { background-position:20% 0%; } .minseo.expr-2,.yuna.expr-2 { background-position:40% 0%; } .minseo.expr-3,.yuna.expr-3 { background-position:60% 0%; } .minseo.expr-4,.yuna.expr-4 { background-position:80% 0%; } .minseo.expr-5,.yuna.expr-5 { background-position:100% 0%; }
+    .dialogue-box { position:absolute; left:22px; right:22px; bottom:calc(22px + env(safe-area-inset-bottom)); min-height:136px; padding:15px 16px; border-radius:22px; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.07) 42%,rgba(7,18,27,.38)); border:1px solid rgba(255,255,255,.30); box-shadow:0 18px 36px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.18); backdrop-filter:blur(18px) saturate(1.24); z-index:13; cursor:pointer; }
+    .name-row { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; } .speaker { color:var(--cyan); font-size:13px; font-weight:900; letter-spacing:.02em; } .counter { color:rgba(247,251,255,.44); font-size:12px; font-weight:800; }
+    .line { min-height:62px; color:#f8fcff; font-size:clamp(16px,4.2vw,20px); font-weight:690; line-height:1.48; word-break:keep-all; text-shadow:0 2px 10px rgba(0,0,0,.72); } .line.muted { color:rgba(247,251,255,.84); font-style:italic; }
+    .next-mark { position:absolute; right:20px; bottom:13px; width:10px; height:10px; border-right:2px solid rgba(126,234,255,.78); border-bottom:2px solid rgba(126,234,255,.78); transform:rotate(45deg); animation:bob 850ms ease-in-out infinite; }
+    .end-panel { position:absolute; inset:0; z-index:30; display:grid; place-items:end center; padding:0 22px calc(24px + env(safe-area-inset-bottom)); background:linear-gradient(to bottom,rgba(2,6,10,.10),rgba(2,6,10,.76)); opacity:0; pointer-events:none; transition:opacity 360ms ease; }
+    .end-panel.show { opacity:1; pointer-events:auto; } .end-card { width:100%; padding:20px 17px 17px; border-radius:24px; background:linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.065)),rgba(5,10,16,.82); border:1px solid rgba(255,255,255,.26); box-shadow:0 22px 48px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(20px) saturate(1.18); }
+    .end-kicker { color:var(--cyan); font-size:13px; font-weight:950; letter-spacing:.08em; margin-bottom:8px; } .end-title { font-size:clamp(22px,5.8vw,29px); font-weight:940; line-height:1.22; margin-bottom:10px; word-break:keep-all; } .end-copy { color:rgba(247,251,255,.72); font-size:13px; font-weight:720; line-height:1.45; margin-bottom:14px; word-break:keep-all; }
+    .end-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; } .end-button { min-height:48px; border:1px solid rgba(255,255,255,.20); border-radius:15px; background:rgba(255,255,255,.07); color:var(--ink); font-family:inherit; font-size:13px; font-weight:850; cursor:pointer; } .end-button.primary { border-color:rgba(126,234,255,.42); background:rgba(126,234,255,.11); }
+    @keyframes bob { 0%,100% { translate:0 0; opacity:.55; } 50% { translate:0 4px; opacity:1; } }
+  </style>
+</head>
+<body>
+  <main class="phone" id="phone" aria-label="Episode 15 final report visual novel scene">
+    <div class="bg"></div><div class="scene-vignette"></div><div class="focus-dim" id="focusDim"></div>
+    <div class="topbar"><div class="chapter">EP.15 FINAL REPORT</div><div class="small-actions"><button class="ghost-button" id="autoBtn" type="button">AUTO</button><button class="ghost-button" id="hintBtn" type="button">HINT</button><button class="ghost-button" id="skipBtn" type="button">SKIP</button></div></div>
+    <section class="info-card" id="infoCard"><div class="info-title" id="infoTitle">FIELD NOTE</div><div class="info-lines" id="infoLines"></div></section>
+    <div class="char haein off-left" id="haein"></div><div class="char junwoo off-left" id="junwoo"></div><div class="char taeyoon off-right" id="taeyoon"></div><div class="char minseo off-right" id="minseo"></div><div class="char yuna off-right" id="yuna"></div>
+    <section class="dialogue-box" id="dialogueBox"><div class="name-row"><div class="speaker" id="speaker">강지호</div><div class="counter" id="counter">1 / 1</div></div><div class="line" id="line"></div><div class="next-mark"></div></section>
+    <section class="end-panel" id="endPanel"><div class="end-card"><div class="end-kicker">EP.15</div><div class="end-title">마지막은 보고서다.</div><div class="end-copy">사건을 끝내는 건 발견이 아니라, 책임 있게 정리하고 전달하는 일이다.</div><div class="end-actions"><button class="end-button" id="replayButton" type="button">다시 보기</button><button class="end-button primary" id="nextButton" type="button">엔딩 보기</button></div></div></section>
+  </main>
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({ sfx:{ click:'../../assets/audio/mobile/common/sfx-click.mp3', card:'../../assets/audio/mobile/common/sfx-card.mp3' } });
+    const beats=[
+      {
+            "type": "narration",
+            "speaker": " ",
+            "text": "악성코드 분석은 사건의 조각들을 하나로 묶었다. 하지만 회의실의 공기는 들뜨기보다 차분했다. 모두가 알고 있었다. 이제부터는 기술보다 더 무거운 일이 남아 있었다.",
+            "chars": {}
+      },
+      {
+            "type": "dialogue",
+            "speaker": "보안팀장",
+            "text": "여러분, 분석은 여기서 끝난 게 아닙니다. 지금부터는 보고서 작성과 공식 공유 절차로 넘어갑니다.",
+            "chars": {
+                  "yuna": [
+                        "right",
+                        1
+                  ],
+                  "haein": [
+                        "left",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "강지호",
+            "text": "우리가 확인한 내용을 그대로 외부에 공개하면 안 되는 거죠?",
+            "chars": {
+                  "haein": [
+                        "left",
+                        1
+                  ],
+                  "yuna": [
+                        "right",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "보안팀장",
+            "text": "그렇습니다. 피해 회사의 내부 정보, 시스템 구성, 식별 가능한 사용자 정보는 보호해야 합니다. 필요한 범위만 정리해야 합니다.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        1
+                  ],
+                  "yuna": [
+                        "right",
+                        1
+                  ]
+            },
+            "info": {
+                  "title": "보고서 원칙",
+                  "lines": [
+                        "피해자 정보 보호",
+                        "권한 범위 명시",
+                        "확인된 사실과 추정 분리",
+                        "공식 절차로 공유"
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "이유나",
+            "text": "회사 보안팀 명의로 내부 보고서를 작성하고, 외부기관 제보에 필요한 항목만 별도로 정리할 예정이에요.",
+            "chars": {
+                  "yuna": [
+                        "right",
+                        0
+                  ],
+                  "haein": [
+                        "left",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "서해인",
+            "text": "우리 이름은 보조 분석자로 들어가겠지만, 자료 제출 주체는 회사 보안팀이 되는 게 맞아.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        4
+                  ],
+                  "yuna": [
+                        "right",
+                        0
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "한민서",
+            "text": "그럼 우리가 쓴 증거 카드도 그대로 붙이는 게 아니라, 개인정보나 내부 주소는 정리해야겠네.",
+            "chars": {
+                  "minseo": [
+                        "right",
+                        0
+                  ],
+                  "haein": [
+                        "left",
+                        4
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "최태윤",
+            "text": "타임라인은 내가 정리할게. 언제 어떤 사건이 있었고, 어떤 분석 단계에서 확인됐는지 한 줄씩 맞춰볼 수 있어.",
+            "chars": {
+                  "taeyoon": [
+                        "right",
+                        0
+                  ],
+                  "haein": [
+                        "left",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "박준우",
+            "text": "IOC는 내가 정리할게. 샘플 해시, 관련 도메인, URI 패턴, 의심 파일명. 단, 확정된 것과 참고용은 분리해서.",
+            "chars": {
+                  "junwoo": [
+                        "right",
+                        0
+                  ],
+                  "taeyoon": [
+                        "left",
+                        0
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "강지호",
+            "text": "좋아. 나는 전체 결론을 쓰겠습니다. 단정하면 안 되는 부분은 단정하지 않고, 확인된 행위만 연결하겠습니다.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        1
+                  ],
+                  "junwoo": [
+                        "right",
+                        0
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "보안팀장",
+            "text": "보고서 첫 장에는 분석 범위를 넣습니다. 어떤 장비를, 어떤 권한으로, 어떤 자료만 가지고 분석했는지부터 밝혀야 합니다.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        1
+                  ],
+                  "yuna": [
+                        "right",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "이유나",
+            "text": "유나 개인 PC 분석은 초기 단서였고, 회사 분석은 보안팀 허가 후 제공된 자료 안에서 진행됐다는 점도 적어야 해요.",
+            "chars": {
+                  "yuna": [
+                        "right",
+                        1
+                  ],
+                  "haein": [
+                        "left",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "서해인",
+            "text": "그리고 EP11부터 이어진 순서가 중요해. 웹서버는 외부 취약점 성공이 아니라 내부 관리자 접근 흔적이었지.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        4
+                  ],
+                  "yuna": [
+                        "right",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "강지호",
+            "text": "그 다음 EP12에서 보안장비 이벤트가 같은 내부 PC를 가리켰고, C2 유사 통신과 EDR 행위가 겹쳤습니다.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        4
+                  ],
+                  "yuna": [
+                        "right",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "최태윤",
+            "text": "EP13에서는 그 PC를 포렌식했고, 이미지 무결성, 타임라인, 실행 흔적, 샘플 추출이 확인됐고.",
+            "chars": {
+                  "taeyoon": [
+                        "right",
+                        0
+                  ],
+                  "haein": [
+                        "left",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "박준우",
+            "text": "EP14에서는 그 샘플이 브라우저 설정 변경, 자동실행 등록, note-sync 계열 통신을 만든다는 걸 봤어.",
+            "chars": {
+                  "junwoo": [
+                        "right",
+                        0
+                  ],
+                  "taeyoon": [
+                        "left",
+                        0
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "한민서",
+            "text": "처음엔 과제 업로드가 안 된다는 작은 문제였는데, 여기까지 이어졌다는 게 아직도 이상해.",
+            "chars": {
+                  "minseo": [
+                        "right",
+                        1
+                  ],
+                  "haein": [
+                        "left",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "강지호",
+            "text": "나도 그래. 그런데 이제는 작은 이상함을 그냥 넘기면 안 된다는 걸 알 것 같아.",
+            "chars": {
+                  "minseo": [
+                        "right",
+                        1
+                  ],
+                  "haein": [
+                        "left",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "보안팀장",
+            "text": "좋습니다. 결론 문장은 조심해야 합니다. 공격자 단체 귀속은 아직 확정하지 않습니다.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        1
+                  ],
+                  "yuna": [
+                        "right",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "박준우",
+            "text": "커뮤니티랑 OSINT에서 비슷한 흔적이 보였는데도요?",
+            "chars": {
+                  "junwoo": [
+                        "right",
+                        1
+                  ],
+                  "haein": [
+                        "left",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "서해인",
+            "text": "비슷한 흔적은 참고 자료야. 동일 공격자라고 말하려면 훨씬 더 강한 근거가 필요해.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        4
+                  ],
+                  "junwoo": [
+                        "right",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "강지호",
+            "text": "그러면 결론은 이렇게 쓰겠습니다. “해당 샘플은 회사 내부 PC에서 관찰된 행위와 일치하는 브라우저 설정 변경, 지속성 등록, 외부 통신 시도를 수행했다.”",
+            "chars": {
+                  "haein": [
+                        "left",
+                        4
+                  ],
+                  "yuna": [
+                        "right",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "이유나",
+            "text": "좋아요. 그리고 “공격자 귀속은 추가 조사 필요”라고 별도 표시하면 됩니다.",
+            "chars": {
+                  "yuna": [
+                        "right",
+                        0
+                  ],
+                  "haein": [
+                        "left",
+                        4
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "한민서",
+            "text": "피해자 관점 요약도 필요하지 않을까? 너무 기술적인 말만 있으면 뭘 조심해야 하는지 안 보일 수도 있어.",
+            "chars": {
+                  "minseo": [
+                        "right",
+                        0
+                  ],
+                  "haein": [
+                        "left",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "보안팀장",
+            "text": "좋은 지적입니다. 경영진 요약에는 영향 범위, 현재 조치, 남은 위험, 재발 방지 조치를 짧게 넣습니다.",
+            "chars": {
+                  "minseo": [
+                        "right",
+                        0
+                  ],
+                  "yuna": [
+                        "left",
+                        1
+                  ]
+            },
+            "info": {
+                  "title": "보고서 구조",
+                  "lines": [
+                        "요약",
+                        "분석 범위",
+                        "타임라인",
+                        "기술 분석",
+                        "IOC",
+                        "조치 사항",
+                        "제보/공유 항목"
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "최태윤",
+            "text": "재발 방지는 공용 PC 세션 관리, 브라우저 저장 세션 정리, 임직원 PC 모니터링, 악성코드 탐지 룰 추가 정도겠네.",
+            "chars": {
+                  "taeyoon": [
+                        "right",
+                        0
+                  ],
+                  "yuna": [
+                        "left",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "박준우",
+            "text": "그리고 샘플 직접 실행 금지. 이건 우리 동아리 교육 자료에도 넣자. 나부터 반성한다.",
+            "chars": {
+                  "junwoo": [
+                        "right",
+                        2
+                  ],
+                  "taeyoon": [
+                        "left",
+                        0
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "한민서",
+            "text": "그건 첫 줄에 넣어도 될 것 같은데. “수상한 파일은 열어보지 않는다.”",
+            "chars": {
+                  "minseo": [
+                        "right",
+                        0
+                  ],
+                  "junwoo": [
+                        "left",
+                        2
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "서해인",
+            "text": "좋아. 기술적으로 배웠고, 절차적으로도 배웠어. 그게 이번 사건의 의미야.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        5
+                  ],
+                  "minseo": [
+                        "right",
+                        0
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "보안팀장",
+            "text": "외부기관 제보용 자료는 KISA 침해사고 신고와 정보 공유 절차에 맞춰 정리하겠습니다. 제출 전 회사 법무와 개인정보 담당 검토도 거칩니다.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        1
+                  ],
+                  "yuna": [
+                        "right",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "강지호",
+            "text": "우리가 바로 보내는 게 아니라, 회사 내부 검토 후 보안팀 명의로 제출되는 거군요.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        1
+                  ],
+                  "yuna": [
+                        "right",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "이유나",
+            "text": "네. 여러분이 도와준 분석 내용은 근거 자료로 포함됩니다. 하지만 제출 책임은 회사가 집니다.",
+            "chars": {
+                  "yuna": [
+                        "right",
+                        0
+                  ],
+                  "haein": [
+                        "left",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "강지호",
+            "text": "알겠습니다. 그럼 보고서에 우리 역할도 정확히 적겠습니다. 초기 단서 분석, 보조 타임라인 정리, 샘플 분석 보조.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        1
+                  ],
+                  "yuna": [
+                        "right",
+                        0
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "서해인",
+            "text": "그리고 지호 네 역할은 더 크게 적어도 돼. 중요한 분석 방향을 잡았잖아.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        5
+                  ],
+                  "yuna": [
+                        "right",
+                        0
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "강지호",
+            "text": "아니요. 이번 건은 혼자 한 게 아닙니다. 민서의 첫 제보가 없었다면 시작도 못 했고, 모두가 중간마다 틀린 길을 막아줬습니다.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        5
+                  ],
+                  "minseo": [
+                        "right",
+                        0
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "한민서",
+            "text": "그래도 네가 끝까지 포기하지 않았잖아. 그건 인정해도 돼.",
+            "chars": {
+                  "minseo": [
+                        "right",
+                        0
+                  ],
+                  "haein": [
+                        "left",
+                        5
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "박준우",
+            "text": "처음엔 해커가 되고 싶다더니, 이제는 진짜 분석가처럼 말하네.",
+            "chars": {
+                  "junwoo": [
+                        "right",
+                        0
+                  ],
+                  "minseo": [
+                        "left",
+                        0
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "강지호",
+            "text": "예전엔 해커가 멋있어 보였어. 그런데 지금은 누군가의 시스템을 지키는 쪽이 더 어렵고, 더 책임 있는 일 같아.",
+            "chars": {
+                  "junwoo": [
+                        "right",
+                        0
+                  ],
+                  "haein": [
+                        "left",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "최태윤",
+            "text": "그 말, 보고서 마지막 문장으로 써도 되겠다.",
+            "chars": {
+                  "taeyoon": [
+                        "right",
+                        0
+                  ],
+                  "haein": [
+                        "left",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "서해인",
+            "text": "보고서에는 감상문 쓰지 마. 대신 네 노트에는 적어둬. 언젠가 다시 필요할 거야.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        4
+                  ],
+                  "taeyoon": [
+                        "right",
+                        0
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "보안팀장",
+            "text": "초안 검토하겠습니다. 타임라인, IOC, 포렌식 무결성, 악성코드 행위, 조치 사항. 모두 들어갔군요.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        1
+                  ],
+                  "yuna": [
+                        "right",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "이유나",
+            "text": "제보 첨부 자료도 준비됐습니다. 해시는 별도 표로, 내부 주소는 비식별 처리했습니다.",
+            "chars": {
+                  "yuna": [
+                        "right",
+                        0
+                  ],
+                  "haein": [
+                        "left",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "보안팀장",
+            "text": "좋습니다. 이 보고서는 내부 대응 완료 후 공식 신고 자료로 제출하겠습니다. 여러분 모두 수고했습니다.",
+            "chars": {
+                  "yuna": [
+                        "right",
+                        0
+                  ],
+                  "haein": [
+                        "left",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "한민서",
+            "text": "끝난 거야? 진짜로?",
+            "chars": {
+                  "minseo": [
+                        "right",
+                        1
+                  ],
+                  "haein": [
+                        "left",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "서해인",
+            "text": "사건은 끝났지만, 기록은 남아. 그리고 다음에 비슷한 일이 생기면 더 빨리 알아볼 수 있겠지.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        5
+                  ],
+                  "minseo": [
+                        "right",
+                        1
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "박준우",
+            "text": "그때는 내가 먼저 더블클릭하자고 안 할게.",
+            "chars": {
+                  "junwoo": [
+                        "right",
+                        2
+                  ],
+                  "haein": [
+                        "left",
+                        5
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "한민서",
+            "text": "그 말 녹음해둘걸.",
+            "chars": {
+                  "minseo": [
+                        "right",
+                        0
+                  ],
+                  "junwoo": [
+                        "left",
+                        2
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "강지호",
+            "text": "다들 고마워. 처음엔 내가 뭔가 해낸다고 생각했는데, 이제는 같이 확인하고 같이 책임지는 게 더 중요하다는 걸 알았어.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        5
+                  ],
+                  "minseo": [
+                        "right",
+                        0
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "이유나",
+            "text": "그게 실무에서도 가장 어려운 부분이에요. 기술은 도구고, 책임은 사람이 지니까요.",
+            "chars": {
+                  "yuna": [
+                        "right",
+                        0
+                  ],
+                  "haein": [
+                        "left",
+                        5
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "강지호",
+            "text": "마지막 문장 쓰겠습니다. “본 보고서는 확인된 행위와 근거만을 바탕으로 작성되었으며, 추가 조사는 공식 절차에 따라 진행한다.”",
+            "chars": {
+                  "haein": [
+                        "left",
+                        1
+                  ],
+                  "yuna": [
+                        "right",
+                        0
+                  ]
+            }
+      },
+      {
+            "type": "dialogue",
+            "speaker": "서해인",
+            "text": "좋아. 제출해.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        5
+                  ],
+                  "yuna": [
+                        "right",
+                        0
+                  ]
+            }
+      },
+      {
+            "type": "narration",
+            "speaker": " ",
+            "text": "지호는 엔터키를 누르기 전 잠시 손을 멈췄다. 수많은 로그와 화면, 대화와 반박이 머릿속을 지나갔다. 흔적을 찾는 일은 끝났지만, 그 흔적을 책임지는 일은 이제 시작이었다.",
+            "chars": {}
+      },
+      {
+            "type": "dialogue",
+            "speaker": "강지호",
+            "text": "제출하겠습니다.",
+            "chars": {
+                  "haein": [
+                        "left",
+                        5
+                  ],
+                  "yuna": [
+                        "right",
+                        0
+                  ]
+            }
+      },
+      {
+            "type": "narration",
+            "speaker": " ",
+            "text": "보고서가 전송되었다. 강의실의 작은 부탁에서 시작된 사건은 공식 절차 안으로 넘어갔다. 그리고 지호는 처음으로, 자신이 바라던 이름에 조금 가까워졌다고 느꼈다.",
+            "chars": {},
+            "end": true
+      }
+];
+    const ids=['haein','junwoo','taeyoon','minseo','yuna'];
+    const els=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]));
+    const focusDim=document.getElementById('focusDim'), speaker=document.getElementById('speaker'), line=document.getElementById('line'), counter=document.getElementById('counter'), dialogueBox=document.getElementById('dialogueBox'), autoBtn=document.getElementById('autoBtn'), hintBtn=document.getElementById('hintBtn'), skipBtn=document.getElementById('skipBtn'), infoCard=document.getElementById('infoCard'), infoTitle=document.getElementById('infoTitle'), infoLines=document.getElementById('infoLines'), endPanel=document.getElementById('endPanel');
+    let index=0, auto=false, hintOn=false, currentInfo=null, autoTimer=null, typeTimer=null, isTyping=false, currentText='';
+    function stopTyping(){ if(typeTimer) clearInterval(typeTimer); typeTimer=null; isTyping=false; }
+    function completeText(){ stopTyping(); line.textContent=currentText; }
+    function typeText(text){ stopTyping(); currentText=text; line.textContent=''; let i=0; isTyping=true; typeTimer=setInterval(()=>{ line.textContent += text[i] || ''; i += 1; if(i > text.length) stopTyping(); }, 18); }
+    function offClass(id){ return id==='haein'||id==='junwoo'?'off-left':'off-right'; }
+    function applyCharacters(chars){ let shown=false; ids.forEach(id=>{ const el=els[id]; el.className='char '+id+' '+offClass(id); if(chars[id]){ const [slot,expr]=chars[id]; el.className='char '+id+' '+slot+' show expr-'+expr; shown=true; } }); focusDim.classList.toggle('on', shown); }
+    function renderHint(){ infoLines.innerHTML=''; if(!hintOn || !currentInfo){ infoCard.classList.remove('show'); return; } infoTitle.textContent=currentInfo.title; currentInfo.lines.forEach(text=>{ const node=document.createElement('div'); node.className='info-line'; node.textContent=text; infoLines.appendChild(node); }); infoCard.classList.add('show'); }
+    function applyInfo(info){ currentInfo=info || null; renderHint(); }
+    function finish(){ endPanel.classList.add('show'); }
+    function showBeat(){ const beat=beats[index]; if(!beat) return; clearTimeout(autoTimer); stopTyping(); applyCharacters(beat.chars || {}); applyInfo(beat.info); speaker.textContent=beat.speaker || ' '; counter.textContent=`${index+1} / ${beats.length}`; line.classList.toggle('muted', beat.type==='narration'); typeText(beat.text); if(beat.end) autoTimer=setTimeout(finish,1300); if(auto && !beat.end) autoTimer=setTimeout(next, Math.max(1500, beat.text.length * 85)); }
+    function next(){ if(isTyping){ completeText(); return; } if(index < beats.length - 1){ index += 1; showBeat(); return; } finish(); }
+    dialogueBox.addEventListener('click', next);
+    document.getElementById('phone').addEventListener('click', e=>{ if(e.target.closest('button') || e.target.closest('.dialogue-box')) return; next(); });
+    autoBtn.addEventListener('click',()=>{ auto=!auto; autoBtn.textContent=auto?'AUTO ON':'AUTO'; autoBtn.classList.toggle('on', auto); if(auto) showBeat(); else clearTimeout(autoTimer); });
+    hintBtn.addEventListener('click',()=>{ hintOn=!hintOn; hintBtn.textContent=hintOn?'HINT ON':'HINT'; hintBtn.classList.toggle('on', hintOn); renderHint(); });
+    skipBtn.addEventListener('click',()=>{ stopTyping(); index=beats.length-1; showBeat(); completeText(); });
+    document.getElementById('replayButton').addEventListener('click',()=>location.reload());
+    document.getElementById('nextButton').addEventListener('click',()=>window.location.href='../episode-15-ending-comic-animation/index.html');
+    showBeat();
+  </script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 04 VN Scene</title>
+  <style>
+    :root { --phone-w:min(100vw,430px); --phone-h:min(100dvh,932px); --ink:#f7fbff; --cyan:#7eeaff; --gold:#ffe18a; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif; }
+    * { box-sizing:border-box; } html,body { height:100%; }
+    body { margin:0; display:grid; place-items:center; overflow:hidden; color:var(--ink); background:radial-gradient(circle at 50% 8%, rgba(126,234,255,.12), transparent 34%), linear-gradient(160deg,#020409,#07131d 54%,#020409); }
+    .phone { position:relative; width:var(--phone-w); height:var(--phone-h); max-height:932px; aspect-ratio:9/16; overflow:hidden; background:#05080d; box-shadow:0 28px 80px rgba(0,0,0,.62); user-select:none; isolation:isolate; }
+    .bg { position:absolute; inset:0; background-image:linear-gradient(to bottom,rgba(0,0,0,.08),rgba(0,0,0,.26) 44%,rgba(0,0,0,.70)),url("../../assets/images/backgrounds/bg-security-conference-lobby-v1.png"); background-size:cover; background-position:center; transform:scale(1.08); filter:saturate(.92) brightness(.86); }
+    .scene-vignette { position:absolute; inset:0; background:radial-gradient(circle at 50% 43%,transparent 0 29%,rgba(0,0,0,.25) 63%,rgba(0,0,0,.62) 100%),linear-gradient(to bottom,rgba(2,6,10,.10),transparent 28%,rgba(2,6,10,.42)); pointer-events:none; }
+    .topbar { position:absolute; top:calc(14px + env(safe-area-inset-top)); left:16px; right:16px; display:flex; justify-content:space-between; align-items:center; gap:10px; z-index:12; opacity:.95; }
+    .chapter,.ghost-button { border:1px solid rgba(255,255,255,.20); border-radius:999px; background:rgba(4,10,16,.40); color:rgba(247,251,255,.80); backdrop-filter:blur(10px); font-weight:850; }
+    .chapter { max-width:calc(100% - 176px); padding:8px 12px; font-size:12px; letter-spacing:.06em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .small-actions { display:flex; gap:6px; } .ghost-button { padding:8px 9px; font-size:11px; cursor:pointer; } .ghost-button.on { border-color:rgba(126,234,255,.44); background:rgba(126,234,255,.14); color:#e9fbff; }
+    .focus-dim { position:absolute; inset:0; background:rgba(0,0,0,.15); opacity:0; transition:opacity 260ms ease; pointer-events:none; z-index:3; } .focus-dim.on { opacity:1; }
+    .info-card { position:absolute; left:26px; right:26px; top:calc(106px + env(safe-area-inset-top)); padding:14px 15px; border-radius:20px; background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.055)),rgba(5,10,16,.74); border:1px solid rgba(255,255,255,.22); box-shadow:0 20px 40px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(18px) saturate(1.16); z-index:10; opacity:0; transform:translateY(-12px); transition:opacity 300ms ease, transform 300ms ease; pointer-events:none; }
+    .info-card.show { opacity:1; transform:translateY(0); } .info-title { color:var(--cyan); font-size:12px; font-weight:950; letter-spacing:.08em; margin-bottom:8px; } .info-lines { display:grid; gap:7px; } .info-line { padding:8px 9px; border-radius:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); color:rgba(247,251,255,.86); font-size:12px; font-weight:720; line-height:1.36; word-break:keep-all; }
+    .char { position:absolute; bottom:148px; width:min(43vw,188px); aspect-ratio:312/793; background-repeat:no-repeat; background-size:contain; background-position:center bottom; opacity:0; filter:drop-shadow(0 28px 24px rgba(0,0,0,.50)); transition:opacity 320ms ease, transform 420ms cubic-bezier(.18,.84,.26,1), background-image 140ms step-end; z-index:5; pointer-events:none; }
+    .char.left { left:27%; transform:translateX(-50%) translateY(16px) scale(.985); } .char.right { left:73%; transform:translateX(-50%) translateY(16px) scale(.985); } .char.center { left:50%; transform:translateX(-50%) translateY(16px) scale(.985); }
+    .char.show.left,.char.show.right,.char.show.center { opacity:1; transform:translateX(-50%) translateY(0) scale(1); }
+    .char.off-left { left:-24%; transform:translateX(-50%) translateY(16px) scale(.985); } .char.off-right { left:124%; transform:translateX(-50%) translateY(16px) scale(.985); }
+    .haein.expr-0 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-0.png"); } .haein.expr-1 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-1.png"); } .haein.expr-2 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-2.png"); } .haein.expr-3 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-3.png"); } .haein.expr-4 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-4.png"); } .haein.expr-5 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-5.png"); }
+    .junwoo.expr-0 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-0.png"); } .junwoo.expr-1 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-1.png"); } .junwoo.expr-2 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-2.png"); } .junwoo.expr-3 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-3.png"); } .junwoo.expr-4 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-4.png"); } .junwoo.expr-5 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-5.png"); }
+    .taeyoon.expr-0 { background-image:url("../../assets/images/characters/choi-taeyoon/cutins/expr-0.png"); } .taeyoon.expr-1 { background-image:url("../../assets/images/characters/choi-taeyoon/cutins/expr-1.png"); } .taeyoon.expr-2 { background-image:url("../../assets/images/characters/choi-taeyoon/cutins/expr-2.png"); } .taeyoon.expr-3 { background-image:url("../../assets/images/characters/choi-taeyoon/cutins/expr-3.png"); } .taeyoon.expr-4 { background-image:url("../../assets/images/characters/choi-taeyoon/cutins/expr-4.png"); } .taeyoon.expr-5 { background-image:url("../../assets/images/characters/choi-taeyoon/cutins/expr-5.png"); }
+    .minseo,.dohyun { aspect-ratio:330.2/793; background-size:600% 100%; }
+    .minseo { background-image:url("../../assets/images/characters/han-minseo/expression-sheet-knee-up-transparent-v3.png"); }
+    .dohyun { background-image:url("../../assets/images/characters/yoon-dohyun/expression-sheet-knee-up-transparent-v1.png"); }
+    .minseo.expr-0,.dohyun.expr-0 { background-position:0% 0%; } .minseo.expr-1,.dohyun.expr-1 { background-position:20% 0%; } .minseo.expr-2,.dohyun.expr-2 { background-position:40% 0%; } .minseo.expr-3,.dohyun.expr-3 { background-position:60% 0%; } .minseo.expr-4,.dohyun.expr-4 { background-position:80% 0%; } .minseo.expr-5,.dohyun.expr-5 { background-position:100% 0%; }
+    .dialogue-box { position:absolute; left:22px; right:22px; bottom:calc(22px + env(safe-area-inset-bottom)); min-height:136px; padding:15px 16px; border-radius:22px; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.07) 42%,rgba(7,18,27,.38)); border:1px solid rgba(255,255,255,.30); box-shadow:0 18px 36px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.18); backdrop-filter:blur(18px) saturate(1.24); z-index:13; cursor:pointer; }
+    .name-row { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; } .speaker { color:var(--cyan); font-size:13px; font-weight:900; letter-spacing:.02em; } .counter { color:rgba(247,251,255,.44); font-size:12px; font-weight:800; }
+    .line { min-height:62px; color:#f8fcff; font-size:clamp(16px,4.2vw,20px); font-weight:690; line-height:1.48; word-break:keep-all; text-shadow:0 2px 10px rgba(0,0,0,.72); } .line.muted { color:rgba(247,251,255,.84); font-style:italic; }
+    .next-mark { position:absolute; right:20px; bottom:13px; width:10px; height:10px; border-right:2px solid rgba(126,234,255,.78); border-bottom:2px solid rgba(126,234,255,.78); transform:rotate(45deg); animation:bob 850ms ease-in-out infinite; }
+    .end-panel { position:absolute; inset:0; z-index:30; display:grid; place-items:end center; padding:0 22px calc(24px + env(safe-area-inset-bottom)); background:linear-gradient(to bottom,rgba(2,6,10,.10),rgba(2,6,10,.76)); opacity:0; pointer-events:none; transition:opacity 360ms ease; }
+    .end-panel.show { opacity:1; pointer-events:auto; } .end-card { width:100%; padding:20px 17px 17px; border-radius:24px; background:linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.065)),rgba(5,10,16,.82); border:1px solid rgba(255,255,255,.26); box-shadow:0 22px 48px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(20px) saturate(1.18); }
+    .end-kicker { color:var(--cyan); font-size:13px; font-weight:950; letter-spacing:.08em; margin-bottom:8px; } .end-title { font-size:clamp(22px,5.8vw,29px); font-weight:940; line-height:1.22; margin-bottom:10px; word-break:keep-all; } .end-copy { color:rgba(247,251,255,.72); font-size:13px; font-weight:720; line-height:1.45; margin-bottom:14px; word-break:keep-all; }
+    .end-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; } .end-button { min-height:48px; border:1px solid rgba(255,255,255,.20); border-radius:15px; background:rgba(255,255,255,.07); color:var(--ink); font-family:inherit; font-size:13px; font-weight:850; cursor:pointer; } .end-button.primary { border-color:rgba(126,234,255,.42); background:rgba(126,234,255,.11); }
+    @keyframes bob { 0%,100% { translate:0 0; opacity:.55; } 50% { translate:0 4px; opacity:1; } }
+  </style>
+</head>
+<body>
+  <main class="phone" id="phone" aria-label="Episode 4 visual novel scene">
+    <div class="bg"></div><div class="scene-vignette"></div><div class="focus-dim" id="focusDim"></div>
+    <div class="topbar"><div class="chapter">EP.04 SIGNAL AT THE CONFERENCE</div><div class="small-actions"><button class="ghost-button" id="autoBtn" type="button">AUTO</button><button class="ghost-button" id="hintBtn" type="button">HINT</button><button class="ghost-button" id="skipBtn" type="button">SKIP</button></div></div>
+    <section class="info-card" id="infoCard"><div class="info-title" id="infoTitle">SOURCE CHECK</div><div class="info-lines" id="infoLines"></div></section>
+    <div class="char haein off-left" id="haein"></div><div class="char taeyoon off-right" id="taeyoon"></div><div class="char junwoo off-left" id="junwoo"></div><div class="char minseo off-right" id="minseo"></div><div class="char dohyun off-right" id="dohyun"></div>
+    <section class="dialogue-box" id="dialogueBox"><div class="name-row"><div class="speaker" id="speaker">강지호</div><div class="counter" id="counter">1 / 1</div></div><div class="line" id="line"></div><div class="next-mark"></div></section>
+    <section class="end-panel" id="endPanel"><div class="end-card"><div class="end-kicker">EP.04 READY</div><div class="end-title">검증할 정보가 생겼다.</div><div class="end-copy">다음 단계는 소문, 취재 메모, 공개 지표를 분리해서 보는 정보 출처 검증이다.</div><div class="end-actions"><button class="end-button" id="replayButton" type="button">다시 보기</button><button class="end-button primary" id="titleButton" type="button">조사 시작</button></div></div></section>
+  </main>
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({ sfx:{ click:'../../assets/audio/mobile/common/sfx-click.mp3', card:'../../assets/audio/mobile/common/sfx-card.mp3' } });
+    const beats=[
+      { type:'narration', speaker:' ', text:'다음 날 오전. 컨퍼런스장 로비는 부스 음악과 사람들의 목소리로 가득했다.', chars:{} },
+      { type:'narration', speaker:' ', text:'지호는 목에 걸린 참가자 명찰을 만지작거리며, 어젯밤 버스 정류장에서 적어 둔 메모를 떠올렸다.', chars:{}, info:{title:'MEMO', lines:['remote tag: blackkite','direct cause: unconfirmed','관찰 메모로 보류']} },
+      { type:'dialogue', speaker:'최태윤', text:'와, 여기 사람 진짜 많다. 저쪽 부스는 모니터가 여섯 개야.', chars:{ taeyoon:['right',0] } },
+      { type:'dialogue', speaker:'박준우', text:'태윤아, 부스 사은품 보고 뛰어가지 마. 우리 단체 등록으로 온 거라 시간 맞춰 움직여야 해.', chars:{ junwoo:['left',1], taeyoon:['right',0] } },
+      { type:'dialogue', speaker:'최태윤', text:'아니, 사은품 때문은 아니고. 저기 키보드가 좀 좋아 보여서...', chars:{ junwoo:['left',2], taeyoon:['right',3] } },
+      { type:'dialogue', speaker:'한민서', text:'그래도 신기하긴 하다. 학교 실습실이랑 분위기가 완전히 달라.', chars:{ minseo:['right',0], junwoo:['left',1] } },
+      { type:'dialogue', speaker:'강지호', text:'응. 다들 진짜 현업 사람들 같아. 발표 제목도 하나같이 어려워 보이고.', chars:{ minseo:['right',0], junwoo:['left',1] } },
+      { type:'dialogue', speaker:'서해인', text:'어려워 보여도 겁먹을 필요는 없어. 대신 여기서 듣는 말을 전부 사실처럼 받아들이면 안 돼.', chars:{ haein:['left',1], minseo:['right',0] } },
+      { type:'dialogue', speaker:'한민서', text:'컨퍼런스 발표도요?', chars:{ haein:['left',1], minseo:['right',1] } },
+      { type:'dialogue', speaker:'서해인', text:'발표는 주장과 근거가 같이 나와야 의미가 있어. 부스 홍보, 커뮤니티 소문, 실제 침해 지표는 전부 무게가 달라.', chars:{ haein:['left',2], minseo:['right',1] } },
+      { type:'dialogue', speaker:'강지호', text:'에피소드3에서 본 흔적도 그렇게 봐야겠죠. 직접 원인인지, 그냥 관찰된 이름인지.', chars:{ haein:['left',1], minseo:['right',1] } },
+      { type:'dialogue', speaker:'서해인', text:'맞아. 네가 어제 결론에 넣지 않고 메모로 남긴 건 좋은 판단이었어.', chars:{ haein:['left',4], minseo:['right',0] } },
+      { type:'dialogue', speaker:'박준우', text:'그럼 오늘은 공부하러 온 거지, 사건 잡으러 온 건 아니지?', chars:{ junwoo:['left',0], haein:['right',1] } },
+      { type:'dialogue', speaker:'강지호', text:'그럴 생각이었는데, 이상하게 어제 메모가 계속 생각나요.', chars:{ junwoo:['left',0], haein:['right',1] } },
+      { type:'dialogue', speaker:'최태윤', text:'야, 컨퍼런스까지 와서 사건 냄새 맡는 거면 너도 이제 꽤 그쪽 사람 같다.', chars:{ taeyoon:['right',0], junwoo:['left',0] } },
+      { type:'dialogue', speaker:'한민서', text:'그런 말 하면 또 혼난다. 사건 냄새가 아니라 기록 비교겠지.', chars:{ minseo:['right',3], taeyoon:['left',3] } },
+      { type:'dialogue', speaker:'서해인', text:'민서 말이 맞아. 보안 분석은 멋있는 단어보다 기록 비교가 먼저야.', chars:{ haein:['left',1], minseo:['right',0] } },
+      { type:'narration', speaker:' ', text:'그때, 카메라 스트랩을 멘 남학생 하나가 조심스럽게 다가왔다.', chars:{} },
+      { type:'dialogue', speaker:'윤도현', text:'혹시... 강지호 씨 맞나요?', chars:{ dohyun:['right',0] } },
+      { type:'dialogue', speaker:'강지호', text:'네? 저를 아세요?', chars:{ dohyun:['right',0] } },
+      { type:'dialogue', speaker:'윤도현', text:'저는 윤도현입니다. 학생 기자 쪽에서 보안 컨퍼런스 취재를 하고 있어요.', chars:{ dohyun:['right',1] } },
+      { type:'dialogue', speaker:'박준우', text:'학생 기자요? 우리한테 취재할 게 있나요?', chars:{ junwoo:['left',1], dohyun:['right',1] } },
+      { type:'dialogue', speaker:'윤도현', text:'정확히는 지호 씨한테 묻고 싶은 게 있습니다. 최근 학교 쪽에서 이상한 PC 기록을 봤다는 얘기를 들었거든요.', chars:{ junwoo:['left',1], dohyun:['right',3] } },
+      { type:'dialogue', speaker:'서해인', text:'그 얘기는 어디서 들었죠?', chars:{ haein:['left',2], dohyun:['right',3] } },
+      { type:'dialogue', speaker:'윤도현', text:'동아리방에서 소문이 조금 돌았습니다. 하지만 기사로 쓰려는 건 아니에요. 확인되지 않은 건 못 씁니다.', chars:{ haein:['left',2], dohyun:['right',5] } },
+      { type:'dialogue', speaker:'강지호', text:'확인되지 않은 걸 못 쓴다... 그 말은 마음에 드네요.', chars:{ haein:['left',1], dohyun:['right',5] } },
+      { type:'dialogue', speaker:'윤도현', text:'저도 그래서 묻는 겁니다. 최근 비슷한 단어가 여러 곳에서 보여요.', chars:{ dohyun:['right',2] }, info:{title:'취재 메모', lines:['대학 동아리 PC 이상 증상','개발자 커뮤니티 계정 잠김 제보','중소기업 사내 브라우저 설정 변경 소문']} },
+      { type:'dialogue', speaker:'한민서', text:'비슷한 단어라면... 어떤 거요?', chars:{ minseo:['left',1], dohyun:['right',2] }, info:{title:'취재 메모', lines:['반복 키워드 존재','출처 혼합: 제보 / 커뮤니티 / 공개 자료']} },
+      { type:'dialogue', speaker:'윤도현', text:'검증된 건 아닙니다. 그래서 이름만 말하면 안 될 것 같은데...', chars:{ minseo:['left',1], dohyun:['right',5] } },
+      { type:'dialogue', speaker:'서해인', text:'그 태도는 좋네요. 단체명이나 별명은 제일 마지막에 붙이는 겁니다.', chars:{ haein:['left',1], dohyun:['right',5] } },
+      { type:'dialogue', speaker:'윤도현', text:'그럼 이렇게 말할게요. 서로 다른 사건에서 같은 원격 태그가 반복된다는 제보가 있습니다.', chars:{ haein:['left',1], dohyun:['right',3] }, info:{title:'검증 전 단서', lines:['같은 문자열 반복','서로 다른 사건 출처','직접 원인 여부 미확인']} },
+      { type:'dialogue', speaker:'강지호', text:'원격 태그...', chars:{ haein:['left',1], dohyun:['right',3] }, info:{title:'검증 전 단서', lines:['같은 문자열 반복','서로 다른 사건 출처','직접 원인 여부 미확인']} },
+      { type:'dialogue', speaker:'윤도현', text:'혹시 `blackkite`라는 이름을 본 적 있나요?', chars:{ dohyun:['right',3] }, info:{title:'KEYWORD', lines:['blackkite','반복 제보 있음','공개 검증 필요']} },
+      { type:'dialogue', speaker:'강지호', text:'...', chars:{ dohyun:['right',3] }, info:{title:'KEYWORD', lines:['blackkite','EP.03 관찰 메모와 일치']} },
+      { type:'dialogue', speaker:'한민서', text:'지호야, 그거 어제 메모에 있던 이름 아니야?', chars:{ minseo:['left',2], dohyun:['right',3] }, info:{title:'KEYWORD', lines:['blackkite','EP.03 관찰 메모와 일치']} },
+      { type:'dialogue', speaker:'강지호', text:'맞아. 하지만 어제 사건의 직접 원인은 아니었어. 관찰 메모로 남겨 둔 이름이야.', chars:{ minseo:['left',2], dohyun:['right',3] } },
+      { type:'dialogue', speaker:'윤도현', text:'그래서 더 중요할 수 있습니다. 직접 원인이 아니었는데도, 다른 사건에도 남아 있다면요.', chars:{ minseo:['left',1], dohyun:['right',2] } },
+      { type:'dialogue', speaker:'서해인', text:'잠깐. 그 말은 조심해야 해요. 반복된다고 해서 같은 공격자라는 뜻은 아닙니다.', chars:{ haein:['left',2], dohyun:['right',2] } },
+      { type:'dialogue', speaker:'윤도현', text:'네. 같은 도구, 같은 문자열, 같은 설정값일 수도 있죠. 그래서 제가 확정하지 않고 확인하고 있습니다.', chars:{ haein:['left',1], dohyun:['right',5] } },
+      { type:'dialogue', speaker:'박준우', text:'그럼 우리한테 뭘 확인하고 싶은 건데요?', chars:{ junwoo:['left',1], dohyun:['right',5] } },
+      { type:'dialogue', speaker:'윤도현', text:'지호 씨가 본 기록이 제가 가진 메모와 같은 종류인지요. 그리고 기사로 써도 되는지보다, 아직 보류해야 하는지 판단하고 싶습니다.', chars:{ junwoo:['left',1], dohyun:['right',3] } },
+      { type:'dialogue', speaker:'강지호', text:'제가 본 건 네트워크 기록의 원격 태그였어요. 확장 프로그램 사건의 직접 원인으로 연결하진 못했습니다.', chars:{ haein:['left',1], dohyun:['right',3] } },
+      { type:'dialogue', speaker:'서해인', text:'좋아. 그 표현 그대로 가야 해. "봤다"와 "원인이다"는 완전히 달라.', chars:{ haein:['left',1], dohyun:['right',3] } },
+      { type:'dialogue', speaker:'최태윤', text:'그러니까 지금은 범인 찾기가 아니라, 같은 흔적이 정말 반복되는지 보는 거네?', chars:{ taeyoon:['left',0], dohyun:['right',0] } },
+      { type:'dialogue', speaker:'윤도현', text:'맞아요. 저는 제보를 모으고 있고, 여러분은 실제 기록을 본 쪽이니까요.', chars:{ taeyoon:['left',0], dohyun:['right',0] } },
+      { type:'dialogue', speaker:'한민서', text:'그런데 커뮤니티 글 같은 건 믿어도 되는 거예요?', chars:{ minseo:['left',1], dohyun:['right',0] } },
+      { type:'dialogue', speaker:'서해인', text:'바로 그걸 구분해야 해. 조회수가 높은 글, 익명 제보, 공개 지표, 실제 로그는 서로 다른 무게야.', chars:{ haein:['left',1], minseo:['right',1] }, info:{title:'SOURCE WEIGHT', lines:['커뮤니티 글: 단서','익명 제보: 보류','공개 지표: 비교 가능','실제 로그: 강한 근거']} },
+      { type:'dialogue', speaker:'강지호', text:'그럼 이번엔 PC를 파헤치는 게 아니라, 정보 출처를 검증하는 거네요.', chars:{ haein:['left',1], minseo:['right',0] }, info:{title:'SOURCE WEIGHT', lines:['소문 ≠ 증거','반복 패턴 ≠ 공격자 확정','공개 지표와 대조 필요']} },
+      { type:'dialogue', speaker:'윤도현', text:'제가 가진 자료를 보여드릴 수 있습니다. 대신 기사로 나가기 전까지는 취재 메모로만 봐주세요.', chars:{ haein:['left',1], dohyun:['right',1] } },
+      { type:'dialogue', speaker:'박준우', text:'동아리 입장에서도 조심해야겠네요. 괜히 학교 이름이 엮이면 곤란하니까.', chars:{ junwoo:['left',2], dohyun:['right',1] } },
+      { type:'dialogue', speaker:'강지호', text:'이름을 먼저 믿지 말고, 반복되는 패턴부터 보자. 그게 맞겠죠?', chars:{ haein:['left',1], dohyun:['right',1] } },
+      { type:'dialogue', speaker:'서해인', text:'맞아. 해커 단체라는 말은 매력적이지만 위험해. 근거가 부족하면 결론이 아니라 소문이 돼.', chars:{ haein:['left',2], dohyun:['right',1] } },
+      { type:'dialogue', speaker:'윤도현', text:'그래서 지호 씨에게 부탁하고 싶었습니다. 제가 가진 자료를 같이 봐줄 수 있을까요?', chars:{ dohyun:['right',1], haein:['left',1] } },
+      { type:'dialogue', speaker:'강지호', text:'좋아요. 다만 결론은 천천히 내릴게요. 지금은 같은 흔적이 있는지부터 확인하죠.', chars:{ dohyun:['right',1], haein:['left',4] } },
+      { type:'dialogue', speaker:'한민서', text:'이번엔 내가 옆에서 메모할게. 어떤 게 소문이고 어떤 게 기록인지 구분해서.', chars:{ minseo:['right',0], haein:['left',4] } },
+      { type:'dialogue', speaker:'최태윤', text:'나는... 이번엔 아무거나 설치 안 하고 조용히 볼게.', chars:{ taeyoon:['right',3], minseo:['left',3] } },
+      { type:'dialogue', speaker:'박준우', text:'그건 컨퍼런스 끝날 때까지 유지해라.', chars:{ junwoo:['left',2], taeyoon:['right',3] } },
+      { type:'dialogue', speaker:'강지호', text:'윤도현 씨, 자료를 보여주세요. 먼저 출처별로 나눠 보겠습니다.', chars:{ dohyun:['right',0], haein:['left',1] }, info:{title:'NEXT TASK', lines:['컨퍼런스 발표 자료','기자 취재 메모','커뮤니티 제보 글','공개 침해지표 목록']} },
+      { type:'narration', speaker:' ', text:'컨퍼런스장의 소음 속에서, 어젯밤의 작은 메모가 더 넓은 사건의 단서처럼 떠올랐다.', chars:{}, info:{title:'EP.04 핵심', lines:['소문과 근거 구분','공통 패턴 확인','공격자 단정 금지']} },
+      { type:'narration', speaker:' ', text:'정보 출처 검증을 준비한다.', chars:{}, end:true }
+    ];
+    const ids=['haein','junwoo','taeyoon','minseo','dohyun'];
+    const els=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]));
+    const focusDim=document.getElementById('focusDim'), speaker=document.getElementById('speaker'), line=document.getElementById('line'), counter=document.getElementById('counter'), dialogueBox=document.getElementById('dialogueBox'), autoBtn=document.getElementById('autoBtn'), hintBtn=document.getElementById('hintBtn'), skipBtn=document.getElementById('skipBtn'), infoCard=document.getElementById('infoCard'), infoTitle=document.getElementById('infoTitle'), infoLines=document.getElementById('infoLines'), endPanel=document.getElementById('endPanel');
+    let index=0, auto=false, hintOn=false, currentInfo=null, autoTimer=null, typeTimer=null, isTyping=false, currentText='';
+    function stopTyping(){ if(typeTimer) clearInterval(typeTimer); typeTimer=null; isTyping=false; }
+    function completeText(){ stopTyping(); line.textContent=currentText; }
+    function typeText(text){ stopTyping(); currentText=text; line.textContent=''; let i=0; isTyping=true; typeTimer=setInterval(()=>{ line.textContent += text[i] || ''; i += 1; if(i > text.length) stopTyping(); }, 18); }
+    function offClass(id){ return id==='haein'||id==='junwoo'?'off-left':'off-right'; }
+    function applyCharacters(chars){ let shown=false; ids.forEach(id=>{ const el=els[id]; el.className='char '+id+' '+offClass(id); if(chars[id]){ const [slot,expr]=chars[id]; el.className='char '+id+' '+slot+' show expr-'+expr; shown=true; } }); focusDim.classList.toggle('on', shown); }
+    function renderHint(){ infoLines.innerHTML=''; if(!hintOn || !currentInfo){ infoCard.classList.remove('show'); return; } infoTitle.textContent=currentInfo.title; currentInfo.lines.forEach(text=>{ const node=document.createElement('div'); node.className='info-line'; node.textContent=text; infoLines.appendChild(node); }); infoCard.classList.add('show'); }
+    function applyInfo(info){ currentInfo=info || null; renderHint(); }
+    function finish(){ endPanel.classList.add('show'); }
+    function showBeat(){ const beat=beats[index]; if(!beat) return; clearTimeout(autoTimer); stopTyping(); applyCharacters(beat.chars || {}); applyInfo(beat.info); speaker.textContent=beat.speaker || ' '; counter.textContent=`${index+1} / ${beats.length}`; line.classList.toggle('muted', beat.type==='narration'); typeText(beat.text); if(beat.end) autoTimer=setTimeout(finish,1300); if(auto && !beat.end) autoTimer=setTimeout(next, Math.max(1500, beat.text.length * 85)); }
+    function next(){ if(isTyping){ completeText(); return; } if(index < beats.length - 1){ index += 1; showBeat(); return; } finish(); }
+    dialogueBox.addEventListener('click', next);
+    document.getElementById('phone').addEventListener('click', e=>{ if(e.target.closest('button') || e.target.closest('.dialogue-box')) return; next(); });
+    autoBtn.addEventListener('click',()=>{ auto=!auto; autoBtn.textContent=auto?'AUTO ON':'AUTO'; autoBtn.classList.toggle('on', auto); if(auto) showBeat(); else clearTimeout(autoTimer); });
+    hintBtn.addEventListener('click',()=>{ hintOn=!hintOn; hintBtn.textContent=hintOn?'HINT ON':'HINT'; hintBtn.classList.toggle('on', hintOn); renderHint(); });
+    skipBtn.addEventListener('click',()=>{ stopTyping(); index=beats.length-1; showBeat(); completeText(); });
+    document.getElementById('replayButton').addEventListener('click',()=>location.reload());
+    document.getElementById('titleButton').addEventListener('click',()=>window.location.href='../episode-04-investigation-menu/index.html');
+    showBeat();
+  </script>
+</body>
+</html>
