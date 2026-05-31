@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 09 Source Link</title>
+  <style>
+    :root { --phone-w:min(100vw,430px); --phone-h:min(100dvh,932px); --ink:#f7fbff; --cyan:#7eeaff; --green:#5fe2ad; --red:#ff8f9b; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif; }
+    * { box-sizing:border-box; } html,body { height:100%; }
+    body { margin:0; display:grid; place-items:center; overflow:hidden; color:var(--ink); background:radial-gradient(circle at 50% 8%, rgba(126,234,255,.13), transparent 34%), linear-gradient(160deg,#020409,#07131d 54%,#020409); }
+    .phone { position:relative; width:var(--phone-w); height:var(--phone-h); max-height:932px; aspect-ratio:9/16; overflow:hidden; background:#05080d; box-shadow:0 28px 80px rgba(0,0,0,.62); isolation:isolate; user-select:none; }
+    .bg { position:absolute; inset:0; background-image:linear-gradient(to bottom,rgba(0,0,0,.05),rgba(0,0,0,.20) 38%,rgba(0,0,0,.76)),url("../../assets/images/mobile/backgrounds/mob-bg-club-room-day-v1.png"); background-size:cover; background-position:center; transform:scale(1.03); filter:saturate(.96) brightness(.86); }
+    .topbar { position:absolute; top:calc(12px + env(safe-area-inset-top)); left:14px; right:14px; display:flex; justify-content:space-between; align-items:center; gap:8px; z-index:30; }
+    .pill,.ghost { border:1px solid rgba(255,255,255,.20); border-radius:999px; background:rgba(4,10,16,.48); color:rgba(247,251,255,.82); backdrop-filter:blur(12px); font-weight:850; }
+    .pill { max-width:calc(100% - 104px); padding:8px 12px; font-size:12px; letter-spacing:.05em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .ghost { padding:8px 10px; font-size:11px; cursor:pointer; }
+    .game { position:absolute; left:12px; right:12px; top:calc(62px + env(safe-area-inset-top)); bottom:calc(82px + env(safe-area-inset-bottom)); z-index:8; }
+    .brief { margin:0 4px 10px; padding:11px 12px; border-radius:16px; background:rgba(3,9,15,.58); border:1px solid rgba(255,255,255,.18); color:rgba(247,251,255,.78); backdrop-filter:blur(14px); font-size:12px; font-weight:760; line-height:1.42; word-break:keep-all; }
+    .link-board { position:absolute; left:0; right:0; top:76px; bottom:0; display:grid; grid-template-columns:1fr 1fr; gap:18px; padding:0 4px 4px; }
+    .col { position:relative; min-width:0; display:flex; flex-direction:column; gap:8px; }
+    .col-title { position:sticky; top:0; z-index:3; padding:7px 8px; border-radius:999px; background:rgba(4,10,16,.62); border:1px solid rgba(255,255,255,.17); color:var(--cyan); font-size:11px; font-weight:950; letter-spacing:.08em; backdrop-filter:blur(12px); }
+    .card-list { min-height:0; overflow-y:auto; display:grid; gap:8px; padding:1px 1px 12px; overscroll-behavior:contain; }
+    .source-card { min-height:72px; width:100%; border:1px solid rgba(255,255,255,.17); border-radius:13px; background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.055)),rgba(8,18,27,.78); color:#f7fbff; font-family:inherit; text-align:left; padding:10px 10px; font-size:12px; line-height:1.32; font-weight:830; word-break:keep-all; box-shadow:0 14px 28px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.12); cursor:pointer; transition:border-color 160ms ease, background 160ms ease, transform 160ms ease; }
+    .source-card.internal { border-color:rgba(126,234,255,.26); }
+    .source-card.external { border-color:rgba(95,226,173,.22); }
+    .source-card.selected { border-color:rgba(126,234,255,.88); background:linear-gradient(145deg,rgba(126,234,255,.26),rgba(255,255,255,.06)),rgba(8,20,30,.86); transform:translateY(-1px); }
+    .source-card.linked { box-shadow:0 14px 28px rgba(0,0,0,.28),0 0 0 1px rgba(126,234,255,.30),inset 0 1px 0 rgba(255,255,255,.12); }
+    .source-card.bad { border-color:rgba(255,143,155,.50); }
+    .link-layer { position:absolute; inset:0; z-index:1; overflow:visible; pointer-events:none; }
+    .col, .brief { z-index:2; }
+    .link-path { fill:none; stroke:rgba(126,234,255,.86); stroke-width:3; stroke-linecap:round; filter:drop-shadow(0 0 8px rgba(126,234,255,.34)); }
+    .actions { position:absolute; left:16px; right:16px; bottom:calc(12px + env(safe-area-inset-bottom)); z-index:25; display:grid; grid-template-columns:1fr 1fr; gap:9px; padding:8px; border-radius:22px; background:rgba(2,8,13,.72); border:1px solid rgba(126,234,255,.18); backdrop-filter:blur(18px); }
+    .action { min-height:44px; border:1px solid rgba(255,255,255,.18); border-radius:15px; background:rgba(255,255,255,.06); color:var(--ink); font-family:inherit; font-size:13px; font-weight:850; cursor:pointer; }
+    .action.primary { border-color:rgba(126,234,255,.44); background:rgba(126,234,255,.12); }
+    .toast,.result { position:absolute; left:20px; right:20px; z-index:90; border-radius:22px; background:linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.06)),rgba(5,10,16,.88); border:1px solid rgba(255,255,255,.25); box-shadow:0 22px 48px rgba(0,0,0,.42); backdrop-filter:blur(20px) saturate(1.18); opacity:0; transform:translateY(14px); pointer-events:none; transition:opacity 240ms ease,transform 240ms ease; }
+    .toast { bottom:calc(76px + env(safe-area-inset-bottom)); padding:15px 16px; }
+    .toast.show,.result.show { opacity:1; transform:translateY(0); pointer-events:auto; }
+    .toast-name,.result-kicker { color:var(--cyan); font-size:13px; font-weight:950; margin-bottom:8px; }
+    .toast-line { color:#f8fcff; font-size:15px; font-weight:760; line-height:1.45; word-break:keep-all; }
+    .result { top:calc(82px + env(safe-area-inset-top)); padding:18px 17px 16px; }
+    .result-title { margin:0 0 10px; font-size:clamp(22px,5.7vw,29px); line-height:1.22; font-weight:940; word-break:keep-all; }
+    .result-list { display:grid; gap:8px; max-height:280px; overflow:auto; margin-bottom:14px; }
+    .result-item { padding:10px 11px; border-radius:14px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); color:rgba(247,251,255,.88); font-size:13px; font-weight:720; line-height:1.4; word-break:keep-all; }
+    .result-actions { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+  </style>
+</head>
+<body>
+  <main class="phone" id="phone" aria-label="Episode 9 source link mini game">
+    <div class="bg"></div>
+    <div class="topbar"><div class="pill">EP.09 PATTERN HUNT</div><button class="ghost" id="hintButton" type="button">HINT</button></div>
+    <section class="game" id="game">
+      <p class="brief">내부 기록과 외부 공개 자료가 같은 패턴을 말하는지 연결하자. 이름이나 루머가 아니라 대조 가능한 지표를 기준으로 본다.</p>
+      <section class="link-board" id="linkBoard">
+        <svg class="link-layer" id="linkLayer" aria-hidden="true"></svg>
+        <div class="col"><div class="col-title">INTERNAL RECORDS</div><div class="card-list" id="internalList"></div></div>
+        <div class="col"><div class="col-title">PUBLIC SOURCES</div><div class="card-list" id="externalList"></div></div>
+      </section>
+    </section>
+    <div class="actions"><button class="action" id="resetButton" type="button">초기화</button><button class="action primary" id="checkButton" type="button">연결 검토</button></div>
+    <section class="toast" id="toast"><div class="toast-name" id="toastName">서해인</div><div class="toast-line" id="toastLine"></div></section>
+    <section class="result" id="result"><div class="result-kicker" id="resultKicker">RESULT</div><h1 class="result-title" id="resultTitle">연결 결과</h1><div class="result-list" id="resultList"></div><div class="result-actions"><button class="action" id="closeResult" type="button">계속 연결</button><button class="action primary" id="nextButton" type="button">다음</button></div></section>
+  </main>
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({ sfx:{ click:'../../assets/audio/mobile/common/sfx-click.mp3', card:'../../assets/audio/mobile/common/sfx-card.mp3', clear:'../../assets/audio/mobile/common/sfx-clear.mp3' } });
+    const internalCards=[
+      {id:'helper', text:'해인 PC에서 CloudNote Helper 실행 흔적이 확인됐다.'},
+      {id:'note', text:'동아리 PC와 해인 PC 모두 note-sync 계열 흔적이 남았다.'},
+      {id:'browser', text:'브라우저 시작 페이지가 낯선 주소 계열로 바뀌었다.'},
+      {id:'login', text:'로그인 직후 짧은 실행 흐름이 반복된다.'},
+      {id:'document', text:'문서 접근은 보였지만 외부 전송은 확인되지 않았다.'}
+    ];
+    const externalCards=[
+      {id:'source-helper', text:'여러 공개 글에서 Helper 유사 증상이 반복 보고됐다.'},
+      {id:'source-note', text:'공개 지표 목록에 note-sync 계열 주소가 반복 등장한다.'},
+      {id:'source-browser', text:'분석 글에서 브라우저 시작 페이지 변경 사례가 언급된다.'},
+      {id:'source-login', text:'제보 요약에 로그인 직후 콘솔/프로세스 실행 흐름이 적혀 있다.'},
+      {id:'source-document', text:'비슷한 사례에서도 문서 접근과 유출 확정은 분리해 다룬다.'},
+      {id:'source-blackkite', text:'조회수가 높은 글에서 blackkite 소행이라고 주장한다.'},
+      {id:'source-hash', text:'평판 화면에서 깨끗하게 보이는 해시 하나가 있다.'},
+      {id:'source-normal', text:'이름이 비슷한 정상 노트 서비스 소개 글이 있다.'},
+      {id:'source-old', text:'몇 년 전 다른 프로그램 이슈를 다룬 분석 글이 있다.'}
+    ];
+    const correct={ helper:'source-helper', note:'source-note', browser:'source-browser', login:'source-login', document:'source-document' };
+    const trapSources=new Set(['source-blackkite','source-hash','source-normal','source-old']);
+    const internalList=document.getElementById('internalList'), externalList=document.getElementById('externalList'), linkBoard=document.getElementById('linkBoard'), linkLayer=document.getElementById('linkLayer'), result=document.getElementById('result'), resultKicker=document.getElementById('resultKicker'), resultTitle=document.getElementById('resultTitle'), resultList=document.getElementById('resultList'), toast=document.getElementById('toast'), toastLine=document.getElementById('toastLine');
+    let selected=null;
+    let links=[];
+    function shuffle(items){ return [...items].sort(()=>Math.random()-.5); }
+    function cardNode(card, side){ const node=document.createElement('button'); node.type='button'; node.className='source-card '+side; node.dataset.id=card.id; node.dataset.side=side; node.textContent=card.text; node.addEventListener('click',()=>selectCard(node)); return node; }
+    function renderCards(){ internalList.innerHTML=''; externalList.innerHTML=''; internalCards.forEach(card=>internalList.appendChild(cardNode(card,'internal'))); shuffle(externalCards).forEach(card=>externalList.appendChild(cardNode(card,'external'))); links=[]; selected=null; updateState(); }
+    function showToast(text, name='서해인'){ document.getElementById('toastName').textContent=name; toastLine.textContent=text; toast.classList.add('show'); clearTimeout(showToast.t); showToast.t=setTimeout(()=>toast.classList.remove('show'),2600); }
+    function getCard(id){ return document.querySelector(`.source-card[data-id="${id}"]`); }
+    function updateState(){ document.querySelectorAll('.source-card').forEach(card=>{ card.classList.toggle('selected', selected && selected.id===card.dataset.id); card.classList.toggle('linked', links.some(link=>link.left===card.dataset.id || link.right===card.dataset.id)); card.classList.toggle('bad', false); }); drawLinks(); }
+    function selectCard(node){ window.HLTAudio.play('click'); const picked={id:node.dataset.id, side:node.dataset.side}; if(!selected){ selected=picked; updateState(); return; } if(selected.id===picked.id){ selected=null; updateState(); return; } if(selected.side===picked.side){ selected=picked; updateState(); return; } const left=selected.side==='internal'?selected.id:picked.id; const right=selected.side==='external'?selected.id:picked.id; const existing=links.find(link=>link.left===left && link.right===right); if(existing){ links=links.filter(link=>link!==existing); } else { links=links.filter(link=>link.left!==left && link.right!==right); links.push({left,right}); window.HLTAudio.play('card'); } selected=null; updateState(); }
+    function drawLinks(){ const boardRect=linkBoard.getBoundingClientRect(); linkLayer.setAttribute('viewBox',`0 0 ${boardRect.width} ${boardRect.height}`); linkLayer.innerHTML=''; links.forEach(link=>{ const a=getCard(link.left), b=getCard(link.right); if(!a||!b) return; const ar=a.getBoundingClientRect(), br=b.getBoundingClientRect(); const x1=ar.right-boardRect.left, y1=ar.top+ar.height/2-boardRect.top, x2=br.left-boardRect.left, y2=br.top+br.height/2-boardRect.top; const mid=(x2-x1)*.46; const path=document.createElementNS('http://www.w3.org/2000/svg','path'); path.setAttribute('class','link-path'); path.setAttribute('d',`M ${x1} ${y1} C ${x1+mid} ${y1}, ${x2-mid} ${y2}, ${x2} ${y2}`); linkLayer.appendChild(path); }); }
+    function renderResult(success, items){ const nextButton=document.getElementById('nextButton'); nextButton.style.display=success?'block':'none'; resultKicker.textContent=success?'SOURCE LINK SUCCESS':'SOURCE LINK FAILED'; resultKicker.style.color=success?'var(--green)':'var(--red)'; resultTitle.textContent=success?'패턴으로 말할 수 있다.':'연결을 다시 검토해야 한다.'; resultList.innerHTML=''; items.forEach(text=>{ const item=document.createElement('div'); item.className='result-item'; item.textContent=text; resultList.appendChild(item); }); result.classList.add('show'); window.HLTAudio.play(success?'clear':'card'); }
+    function checkLinks(){ const problems=[]; if(links.length<internalCards.length) problems.push('모든 내부 기록이 외부 자료와 대조되지 않았다.'); if(links.length>internalCards.length) problems.push('필요 이상으로 많은 자료를 연결해 결론이 흐려졌다.'); const linkedTrap=links.find(link=>trapSources.has(link.right)); if(linkedTrap) problems.push('소문, 단정, 무관한 자료가 근거 연결에 섞였다.'); internalCards.forEach(card=>{ const link=links.find(item=>item.left===card.id); if(!link) return; if(correct[card.id]!==link.right) problems.push('서로 다른 종류의 지표가 같은 근거처럼 연결됐다.'); }); if(problems.length){ renderResult(false,[...new Set(problems)].slice(0,5)); return; } renderResult(true,['내부 기록과 공개 자료를 지표 단위로 대조했다.','반복되는 주소, Helper 증상, 시작 페이지 변경, 로그인 직후 실행 흐름을 분리해 연결했다.','문서 접근과 유출 확정을 구분했고, 공격자 귀속은 보류했다.']); }
+    document.getElementById('hintButton').addEventListener('click',()=>showToast('이름보다 지표를 먼저 봐. 내부 기록 하나와 같은 종류의 외부 자료 하나를 연결하면 된다.'));
+    document.getElementById('resetButton').addEventListener('click',()=>{ renderCards(); result.classList.remove('show'); });
+    document.getElementById('checkButton').addEventListener('click',checkLinks);
+    document.getElementById('closeResult').addEventListener('click',()=>result.classList.remove('show'));
+    document.getElementById('nextButton').addEventListener('click',()=>window.location.href='../episode-09-ending-comic-animation/index.html');
+    internalList.addEventListener('scroll',drawLinks); externalList.addEventListener('scroll',drawLinks); window.addEventListener('resize',drawLinks);
+    renderCards();
+  </script>
+</body>
+</html>

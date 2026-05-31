@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 09 Pattern Hunt VN Scene</title>
+  <style>
+    :root { --phone-w:min(100vw,430px); --phone-h:min(100dvh,932px); --ink:#f7fbff; --cyan:#7eeaff; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif; }
+    * { box-sizing:border-box; } html,body { height:100%; }
+    body { margin:0; display:grid; place-items:center; overflow:hidden; color:var(--ink); background:radial-gradient(circle at 50% 8%, rgba(126,234,255,.12), transparent 34%), linear-gradient(160deg,#020409,#07131d 54%,#020409); }
+    .phone { position:relative; width:var(--phone-w); height:var(--phone-h); max-height:932px; aspect-ratio:9/16; overflow:hidden; background:#05080d; box-shadow:0 28px 80px rgba(0,0,0,.62); user-select:none; isolation:isolate; }
+    .bg { position:absolute; inset:0; background-image:linear-gradient(to bottom,rgba(0,0,0,.02),rgba(0,0,0,.10) 42%,rgba(0,0,0,.48)),url("../../assets/images/mobile/backgrounds/mob-bg-club-room-day-v1.png"); background-size:cover; background-position:center; transform:scale(1.025); filter:saturate(.98) brightness(.96); }
+    .scene-vignette { position:absolute; inset:0; background:radial-gradient(circle at 50% 42%,transparent 0 34%,rgba(0,0,0,.12) 66%,rgba(0,0,0,.42) 100%),linear-gradient(to bottom,rgba(2,6,10,.04),transparent 30%,rgba(2,6,10,.28)); pointer-events:none; }
+    .topbar { position:absolute; top:calc(14px + env(safe-area-inset-top)); left:16px; right:16px; display:flex; justify-content:space-between; align-items:center; gap:10px; z-index:18; opacity:.95; }
+    .chapter,.ghost-button { border:1px solid rgba(255,255,255,.20); border-radius:999px; background:rgba(4,10,16,.40); color:rgba(247,251,255,.80); backdrop-filter:blur(10px); font-weight:850; }
+    .chapter { max-width:calc(100% - 176px); padding:8px 12px; font-size:12px; letter-spacing:.06em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .small-actions { display:flex; gap:6px; } .ghost-button { padding:8px 9px; font-size:11px; cursor:pointer; } .ghost-button.on { border-color:rgba(126,234,255,.44); background:rgba(126,234,255,.14); color:#e9fbff; }
+    .focus-dim { position:absolute; inset:0; background:rgba(0,0,0,.16); opacity:0; transition:opacity 260ms ease; pointer-events:none; z-index:3; } .focus-dim.on { opacity:1; }
+    .info-card { position:absolute; left:26px; right:26px; top:calc(106px + env(safe-area-inset-top)); padding:14px 15px; border-radius:20px; background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.055)),rgba(5,10,16,.76); border:1px solid rgba(255,255,255,.22); box-shadow:0 20px 40px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(18px) saturate(1.16); z-index:15; opacity:0; transform:translateY(-12px); transition:opacity 300ms ease, transform 300ms ease; pointer-events:none; }
+    .info-card.show { opacity:1; transform:translateY(0); } .info-title { color:var(--cyan); font-size:12px; font-weight:950; letter-spacing:.08em; margin-bottom:8px; } .info-lines { display:grid; gap:7px; } .info-line { padding:8px 9px; border-radius:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); color:rgba(247,251,255,.86); font-size:12px; font-weight:720; line-height:1.36; word-break:keep-all; }
+    .char { position:absolute; bottom:148px; width:min(43vw,188px); aspect-ratio:312/793; background-repeat:no-repeat; background-size:contain; background-position:center bottom; opacity:0; filter:drop-shadow(0 28px 24px rgba(0,0,0,.50)); transition:opacity 320ms ease, transform 420ms cubic-bezier(.18,.84,.26,1), background-image 140ms step-end; z-index:5; pointer-events:none; }
+    .char.left { left:27%; transform:translateX(-50%) translateY(16px) scale(.985); } .char.right { left:73%; transform:translateX(-50%) translateY(16px) scale(.985); } .char.center { left:50%; transform:translateX(-50%) translateY(16px) scale(.985); }
+    .char.show.left,.char.show.right,.char.show.center { opacity:1; transform:translateX(-50%) translateY(0) scale(1); } .char.off-left { left:-24%; transform:translateX(-50%) translateY(16px) scale(.985); } .char.off-right { left:124%; transform:translateX(-50%) translateY(16px) scale(.985); }
+    .haein.expr-0 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-0.png"); } .haein.expr-1 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-1.png"); } .haein.expr-2 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-2.png"); } .haein.expr-3 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-3.png"); } .haein.expr-4 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-4.png"); } .haein.expr-5 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-5.png"); }
+    .junwoo.expr-0 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-0.png"); } .junwoo.expr-1 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-1.png"); } .junwoo.expr-2 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-2.png"); } .junwoo.expr-3 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-3.png"); } .junwoo.expr-4 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-4.png"); } .junwoo.expr-5 { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-5.png"); }
+    .taeyoon.expr-0 { background-image:url("../../assets/images/characters/choi-taeyoon/cutins/expr-0.png"); } .taeyoon.expr-1 { background-image:url("../../assets/images/characters/choi-taeyoon/cutins/expr-1.png"); } .taeyoon.expr-2 { background-image:url("../../assets/images/characters/choi-taeyoon/cutins/expr-2.png"); } .taeyoon.expr-3 { background-image:url("../../assets/images/characters/choi-taeyoon/cutins/expr-3.png"); } .taeyoon.expr-4 { background-image:url("../../assets/images/characters/choi-taeyoon/cutins/expr-4.png"); } .taeyoon.expr-5 { background-image:url("../../assets/images/characters/choi-taeyoon/cutins/expr-5.png"); }
+    .minseo,.dohyun { aspect-ratio:330.2/793; background-size:600% 100%; }
+    .minseo { background-image:url("../../assets/images/characters/han-minseo/expression-sheet-knee-up-transparent-v3.png"); } .dohyun { background-image:url("../../assets/images/characters/yoon-dohyun/expression-sheet-knee-up-transparent-v1.png"); }
+    .minseo.expr-0,.dohyun.expr-0 { background-position:0% 0%; } .minseo.expr-1,.dohyun.expr-1 { background-position:20% 0%; } .minseo.expr-2,.dohyun.expr-2 { background-position:40% 0%; } .minseo.expr-3,.dohyun.expr-3 { background-position:60% 0%; } .minseo.expr-4,.dohyun.expr-4 { background-position:80% 0%; } .minseo.expr-5,.dohyun.expr-5 { background-position:100% 0%; }
+    .dialogue-box { position:absolute; left:22px; right:22px; bottom:calc(22px + env(safe-area-inset-bottom)); min-height:136px; padding:15px 16px; border-radius:22px; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.07) 42%,rgba(7,18,27,.38)); border:1px solid rgba(255,255,255,.30); box-shadow:0 18px 36px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.18); backdrop-filter:blur(18px) saturate(1.24); z-index:13; cursor:pointer; }
+    .name-row { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; } .speaker { color:var(--cyan); font-size:13px; font-weight:900; letter-spacing:.02em; } .counter { color:rgba(247,251,255,.44); font-size:12px; font-weight:800; }
+    .line { min-height:62px; color:#f8fcff; font-size:clamp(16px,4.2vw,20px); font-weight:690; line-height:1.48; word-break:keep-all; text-shadow:0 2px 10px rgba(0,0,0,.72); } .line.muted { color:rgba(247,251,255,.84); font-style:italic; }
+    .next-mark { position:absolute; right:20px; bottom:13px; width:10px; height:10px; border-right:2px solid rgba(126,234,255,.78); border-bottom:2px solid rgba(126,234,255,.78); transform:rotate(45deg); animation:bob 850ms ease-in-out infinite; }
+    .end-panel { position:absolute; inset:0; z-index:30; display:grid; place-items:end center; padding:0 22px calc(24px + env(safe-area-inset-bottom)); background:linear-gradient(to bottom,rgba(2,6,10,.10),rgba(2,6,10,.76)); opacity:0; pointer-events:none; transition:opacity 360ms ease; }
+    .end-panel.show { opacity:1; pointer-events:auto; } .end-card { width:100%; padding:20px 17px 17px; border-radius:24px; background:linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.065)),rgba(5,10,16,.82); border:1px solid rgba(255,255,255,.26); box-shadow:0 22px 48px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(20px) saturate(1.18); }
+    .end-kicker { color:var(--cyan); font-size:13px; font-weight:950; letter-spacing:.08em; margin-bottom:8px; } .end-title { font-size:clamp(22px,5.8vw,29px); font-weight:940; line-height:1.22; margin-bottom:10px; word-break:keep-all; } .end-copy { color:rgba(247,251,255,.72); font-size:13px; font-weight:720; line-height:1.45; margin-bottom:14px; word-break:keep-all; }
+    .end-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; } .end-button { min-height:48px; border:1px solid rgba(255,255,255,.20); border-radius:15px; background:rgba(255,255,255,.07); color:var(--ink); font-family:inherit; font-size:13px; font-weight:850; cursor:pointer; } .end-button.primary { border-color:rgba(126,234,255,.42); background:rgba(126,234,255,.11); }
+    @keyframes bob { 0%,100% { translate:0 0; opacity:.55; } 50% { translate:0 4px; opacity:1; } }
+  </style>
+</head>
+<body>
+  <main class="phone" id="phone" aria-label="Episode 9 pattern hunt visual novel scene">
+    <div class="bg"></div><div class="scene-vignette"></div><div class="focus-dim" id="focusDim"></div>
+    <div class="topbar"><div class="chapter">EP.09 PATTERN HUNT</div><div class="small-actions"><button class="ghost-button" id="autoBtn" type="button">AUTO</button><button class="ghost-button" id="hintBtn" type="button">HINT</button><button class="ghost-button" id="skipBtn" type="button">SKIP</button></div></div>
+    <section class="info-card" id="infoCard"><div class="info-title" id="infoTitle">SOURCE MEMO</div><div class="info-lines" id="infoLines"></div></section>
+    <div class="char haein off-left" id="haein"></div><div class="char junwoo off-left" id="junwoo"></div><div class="char taeyoon off-right" id="taeyoon"></div><div class="char minseo off-right" id="minseo"></div><div class="char dohyun off-right" id="dohyun"></div>
+    <section class="dialogue-box" id="dialogueBox"><div class="name-row"><div class="speaker" id="speaker">강지호</div><div class="counter" id="counter">1 / 1</div></div><div class="line" id="line"></div><div class="next-mark"></div></section>
+    <section class="end-panel" id="endPanel"><div class="end-card"><div class="end-kicker">EP.09 READY</div><div class="end-title">공개 자료 조사를 시작한다.</div><div class="end-copy">이번 목표는 범인을 찍는 게 아니라, 독립된 출처에서 반복되는 지표와 과장된 소문을 분리하는 것이다.</div><div class="end-actions"><button class="end-button" id="replayButton" type="button">다시 보기</button><button class="end-button primary" id="nextButton" type="button">자료 연결</button></div></div></section>
+  </main>
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({ sfx:{ click:'../../assets/audio/mobile/common/sfx-click.mp3', card:'../../assets/audio/mobile/common/sfx-card.mp3' } });
+    const beats=[
+      { type:'narration', speaker:' ', text:'화이트보드 정리 다음 날, 동아리방에는 전날보다 더 많은 노트북이 펼쳐져 있었다.', chars:{} },
+      { type:'dialogue', speaker:'강지호', text:'어제 정리한 결론은 하나예요. 같은 흔적일 가능성은 있지만, 공격자 귀속은 아직 보류.', chars:{haein:['left',1]} },
+      { type:'dialogue', speaker:'서해인', text:'좋아. 오늘은 그 보류를 유지한 채로 외부 자료를 볼 거야.', chars:{haein:['left',1]} },
+      { type:'dialogue', speaker:'한민서', text:'외부 자료라면 커뮤니티 글 같은 거? 검색하면 엄청 많이 나오던데.', chars:{minseo:['right',1],haein:['left',1]} },
+      { type:'dialogue', speaker:'서해인', text:'맞아. 그래서 더 위험해. 자료가 많다고 증거가 많아지는 건 아니거든.', chars:{minseo:['right',1],haein:['left',2]} },
+      { type:'dialogue', speaker:'박준우', text:'동아리 차원에서 보면 공개 자료를 모으는 건 괜찮아. 대신 학교나 개인 정보는 절대 넣지 말자.', chars:{junwoo:['left',1],haein:['right',1]} },
+      { type:'dialogue', speaker:'강지호', text:'네. 내부 기록과 외부 자료를 직접 섞지 않고, 겹치는 지표만 비교하겠습니다.', chars:{junwoo:['left',1],haein:['right',1]}, info:{title:'조사 원칙', lines:['내부 기록 원문 비공개','공개 자료만 수집','겹치는 지표만 비교']} },
+      { type:'dialogue', speaker:'최태윤', text:'그러면 blackkite 검색부터 하면 되는 거 아냐? 이름이 제일 직접적이잖아.', chars:{taeyoon:['right',0],junwoo:['left',1]} },
+      { type:'dialogue', speaker:'강지호', text:'이름부터 검색하면 그 이름을 믿고 싶은 자료만 보게 될 수 있어.', chars:{taeyoon:['right',3],junwoo:['left',1]} },
+      { type:'dialogue', speaker:'서해인', text:'우리가 먼저 볼 건 이름이 아니라 패턴이야. note-sync 계열 주소, Helper 증상, 로그인 직후 변화.', chars:{haein:['left',1],taeyoon:['right',3]}, info:{title:'우선 지표', lines:['note-sync 계열 주소','Helper 유사 증상','로그인 직후 변화']} },
+      { type:'dialogue', speaker:'한민서', text:'그럼 검색어도 단체명이 아니라 증상 중심으로 잡아야겠네.', chars:{minseo:['right',0],haein:['left',1]} },
+      { type:'dialogue', speaker:'강지호', text:'응. 그리고 출처를 나눠야 해. 커뮤니티, 공개 지표, 분석 글, 익명 제보는 무게가 달라.', chars:{minseo:['right',0],haein:['left',1]} },
+      { type:'dialogue', speaker:'윤도현', text:'그 부분은 제가 도울 수 있습니다. 취재하면서 모은 자료도 출처별로 나눠 두었습니다.', chars:{dohyun:['right',1],haein:['left',1]} },
+      { type:'dialogue', speaker:'박준우', text:'윤기자님 자료는 기사화된 건가요, 아니면 제보 단계인가요?', chars:{junwoo:['left',1],dohyun:['right',1]} },
+      { type:'dialogue', speaker:'윤도현', text:'대부분은 제보 단계입니다. 그래서 저는 단정하지 않았고, 반복되는 표현만 따로 표시해 뒀습니다.', chars:{junwoo:['left',1],dohyun:['right',5]} },
+      { type:'dialogue', speaker:'서해인', text:'좋네요. 제보는 단서가 될 수 있지만, 단독 근거가 되면 안 됩니다.', chars:{haein:['left',1],dohyun:['right',5]} },
+      { type:'dialogue', speaker:'최태윤', text:'그럼 커뮤니티에서 조회수 높은 글도 그냥 단서야?', chars:{taeyoon:['right',0],haein:['left',1]} },
+      { type:'dialogue', speaker:'강지호', text:'조회수는 관심도지 신뢰도는 아니야. 글 안에 어떤 근거가 있는지를 봐야 해.', chars:{taeyoon:['right',3],haein:['left',1]} },
+      { type:'dialogue', speaker:'한민서', text:'예를 들면 주소나 해시처럼 다른 자료와 대조할 수 있는 것?', chars:{minseo:['right',1],taeyoon:['left',3]} },
+      { type:'dialogue', speaker:'강지호', text:'맞아. 그런데 해시 평판 하나가 깨끗하다고 전체가 정상이라는 뜻도 아니야.', chars:{minseo:['right',1],taeyoon:['left',3]} },
+      { type:'dialogue', speaker:'서해인', text:'정상 판정도 조심해야 해. 증거가 없다는 말과 안전하다는 말은 다르니까.', chars:{haein:['left',2],minseo:['right',1]} },
+      { type:'dialogue', speaker:'박준우', text:'그럼 오늘 조사 항목은 여섯 개 정도로 나누자. 커뮤니티, 공개 지표, 분석 글, 제보, 도메인, 해시 평판.', chars:{junwoo:['left',1],haein:['right',1]}, info:{title:'조사 항목', lines:['커뮤니티 게시글','공개 지표 목록','분석 블로그','익명 제보','도메인 요약','해시 평판']} },
+      { type:'dialogue', speaker:'윤도현', text:'저는 제보 자료를 맡겠습니다. 출처가 불명확한 건 분리해서 표시할게요.', chars:{junwoo:['left',1],dohyun:['right',1]} },
+      { type:'dialogue', speaker:'한민서', text:'나는 커뮤니티 글을 볼게. 제목이 자극적인 건 따로 표시해둘게.', chars:{minseo:['right',0],dohyun:['left',1]} },
+      { type:'dialogue', speaker:'최태윤', text:'나는 도메인 쪽 볼래. 비슷한 이름이면 다 수상한 거지?', chars:{taeyoon:['right',0],minseo:['left',0]} },
+      { type:'dialogue', speaker:'서해인', text:'아니. 비슷한 이름은 제일 흔한 함정이야. 정상 서비스와 무관한 도메인을 구분해야 해.', chars:{haein:['left',2],taeyoon:['right',3]} },
+      { type:'dialogue', speaker:'최태윤', text:'오늘도 한 번 배웠습니다.', chars:{haein:['left',1],taeyoon:['right',4]} },
+      { type:'dialogue', speaker:'강지호', text:'나는 공개 지표와 우리 타임라인을 대조할게. 직접 원문을 붙이지 않고, 겹치는 키워드만 메모하겠습니다.', chars:{haein:['left',1],taeyoon:['right',3]} },
+      { type:'dialogue', speaker:'박준우', text:'그리고 최종 문장은 조심스럽게. “같은 캠페인 가능성”까지는 되지만 “범인 확정”은 안 된다.', chars:{junwoo:['left',2],taeyoon:['right',3]} },
+      { type:'dialogue', speaker:'윤도현', text:'기사에서도 그 선이 중요합니다. 이름을 먼저 쓰면 사람들이 그 이름만 기억하거든요.', chars:{junwoo:['left',1],dohyun:['right',2]} },
+      { type:'dialogue', speaker:'한민서', text:'그럼 정답은 이름을 찾는 게 아니라, 서로 다른 출처가 같은 방향을 가리키는지 확인하는 거네.', chars:{minseo:['right',0],dohyun:['left',2]} },
+      { type:'dialogue', speaker:'강지호', text:'응. 그리고 방향이 같아도 결론을 넘지 않는 것. 그게 오늘 제일 어려운 부분이야.', chars:{minseo:['right',0],dohyun:['left',1]} },
+      { type:'dialogue', speaker:'서해인', text:'좋아. 이제 각자 자료를 보고, 기록할 것과 버릴 것을 나누자.', chars:{haein:['left',1],minseo:['right',0]} },
+      { type:'dialogue', speaker:'강지호', text:'수집 기준은 세 가지로 하겠습니다. 반복성, 대조 가능성, 결론 보류 가능성.', chars:{haein:['left',1],minseo:['right',0]}, info:{title:'수집 기준', lines:['반복성','대조 가능성','결론 보류 가능성']} },
+      { type:'dialogue', speaker:'박준우', text:'반대로 단정, 루머, 무관한 정상 서비스는 빼고.', chars:{junwoo:['left',1],haein:['right',1]} },
+      { type:'dialogue', speaker:'최태윤', text:'이번엔 내가 범인이라고 써 붙이기 전에 세 번 생각할게.', chars:{taeyoon:['right',0],junwoo:['left',1]} },
+      { type:'dialogue', speaker:'한민서', text:'한 번 더 생각해서 네 번으로 하자.', chars:{taeyoon:['right',3],minseo:['left',0]} },
+      { type:'dialogue', speaker:'윤도현', text:'그럼 저는 제보 묶음을 열겠습니다. 기사보다 먼저, 근거부터 확인하죠.', chars:{dohyun:['right',1],minseo:['left',0]} },
+      { type:'dialogue', speaker:'강지호', text:'좋습니다. 오늘은 공개 자료 속에서 반복되는 패턴을 찾겠습니다.', chars:{haein:['left',1],dohyun:['right',1]} },
+      { type:'narration', speaker:' ', text:'공개 자료 조사를 시작한다.', chars:{}, end:true }
+    ];
+    const ids=['haein','junwoo','taeyoon','minseo','dohyun'];
+    const els=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]));
+    const focusDim=document.getElementById('focusDim'), speaker=document.getElementById('speaker'), line=document.getElementById('line'), counter=document.getElementById('counter'), dialogueBox=document.getElementById('dialogueBox'), autoBtn=document.getElementById('autoBtn'), hintBtn=document.getElementById('hintBtn'), skipBtn=document.getElementById('skipBtn'), infoCard=document.getElementById('infoCard'), infoTitle=document.getElementById('infoTitle'), infoLines=document.getElementById('infoLines'), endPanel=document.getElementById('endPanel');
+    let index=0, auto=false, hintOn=false, currentInfo=null, autoTimer=null, typeTimer=null, isTyping=false, currentText='';
+    function stopTyping(){ if(typeTimer) clearInterval(typeTimer); typeTimer=null; isTyping=false; }
+    function completeText(){ stopTyping(); line.textContent=currentText; }
+    function typeText(text){ stopTyping(); currentText=text; line.textContent=''; let i=0; isTyping=true; typeTimer=setInterval(()=>{ line.textContent += text[i] || ''; i += 1; if(i > text.length) stopTyping(); }, 18); }
+    function offClass(id){ return id==='haein'||id==='junwoo'?'off-left':'off-right'; }
+    function applyCharacters(chars){ let shown=false; ids.forEach(id=>{ const el=els[id]; el.className='char '+id+' '+offClass(id); if(chars[id]){ const [slot,expr]=chars[id]; el.className='char '+id+' '+slot+' show expr-'+expr; shown=true; } }); focusDim.classList.toggle('on', shown); }
+    function renderHint(){ infoLines.innerHTML=''; if(!hintOn || !currentInfo){ infoCard.classList.remove('show'); return; } infoTitle.textContent=currentInfo.title; currentInfo.lines.forEach(text=>{ const node=document.createElement('div'); node.className='info-line'; node.textContent=text; infoLines.appendChild(node); }); infoCard.classList.add('show'); }
+    function applyInfo(info){ currentInfo=info || null; renderHint(); }
+    function finish(){ endPanel.classList.add('show'); }
+    function showBeat(){ const beat=beats[index]; if(!beat) return; clearTimeout(autoTimer); stopTyping(); applyCharacters(beat.chars || {}); applyInfo(beat.info); speaker.textContent=beat.speaker || ' '; counter.textContent=`${index+1} / ${beats.length}`; line.classList.toggle('muted', beat.type==='narration'); typeText(beat.text); if(beat.end) autoTimer=setTimeout(finish,1300); if(auto && !beat.end) autoTimer=setTimeout(next, Math.max(1500, beat.text.length * 85)); }
+    function next(){ if(isTyping){ completeText(); return; } if(index < beats.length - 1){ index += 1; showBeat(); return; } finish(); }
+    dialogueBox.addEventListener('click', next);
+    document.getElementById('phone').addEventListener('click', e=>{ if(e.target.closest('button') || e.target.closest('.dialogue-box')) return; next(); });
+    autoBtn.addEventListener('click',()=>{ auto=!auto; autoBtn.textContent=auto?'AUTO ON':'AUTO'; autoBtn.classList.toggle('on', auto); if(auto) showBeat(); else clearTimeout(autoTimer); });
+    hintBtn.addEventListener('click',()=>{ hintOn=!hintOn; hintBtn.textContent=hintOn?'HINT ON':'HINT'; hintBtn.classList.toggle('on', hintOn); renderHint(); });
+    skipBtn.addEventListener('click',()=>{ stopTyping(); index=beats.length-1; showBeat(); completeText(); });
+    document.getElementById('replayButton').addEventListener('click',()=>location.reload());
+    document.getElementById('nextButton').addEventListener('click',()=>window.location.href='../episode-09-source-link/index.html');
+    showBeat();
+  </script>
+</body>
+</html>

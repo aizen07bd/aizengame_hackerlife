@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Comic Prologue Inline Text</title>
+  <style>
+    :root {
+      --phone-w: min(100vw, 430px);
+      --phone-h: min(100dvh, 932px);
+      --cyan: #68ecff;
+      --ink: #f6fbff;
+      --bg: #03070c;
+      --image: url("../../assets/images/mobile/prologue/prologue-four-panel-comic-v1.png");
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 10%, rgba(104, 236, 255, 0.15), transparent 30%),
+        linear-gradient(160deg, #020409, #07131d 52%, #020409);
+      color: var(--ink);
+    }
+
+    .phone {
+      position: relative;
+      width: var(--phone-w);
+      height: var(--phone-h);
+      max-height: 932px;
+      aspect-ratio: 9 / 16;
+      overflow: hidden;
+      background: var(--bg);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.6);
+      isolation: isolate;
+    }
+
+    .intro {
+      position: absolute;
+      inset: 0;
+      background: #02050a;
+    }
+
+    .panel {
+      position: absolute;
+      inset: 0;
+      background-image: var(--image);
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transform-origin: center;
+      filter: drop-shadow(0 18px 16px rgba(0,0,0,0.6));
+      will-change: transform, opacity;
+    }
+
+    /* Clip shapes are tuned for prologue-four-panel-comic-v1.png. */
+    .panel-1 {
+      clip-path: polygon(0 0, 67.6% 0, 36.7% 37.3%, 0 34.0%);
+      animation: panelFromLeft 1180ms cubic-bezier(.18, .94, .2, 1) 260ms forwards;
+    }
+    .panel-2 {
+      clip-path: polygon(67.6% 0, 100% 0, 100% 42.9%, 36.7% 37.3%);
+      animation: panelFromRight 1180ms cubic-bezier(.18, .94, .2, 1) 1420ms forwards;
+    }
+    .panel-3 {
+      clip-path: polygon(0 34.0%, 36.7% 37.3%, 100% 42.9%, 100% 45.6%, 0 71.8%);
+      animation: panelFromLowerLeft 1260ms cubic-bezier(.18, .94, .2, 1) 2580ms forwards;
+    }
+    .panel-4 {
+      clip-path: polygon(0 71.8%, 100% 45.6%, 100% 100%, 0 100%);
+      animation: panelFromLowerRight 1260ms cubic-bezier(.18, .94, .2, 1) 3820ms forwards;
+    }
+
+    .full-page {
+      position: absolute;
+      inset: 0;
+      background-image: var(--image);
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transform: scale(1.02);
+      animation: revealFull 1100ms ease 5600ms forwards;
+      pointer-events: none;
+    }
+
+    .scanline {
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.09) 0 1px, transparent 1px 5px),
+        linear-gradient(90deg, transparent, rgba(104,236,255,0.12), transparent);
+      opacity: 0.14;
+      mix-blend-mode: screen;
+      animation: scan 1100ms steps(2, end) infinite;
+      pointer-events: none;
+    }
+
+    .flash {
+      position: absolute;
+      inset: 0;
+      background: #dffbff;
+      opacity: 0;
+      pointer-events: none;
+      animation: finalFlash 1100ms ease 9800ms forwards;
+    }
+
+    .panel-text {
+      position: absolute;
+      z-index: 9;
+      max-width: 72%;
+      color: #f7fbff;
+      font-weight: 900;
+      line-height: 1.18;
+      letter-spacing: 0;
+      text-shadow:
+        0 3px 12px rgba(0,0,0,0.95),
+        0 0 14px rgba(76,232,255,0.36),
+        -2px 0 0 rgba(0,0,0,0.62),
+        2px 0 0 rgba(0,0,0,0.62),
+        0 -2px 0 rgba(0,0,0,0.62),
+        0 2px 0 rgba(0,0,0,0.62);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 320ms ease, transform 320ms ease;
+      pointer-events: none;
+    }
+    .panel-text.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .text-1 {
+      left: 7%;
+      top: 25.6%;
+      font-size: clamp(19px, 5.4vw, 26px);
+    }
+    .text-2 {
+      right: 7%;
+      top: 34.2%;
+      max-width: 58%;
+      text-align: right;
+      font-size: clamp(16px, 4.6vw, 22px);
+    }
+    .text-3 {
+      left: 7%;
+      top: 56.2%;
+      max-width: 56%;
+      font-size: clamp(15px, 4.2vw, 21px);
+    }
+    .text-4 {
+      right: 7%;
+      bottom: 7.2%;
+      max-width: 66%;
+      text-align: right;
+      font-size: clamp(18px, 5.1vw, 25px);
+    }
+
+    .controls {
+      position: absolute;
+      right: 14px;
+      top: calc(14px + env(safe-area-inset-top));
+      display: flex;
+      gap: 8px;
+      z-index: 20;
+    }
+    .control {
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 999px;
+      color: rgba(255,255,255,0.82);
+      background: rgba(0,0,0,0.26);
+      padding: 8px 11px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+    }
+
+    @keyframes panelFromLeft {
+      0% { opacity: 0; transform: translateX(-115%) translateY(-8%) rotate(-8deg) scale(.98); }
+      72% { opacity: 1; transform: translateX(2.8%) rotate(1.2deg) scale(1); }
+      100% { opacity: 1; transform: translateX(0) rotate(0); }
+    }
+    @keyframes panelFromRight {
+      0% { opacity: 0; transform: translateX(115%) translateY(-6%) rotate(8deg) scale(.98); }
+      72% { opacity: 1; transform: translateX(-2.8%) rotate(-1.2deg) scale(1); }
+      100% { opacity: 1; transform: translateX(0) rotate(0); }
+    }
+    @keyframes panelFromLowerLeft {
+      0% { opacity: 0; transform: translateX(-110%) translateY(48%) rotate(7deg) scale(.98); }
+      72% { opacity: 1; transform: translateX(2.4%) translateY(-1%) rotate(-1.1deg) scale(1); }
+      100% { opacity: 1; transform: translateX(0) translateY(0) rotate(0); }
+    }
+    @keyframes panelFromLowerRight {
+      0% { opacity: 0; transform: translateX(115%) translateY(44%) rotate(-7deg) scale(.98); }
+      72% { opacity: 1; transform: translateX(-2.4%) translateY(-1%) rotate(1.1deg) scale(1); }
+      100% { opacity: 1; transform: translateX(0) translateY(0) rotate(0); }
+    }
+    @keyframes revealFull {
+      0% { opacity: 0; transform: scale(1.02); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes scan {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(5px); }
+    }
+    @keyframes finalFlash {
+      0%, 100% { opacity: 0; }
+      45% { opacity: .72; }
+    }
+    @keyframes showEpisode {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .panel, .full-page, .flash { animation-duration: 1ms !important; animation-delay: 0ms !important; }
+      .panel-text { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="Hacker Life Trace comic prologue animation">
+    <section class="intro" id="intro">
+      <div class="panel panel-1"></div>
+      <div class="panel panel-2"></div>
+      <div class="panel panel-3"></div>
+      <div class="panel panel-4"></div>
+      <div class="full-page"></div>
+      <div class="scanline"></div>
+      <div class="flash"></div>
+      <div class="controls">
+        <button class="control" id="replay" type="button">REPLAY</button>
+        <button class="control" id="skip" type="button">SKIP</button>
+        <button class="control" id="nextScene" type="button">NEXT</button>
+      </div>
+      <div class="panel-text text-1" id="text1">해커가 되고 싶었다.</div>
+      <div class="panel-text text-2" id="text2">남들이 놓친 흔적을<br>먼저 보는 사람.</div>
+      <div class="panel-text text-3" id="text3">하지만 시작은<br>아주 평범한 기록이었다.</div>
+      <div class="panel-text text-4" id="text4">지호야...<br>잠깐만 봐줄 수 있어?</div>
+    </section>
+  </main>
+
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({
+      bgm: '../../assets/audio/mobile/episode-01/bgm-prologue.mp3',
+      bgmVolume: 0.30,
+      sfx: {
+        click: '../../assets/audio/mobile/common/sfx-click.mp3',
+        whoosh: '../../assets/audio/mobile/common/sfx-panel-whoosh.mp3'
+      }
+    });
+
+    const intro = document.getElementById('intro');
+    const replay = document.getElementById('replay');
+    const skip = document.getElementById('skip');
+    const nextScene = document.getElementById('nextScene');
+    const textItems = [
+      { at: 1460, el: document.getElementById('text1') },
+      { at: 2860, el: document.getElementById('text2') },
+      { at: 4320, el: document.getElementById('text3') },
+      { at: 5980, el: document.getElementById('text4') }
+    ];
+    let timers = [];
+    let finished = false;
+
+    function clearTimers() {
+      timers.forEach(clearTimeout);
+      timers = [];
+    }
+
+    function goNextScene() {
+      window.location.href = '../episode-01-vn-scene/index.html';
+    }
+
+    function markFinished() {
+      if (finished) return;
+      finished = true;
+      timers.push(setTimeout(goNextScene, 1600));
+    }
+
+    function hideTexts() {
+      textItems.forEach(item => item.el.classList.remove('show'));
+    }
+
+    function run() {
+      clearTimers();
+      finished = false;
+      hideTexts();
+      intro.classList.remove('restart');
+      void intro.offsetWidth;
+      intro.classList.add('restart');
+      [260, 1420, 2580, 3820].forEach(at => timers.push(setTimeout(() => window.HLTAudio.play('whoosh'), at)));
+      textItems.forEach(item => timers.push(setTimeout(() => item.el.classList.add('show'), item.at)));
+      timers.push(setTimeout(markFinished, 10800));
+    }
+
+    function skipToEnd() {
+      clearTimers();
+      for (const el of intro.querySelectorAll('.panel, .full-page, .flash')) {
+        el.style.animationDelay = '0ms';
+        el.style.animationDuration = '1ms';
+      }
+      textItems.forEach(item => item.el.classList.add('show'));
+      markFinished();
+    }
+
+    replay.addEventListener('click', () => location.reload());
+    skip.addEventListener('click', skipToEnd);
+    nextScene.addEventListener('click', goNextScene);
+    run();
+  </script>
+</body>
+</html>

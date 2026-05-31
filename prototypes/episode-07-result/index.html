@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 07 Result</title>
+  <style>
+    :root { --phone-w:min(100vw,430px); --phone-h:min(100dvh,932px); --ink:#f7fbff; --cyan:#7eeaff; --red:#ff8f9b; --green:#5fe2ad; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif; }
+    * { box-sizing:border-box; } html,body { height:100%; }
+    body { margin:0; display:grid; place-items:center; overflow:hidden; color:var(--ink); background:radial-gradient(circle at 50% 8%, rgba(126,234,255,.14), transparent 34%), linear-gradient(160deg,#020409,#07131d 54%,#020409); }
+    .phone { position:relative; width:var(--phone-w); height:var(--phone-h); max-height:932px; aspect-ratio:9/16; overflow:hidden; background:#05080d; box-shadow:0 28px 80px rgba(0,0,0,.62); isolation:isolate; }
+    .bg { position:absolute; inset:0; background-image:linear-gradient(to bottom,rgba(0,0,0,.20),rgba(0,0,0,.76)),url("../../assets/images/mobile/backgrounds/mob-bg-campus-cafe-v1.png"); background-size:cover; background-position:center; filter:saturate(.88) brightness(.66); transform:scale(1.03); }
+    .topbar { position:absolute; top:calc(14px + env(safe-area-inset-top)); left:16px; right:16px; display:flex; justify-content:space-between; gap:10px; z-index:8; }
+    .pill { padding:8px 12px; border-radius:999px; background:rgba(4,10,16,.48); border:1px solid rgba(255,255,255,.20); color:rgba(247,251,255,.82); backdrop-filter:blur(12px); font-size:12px; font-weight:850; letter-spacing:.05em; white-space:nowrap; }
+    .char { position:absolute; left:50%; bottom:148px; width:min(50vw,214px); aspect-ratio:312/793; background-repeat:no-repeat; background-size:contain; background-position:center bottom; filter:drop-shadow(0 28px 26px rgba(0,0,0,.52)); transform:translateX(-50%); z-index:4; }
+    .haein { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-2.png"); }
+    .junwoo { background-image:url("../../assets/images/characters/park-junwoo/cutins/expr-2.png"); }
+    .dialogue { position:absolute; left:22px; right:22px; bottom:calc(22px + env(safe-area-inset-bottom)); min-height:136px; padding:16px; border-radius:22px; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.07) 42%,rgba(7,18,27,.42)); border:1px solid rgba(255,255,255,.30); box-shadow:0 18px 36px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.16); backdrop-filter:blur(18px) saturate(1.24); z-index:9; cursor:pointer; }
+    .speaker { color:var(--cyan); font-size:13px; font-weight:900; margin-bottom:10px; }
+    .line { color:#f8fcff; font-size:clamp(17px,4.5vw,21px); font-weight:760; line-height:1.48; word-break:keep-all; }
+    .next-mark { position:absolute; right:20px; bottom:13px; width:10px; height:10px; border-right:2px solid rgba(126,234,255,.78); border-bottom:2px solid rgba(126,234,255,.78); transform:rotate(45deg); }
+    .result { position:absolute; inset:calc(68px + env(safe-area-inset-top)) 18px calc(18px + env(safe-area-inset-bottom)); z-index:12; display:none; flex-direction:column; gap:10px; min-height:0; }
+    .result.show { display:flex; }
+    .result-card { padding:15px 14px; border-radius:22px; background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.06)),rgba(5,10,16,.82); border:1px solid rgba(255,255,255,.24); box-shadow:0 20px 44px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(20px) saturate(1.15); }
+    .status { font-size:13px; font-weight:950; letter-spacing:.08em; margin-bottom:8px; }
+    .status.success { color:var(--green); } .status.fail { color:var(--red); }
+    h1 { margin:0; font-size:clamp(21px,5.6vw,28px); line-height:1.22; font-weight:930; word-break:keep-all; }
+    .section-title { color:var(--cyan); font-size:13px; font-weight:900; margin:2px 0 8px; }
+    .list { display:grid; gap:8px; }
+    .scroll-list { overflow-y:auto; padding-right:3px; overscroll-behavior:contain; max-height:290px; }
+    .item { padding:10px 11px; border-radius:14px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); color:rgba(247,251,255,.88); font-size:13px; font-weight:720; line-height:1.42; word-break:keep-all; }
+    .actions { margin-top:auto; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .action { min-height:50px; border:1px solid rgba(255,255,255,.20); border-radius:16px; background:rgba(255,255,255,.07); color:var(--ink); font-family:inherit; font-size:14px; font-weight:850; cursor:pointer; }
+    .action.primary { border-color:rgba(126,234,255,.42); background:rgba(126,234,255,.11); }
+    .stamp { position:absolute; left:50%; top:43%; z-index:40; width:min(82vw,350px); height:auto; transform:translate(-50%,-50%) rotate(-37deg) scale(2.1); opacity:0; pointer-events:none; filter:drop-shadow(0 22px 26px rgba(0,0,0,.38)); mix-blend-mode:screen; }
+    .stamp.show { animation:stampHit 2600ms cubic-bezier(.18,.84,.26,1) forwards; }
+    @keyframes stampHit { 0% { opacity:0; transform:translate(-50%,-50%) rotate(-37deg) scale(2.1); filter:blur(2px) drop-shadow(0 22px 26px rgba(0,0,0,.38)); } 13% { opacity:1; transform:translate(-50%,-50%) rotate(-37deg) scale(.92); filter:blur(0) drop-shadow(0 22px 26px rgba(0,0,0,.38)); } 19% { transform:translate(-50%,-50%) rotate(-34deg) scale(1.03); } 24% { transform:translate(-50%,-50%) rotate(-39deg) scale(.99); } 31% { transform:translate(-50%,-50%) rotate(-37deg) scale(1); } 72% { opacity:1; } 100% { opacity:0; transform:translate(-50%,-50%) rotate(-37deg) scale(1.04); } }
+    .hidden { display:none; }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="Episode 7 result">
+    <div class="bg"></div>
+    <div class="topbar"><div class="pill">EP.07 SENIOR'S PC, SECOND LOOK</div><div class="pill" id="modePill">분석 결과</div></div>
+    <section id="rebuttalScene"><div class="char" id="rebuttalChar"></div><div class="dialogue" id="dialogueBox"><div class="speaker" id="speakerName">서해인</div><div class="line" id="rebuttalLine"></div><div class="next-mark"></div></div></section>
+    <img class="stamp" id="stamp" src="../../assets/images/mobile/ui/result-stamp-failed-v1.png" alt="" aria-hidden="true" />
+    <section class="result" id="resultView"><div class="result-card"><div class="status" id="statusText">RESULT</div><h1 id="headline">분석 결과</h1></div><div class="result-card"><div class="section-title" id="detailTitle">판정 근거</div><div class="list scroll-list" id="detailList"></div></div><div class="actions" id="actions"></div></section>
+  </main>
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({ sfx:{ click:'../../assets/audio/mobile/common/sfx-click.mp3', stamp:'../../assets/audio/mobile/common/sfx-stamp.mp3' } });
+    const required=['ep07-timeline-cluster-01-true.png','ep07-external-local-compare-01-true.png','ep07-browser-before-after-01-true.png','ep07-doc-access-no-exfil-01-true.png','ep07-normal-activity-exclusion-01-true.png','ep07-final-hypothesis-01-true.png'];
+    const traps=['ep05-event-log-02-trap.png','ep06-baseless-attribution-02-trap.png','ep05-browser-settings-02-trap.png','ep05-user-folder-01-true.png','ep05-recent-execution-02-trap.png','ep06-rumor-overclaim-02-trap.png'];
+    const missingLabels={
+      'ep07-timeline-cluster-01-true.png':'21:31~21:33 사이 핵심 흐름을 시간순으로 묶은 근거가 부족하다.',
+      'ep07-external-local-compare-01-true.png':'EP6 외부 제보와 해인 PC 로컬 기록을 대조한 근거가 부족하다.',
+      'ep07-browser-before-after-01-true.png':'브라우저 시작 페이지 변경 전후를 설명하는 근거가 부족하다.',
+      'ep07-doc-access-no-exfil-01-true.png':'문서 접근과 외부 전송을 구분한 근거가 부족하다.',
+      'ep07-normal-activity-exclusion-01-true.png':'정상 활동을 배제하고 남는 흐름을 분리한 근거가 부족하다.',
+      'ep07-final-hypothesis-01-true.png':'가능성과 보류 범위를 정리한 최종 가설이 부족하다.'
+    };
+    const conclusion=sessionStorage.getItem('ep07Conclusion') || '';
+    const collected=JSON.parse(sessionStorage.getItem('ep07Evidence') || '[]');
+    const has=id=>collected.includes(id);
+    const missing=required.filter(id=>!has(id));
+    const trapHits=traps.filter(id=>has(id));
+    const isSuccess=conclusion==='second-look-hypothesis' && missing.length===0 && trapHits.length===0;
+    const rebuttalScene=document.getElementById('rebuttalScene'), resultView=document.getElementById('resultView'), rebuttalLine=document.getElementById('rebuttalLine'), dialogueBox=document.getElementById('dialogueBox'), speakerName=document.getElementById('speakerName'), rebuttalChar=document.getElementById('rebuttalChar'), statusText=document.getElementById('statusText'), headline=document.getElementById('headline'), detailTitle=document.getElementById('detailTitle'), detailList=document.getElementById('detailList'), actions=document.getElementById('actions'), modePill=document.getElementById('modePill'), stamp=document.getElementById('stamp');
+    const conclusionRebuttals={
+      'data-stolen-confirmed':['서해인','haein','문서 폴더 접근은 불안하지만, 외부 업로드나 대용량 전송 없이 유출이라고 말하면 안 돼.'],
+      'blackkite-confirmed':['서해인','haein','공격자 이름은 아직 붙일 수 없어. 지금 강해진 건 패턴이지 귀속이 아니야.'],
+      'normal-activity':['서해인','haein','정상 기록을 배제하는 건 맞지만, 남는 21:31부터 21:33 흐름을 설명해야 해.'],
+      'repeat-ep05':['서해인','haein','EP5 결론을 반복하면 2차 분석이 아니야. 이번엔 시간순으로 연결해야 해.'],
+      'ignore-external':['서해인','haein','외부 제보는 결론은 아니지만 가설이야. 로컬 기록과 대조해야 의미가 생겨.']
+    };
+    function buildRebuttals(){
+      const beats=[];
+      if(conclusion!=='second-look-hypothesis') beats.push(conclusionRebuttals[conclusion] || ['서해인','haein','2차 분석은 연결이 중요해. 단정할 것과 보류할 것을 나눠야 해.']);
+      if(trapHits.length) beats.push(['서해인','haein','원본 기록 하나만 떼어 보면 다시 1차 분석으로 돌아가. 시간순 연결이 필요해.']);
+      if(missing.length) beats.push(['서해인','haein','빠진 분석 자료가 있으면 가설이 약해져. 타임라인, 대조, 배제, 보류 범위가 모두 필요해.']);
+      return beats.length ? beats : [['서해인','haein','결론 방향은 맞지만 증거 카드 구성이 아직 완성되지 않았어.']];
+    }
+    let rebuttalIndex=0;
+    const rebuttals=buildRebuttals();
+    function renderList(target,items){ target.innerHTML=''; items.forEach(text=>{ const div=document.createElement('div'); div.className='item'; div.textContent=text; target.appendChild(div); }); }
+    function playStamp(success){ window.HLTAudio.play('stamp'); stamp.src=success?'../../assets/images/mobile/ui/result-stamp-success-v1.png':'../../assets/images/mobile/ui/result-stamp-failed-v1.png'; stamp.className='stamp'; void stamp.offsetWidth; stamp.classList.add('show'); }
+    function setRebuttalBeat(){ const beat=rebuttals[rebuttalIndex]; speakerName.textContent=beat[0]; rebuttalChar.className='char '+beat[1]; rebuttalLine.textContent=beat[2]; }
+    function failureDetails(){
+      const details=[];
+      if(conclusion!=='second-look-hypothesis') details.push('선택한 결론이 2차 분석 자료로 말할 수 있는 범위를 벗어났다.');
+      if(trapHits.length) details.push('정상 기록, 루머, 원본 기록 단편이 2차 분석 근거처럼 섞였다.');
+      missing.forEach(id=>details.push(missingLabels[id]));
+      if(!collected.length) details.push('판단할 자료가 수집되지 않았다.');
+      return details.length ? details : ['결론 표현과 증거 카드의 논리 연결을 다시 확인해야 한다.'];
+    }
+    function showResult(){
+      rebuttalScene.classList.add('hidden');
+      resultView.classList.add('show');
+      playStamp(isSuccess);
+      if(isSuccess){
+        modePill.textContent='CLEAR';
+        statusText.textContent='ANALYSIS SUCCESS';
+        statusText.className='status success';
+        headline.textContent='2차 분석 가설을 세웠다.';
+        detailTitle.textContent='정답 근거';
+        renderList(detailList,[
+          '21:31~21:33 사이 CloudNote Helper 흐름이 시간순으로 맞물린다.',
+          'EP6 외부 제보와 해인 PC 로컬 기록이 같은 증상 묶음을 가리킨다.',
+          '브라우저 시작 페이지 변경 전후와 note-sync.example 흐름이 확인된다.',
+          '문서 접근은 있으나 외부 전송과 유출은 확인되지 않았다고 구분했다.',
+          '같은 캠페인 가능성은 높지만 공격자 귀속은 보류했다.'
+        ]);
+        actions.innerHTML='<button class="action" type="button" id="backInvestigation">자료 다시 보기</button><button class="action primary" type="button" id="titleButton">엔딩 독백</button>';
+        document.getElementById('backInvestigation').addEventListener('click',()=>window.location.href='../episode-07-investigation-menu/index.html');
+        document.getElementById('titleButton').addEventListener('click',()=>window.location.href='../episode-07-ending-comic-animation/index.html');
+      } else {
+        modePill.textContent='FAILED';
+        statusText.textContent='ANALYSIS FAILED';
+        statusText.className='status fail';
+        headline.textContent='결론을 다시 세워야 한다.';
+        detailTitle.textContent='반론 이후 부족한 부분';
+        renderList(detailList,failureDetails());
+        actions.innerHTML='<button class="action" type="button" id="retryConclusion">결론 다시 선택</button><button class="action primary" type="button" id="retryInvestigation">다시 조사하기</button>';
+        document.getElementById('retryConclusion').addEventListener('click',()=>window.location.href='../episode-07-conclusion/index.html');
+        document.getElementById('retryInvestigation').addEventListener('click',()=>window.location.href='../episode-07-investigation-menu/index.html');
+      }
+    }
+    if(isSuccess){ rebuttalScene.classList.add('hidden'); showResult(); } else { setRebuttalBeat(); dialogueBox.addEventListener('click',()=>{ window.HLTAudio.play('click'); rebuttalIndex+=1; if(rebuttalIndex>=rebuttals.length){ showResult(); return; } setRebuttalBeat(); }); }
+  </script>
+</body>
+</html>

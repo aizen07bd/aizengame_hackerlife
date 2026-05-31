@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 11 Result</title>
+  <style>
+    :root { --phone-w:min(100vw,430px); --phone-h:min(100dvh,932px); --ink:#f7fbff; --cyan:#7eeaff; --red:#ff8f9b; --green:#5fe2ad; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif; }
+    * { box-sizing:border-box; } html,body { height:100%; }
+    body { margin:0; display:grid; place-items:center; overflow:hidden; color:var(--ink); background:radial-gradient(circle at 50% 8%, rgba(126,234,255,.14), transparent 34%), linear-gradient(160deg,#020409,#07131d 54%,#020409); }
+    .phone { position:relative; width:var(--phone-w); height:var(--phone-h); max-height:932px; aspect-ratio:9/16; overflow:hidden; background:#05080d; box-shadow:0 28px 80px rgba(0,0,0,.62); isolation:isolate; }
+    .bg { position:absolute; inset:0; background-image:linear-gradient(to bottom,rgba(0,0,0,.20),rgba(0,0,0,.76)),url("../../assets/images/mobile/backgrounds/mob-bg-employee-workspace-v1.png"); background-size:cover; background-position:center; filter:saturate(.88) brightness(.66); transform:scale(1.03); }
+    .topbar { position:absolute; top:calc(14px + env(safe-area-inset-top)); left:16px; right:16px; display:flex; justify-content:space-between; gap:10px; z-index:8; }
+    .pill { padding:8px 12px; border-radius:999px; background:rgba(4,10,16,.48); border:1px solid rgba(255,255,255,.20); color:rgba(247,251,255,.82); backdrop-filter:blur(12px); font-size:12px; font-weight:850; letter-spacing:.05em; white-space:nowrap; }
+    .char { position:absolute; left:50%; bottom:148px; width:min(50vw,214px); aspect-ratio:330.2/793; background-repeat:no-repeat; background-size:600% 100%; background-position:40% 0%; filter:drop-shadow(0 28px 26px rgba(0,0,0,.52)); transform:translateX(-50%); z-index:4; }
+    .yuna { background-image:url("../../assets/images/characters/lee-yuna/expression-sheet-knee-up-transparent-v3.png"); } .haein { aspect-ratio:312/793; background-size:contain; background-position:center bottom; background-image:url("../../assets/images/characters/seo-haein/cutins/expr-2.png"); }
+    .dialogue { position:absolute; left:22px; right:22px; bottom:calc(22px + env(safe-area-inset-bottom)); min-height:136px; padding:16px; border-radius:22px; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.07) 42%,rgba(7,18,27,.42)); border:1px solid rgba(255,255,255,.30); box-shadow:0 18px 36px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.16); backdrop-filter:blur(18px) saturate(1.24); z-index:9; cursor:pointer; }
+    .speaker { color:var(--cyan); font-size:13px; font-weight:900; margin-bottom:10px; } .line { color:#f8fcff; font-size:clamp(17px,4.5vw,21px); font-weight:760; line-height:1.48; word-break:keep-all; } .next-mark { position:absolute; right:20px; bottom:13px; width:10px; height:10px; border-right:2px solid rgba(126,234,255,.78); border-bottom:2px solid rgba(126,234,255,.78); transform:rotate(45deg); }
+    .result { position:absolute; inset:calc(68px + env(safe-area-inset-top)) 18px calc(18px + env(safe-area-inset-bottom)); z-index:12; display:none; flex-direction:column; gap:10px; min-height:0; } .result.show { display:flex; }
+    .result-card { padding:15px 14px; border-radius:22px; background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.06)),rgba(5,10,16,.82); border:1px solid rgba(255,255,255,.24); box-shadow:0 20px 44px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(20px) saturate(1.15); }
+    .status { font-size:13px; font-weight:950; letter-spacing:.08em; margin-bottom:8px; } .status.success { color:var(--green); } .status.fail { color:var(--red); } h1 { margin:0; font-size:clamp(21px,5.6vw,28px); line-height:1.22; font-weight:930; word-break:keep-all; }
+    .section-title { color:var(--cyan); font-size:13px; font-weight:900; margin:2px 0 8px; } .list { display:grid; gap:8px; } .scroll-list { overflow-y:auto; padding-right:3px; overscroll-behavior:contain; max-height:290px; } .item { padding:10px 11px; border-radius:14px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); color:rgba(247,251,255,.88); font-size:13px; font-weight:720; line-height:1.42; word-break:keep-all; }
+    .actions { margin-top:auto; display:grid; grid-template-columns:1fr 1fr; gap:10px; } .action { min-height:50px; border:1px solid rgba(255,255,255,.20); border-radius:16px; background:rgba(255,255,255,.07); color:var(--ink); font-family:inherit; font-size:14px; font-weight:850; cursor:pointer; } .action.primary { border-color:rgba(126,234,255,.42); background:rgba(126,234,255,.11); }
+    .stamp { position:absolute; left:50%; top:43%; z-index:40; width:min(82vw,350px); height:auto; transform:translate(-50%,-50%) rotate(-37deg) scale(2.1); opacity:0; pointer-events:none; filter:drop-shadow(0 22px 26px rgba(0,0,0,.38)); mix-blend-mode:screen; } .stamp.show { animation:stampHit 2600ms cubic-bezier(.18,.84,.26,1) forwards; }
+    @keyframes stampHit { 0% { opacity:0; transform:translate(-50%,-50%) rotate(-37deg) scale(2.1); filter:blur(2px) drop-shadow(0 22px 26px rgba(0,0,0,.38)); } 13% { opacity:1; transform:translate(-50%,-50%) rotate(-37deg) scale(.92); filter:blur(0) drop-shadow(0 22px 26px rgba(0,0,0,.38)); } 19% { transform:translate(-50%,-50%) rotate(-34deg) scale(1.03); } 24% { transform:translate(-50%,-50%) rotate(-39deg) scale(.99); } 31% { transform:translate(-50%,-50%) rotate(-37deg) scale(1); } 72% { opacity:1; } 100% { opacity:0; transform:translate(-50%,-50%) rotate(-37deg) scale(1.04); } }
+    .hidden { display:none; }
+  </style>
+</head>
+<body>
+  <main class="phone"><div class="bg"></div><div class="topbar"><div class="pill">EP.11 WEB SERVER TRACE</div><div class="pill" id="modePill">분석 결과</div></div>
+    <section id="rebuttalScene"><div class="char" id="rebuttalChar"></div><div class="dialogue" id="dialogueBox"><div class="speaker" id="speakerName">이유나</div><div class="line" id="rebuttalLine"></div><div class="next-mark"></div></div></section>
+    <img class="stamp" id="stamp" src="../../assets/images/mobile/ui/result-stamp-failed-v1.png" alt="" aria-hidden="true" />
+    <section class="result" id="resultView"><div class="result-card"><div class="status" id="statusText">RESULT</div><h1 id="headline">분석 결과</h1></div><div class="result-card"><div class="section-title" id="detailTitle">판정 근거</div><div class="list scroll-list" id="detailList"></div></div><div class="actions" id="actions"></div></section>
+  </main>
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({ sfx:{ click:'../../assets/audio/mobile/common/sfx-click.mp3', stamp:'../../assets/audio/mobile/common/sfx-stamp.mp3' } });
+    const required=['ep11-web-vuln-waf-block-01-true.png','ep11-admin-access-internal-ip-01-true.png','ep11-server-config-current-01-true.png','ep11-file-integrity-clean-01-true.png'];
+    const traps=['ep11-web-vuln-failed-only-02-trap.png','ep11-admin-access-readonly-02-trap.png','ep11-server-config-old-snapshot-02-trap.png','ep11-file-integrity-webshell-noise-02-trap.png'];
+    const missingLabels={
+      'ep11-web-vuln-waf-block-01-true.png':'웹 취약점 공격 시도가 WAF에서 차단되었다는 근거가 부족하다.',
+      'ep11-admin-access-internal-ip-01-true.png':'게시물 변경으로 이어진 내부 관리자 세션 근거가 부족하다.',
+      'ep11-server-config-current-01-true.png':'현재 웹서버 설정이 외부 취약점 성공 가능성을 낮춘다는 근거가 부족하다.',
+      'ep11-file-integrity-clean-01-true.png':'웹 루트 변조 없이 관리자 API 변경만 남았다는 근거가 부족하다.'
+    };
+    const conclusion=sessionStorage.getItem('ep11Conclusion') || '';
+    const collected=JSON.parse(sessionStorage.getItem('ep11Evidence') || '[]');
+    const has=id=>collected.includes(id); const missing=required.filter(id=>!has(id)); const trapHits=traps.filter(id=>has(id));
+    const isSuccess=conclusion==='internal-admin-next' && missing.length===0 && trapHits.length===0;
+    const rebuttalScene=document.getElementById('rebuttalScene'), resultView=document.getElementById('resultView'), rebuttalLine=document.getElementById('rebuttalLine'), dialogueBox=document.getElementById('dialogueBox'), speakerName=document.getElementById('speakerName'), rebuttalChar=document.getElementById('rebuttalChar'), statusText=document.getElementById('statusText'), headline=document.getElementById('headline'), detailTitle=document.getElementById('detailTitle'), detailList=document.getElementById('detailList'), actions=document.getElementById('actions'), modePill=document.getElementById('modePill'), stamp=document.getElementById('stamp');
+    const conclusionRebuttals={
+      'web-vuln-confirmed':['박준우','haein','공격 문자열은 맞지만 WAF 차단 근거를 같이 봐야 해. 실패한 시도만으로 침해 성공이라고 말하면 안 돼.'],
+      'old-config-root':['최태윤','haein','그건 현재 설정이 아니라 오래된 백업 스냅샷이야. 현재 서버에 올라간 값인지부터 구분해야 해.'],
+      'webshell-confirmed':['서해인','haein','웹셸처럼 보이는 요청은 모두 404야. 파일 생성 이벤트 없이 업로드 성공으로 볼 수 없어.'],
+      'admin-normal-ignore':['서해인','haein','내부 주소라고 정상 업무로 넘기면 안 돼. 같은 세션에서 쓰기 요청이 이어졌는지가 핵심이야.'],
+      'db-required':['이유나','yuna','DB 접근은 이번 범위가 아니에요. 비식별 웹 로그와 점검 자료만으로 판단해야 합니다.']
+    };
+    function buildRebuttals(){ const beats=[]; if(conclusion!=='internal-admin-next') beats.push(conclusionRebuttals[conclusion] || ['서해인','haein','결론이 웹서버 자료로 말할 수 있는 범위를 벗어났어.']); if(trapHits.length) beats.push(['이유나','yuna','같은 종류의 화면이어도 값이 맞지 않는 자료가 섞였어요. 그 자료로 결론을 내리면 안 됩니다.']); if(missing.length) beats.push(['서해인','haein','핵심 흐름이 빠졌어. WAF 차단, 내부 관리자 쓰기 요청, 현재 설정, 파일 무결성 기록이 같이 필요해.']); return beats.length ? beats : [['서해인','haein','방향은 맞지만 증거 카드 구성이 아직 완성되지 않았어.']]; }
+    let rebuttalIndex=0; const rebuttals=buildRebuttals();
+    function renderList(target,items){ target.innerHTML=''; items.forEach(text=>{ const div=document.createElement('div'); div.className='item'; div.textContent=text; target.appendChild(div); }); }
+    function playStamp(success){ window.HLTAudio.play('stamp'); stamp.src=success?'../../assets/images/mobile/ui/result-stamp-success-v1.png':'../../assets/images/mobile/ui/result-stamp-failed-v1.png'; stamp.className='stamp'; void stamp.offsetWidth; stamp.classList.add('show'); }
+    function setRebuttalBeat(){ const beat=rebuttals[rebuttalIndex]; speakerName.textContent=beat[0]; rebuttalChar.className='char '+beat[1]; rebuttalLine.textContent=beat[2]; }
+    function failureDetails(){ const details=[]; if(conclusion!=='internal-admin-next') details.push('선택한 결론이 웹서버 자료로 말할 수 있는 범위를 벗어났다.'); if(trapHits.length) details.push('현재 사건과 직접 연결되지 않는 유사 자료가 증거 카드에 섞였다.'); missing.forEach(id=>details.push(missingLabels[id])); if(!collected.length) details.push('판단할 자료가 수집되지 않았다.'); return details.length ? details : ['결론 표현과 증거 카드의 논리 연결을 다시 확인해야 한다.']; }
+    function showResult(){ rebuttalScene.classList.add('hidden'); resultView.classList.add('show'); playStamp(isSuccess); if(isSuccess){ modePill.textContent='CLEAR'; statusText.textContent='ANALYSIS SUCCESS'; statusText.className='status success'; headline.textContent='다음 확인 지점이 좁혀졌다.'; detailTitle.textContent='정답 근거'; renderList(detailList,['웹 취약점 공격 시도는 있었지만 WAF 차단 기록과 연결되어 성공 근거로 보기 어렵다.','현재 웹서버 설정과 파일 무결성 기록에서도 웹 루트 변조나 웹셸 생성 근거가 부족하다.','의미 있는 변경은 내부 IP의 관리자 세션에서 쓰기 요청으로 이어졌다.','다음 단계는 해당 내부 IP의 보안장비와 EDR 이벤트를 확인하는 것이다.']); actions.innerHTML='<button class="action" type="button" id="backInvestigation">자료 다시 보기</button><button class="action primary" type="button" id="endingButton">사건 정리</button>'; document.getElementById('backInvestigation').addEventListener('click',()=>window.location.href='../episode-11-investigation-menu/index.html'); document.getElementById('endingButton').addEventListener('click',()=>window.location.href='../episode-11-ending-comic-animation/index.html'); } else { modePill.textContent='FAILED'; statusText.textContent='ANALYSIS FAILED'; statusText.className='status fail'; headline.textContent='기록의 값과 결론을 다시 맞춰야 한다.'; detailTitle.textContent='반론 이후 부족한 부분'; renderList(detailList,failureDetails()); actions.innerHTML='<button class="action" type="button" id="retryConclusion">결론 다시 선택</button><button class="action primary" type="button" id="retryInvestigation">다시 조사하기</button>'; document.getElementById('retryConclusion').addEventListener('click',()=>window.location.href='../episode-11-conclusion/index.html'); document.getElementById('retryInvestigation').addEventListener('click',()=>window.location.href='../episode-11-investigation-menu/index.html'); } }
+    if(isSuccess){ rebuttalScene.classList.add('hidden'); showResult(); } else { setRebuttalBeat(); dialogueBox.addEventListener('click',()=>{ window.HLTAudio.play('click'); rebuttalIndex+=1; if(rebuttalIndex>=rebuttals.length){ showResult(); return; } setRebuttalBeat(); }); }
+  </script>
+</body>
+</html>

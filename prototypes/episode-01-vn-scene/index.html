@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 01 VN Scene</title>
+  <style>
+    :root {
+      --phone-w: min(100vw, 430px);
+      --phone-h: min(100dvh, 932px);
+      --ink: #f7fbff;
+      --muted: rgba(247, 251, 255, 0.72);
+      --cyan: #81ecff;
+      --panel: rgba(4, 10, 16, 0.74);
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 50% 8%, rgba(129,236,255,0.12), transparent 34%),
+        linear-gradient(160deg, #020409, #07131d 54%, #020409);
+    }
+
+    .phone {
+      position: relative;
+      width: var(--phone-w);
+      height: var(--phone-h);
+      max-height: 932px;
+      aspect-ratio: 9 / 16;
+      overflow: hidden;
+      background: #05080d;
+      box-shadow: 0 28px 80px rgba(0,0,0,.62);
+      user-select: none;
+      isolation: isolate;
+    }
+
+    .bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to bottom, rgba(0,0,0,.10), rgba(0,0,0,.22) 46%, rgba(0,0,0,.58)),
+        url("../../assets/images/mobile/backgrounds/mob-bg-university-computer-lab-v1.png");
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.02);
+    }
+
+    .scene-vignette {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 68% 47%, transparent 0 28%, rgba(0,0,0,.22) 58%, rgba(0,0,0,.52) 100%),
+        linear-gradient(to bottom, rgba(2,6,10,.18), transparent 26%, rgba(2,6,10,.42));
+      pointer-events: none;
+    }
+
+    .topbar {
+      position: absolute;
+      top: calc(14px + env(safe-area-inset-top));
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      z-index: 8;
+      opacity: .92;
+    }
+    .chapter {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(4, 10, 16, .42);
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(10px);
+      color: rgba(247,251,255,.78);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: .06em;
+    }
+    .small-actions { display: flex; gap: 8px; }
+    .ghost-button {
+      border: 1px solid rgba(255,255,255,.20);
+      color: rgba(247,251,255,.74);
+      background: rgba(4, 10, 16, .30);
+      border-radius: 999px;
+      padding: 8px 11px;
+      font-size: 11px;
+      font-weight: 800;
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+    }
+
+    .character {
+      position: absolute;
+      left: 50%;
+      right: auto;
+      bottom: 154px;
+      width: min(44vw, 202px);
+      aspect-ratio: 330 / 793;
+      background-image: url("../../assets/images/characters/han-minseo/expression-sheet-knee-up-transparent-v3.png");
+      background-repeat: no-repeat;
+      background-size: 600% 100%;
+      background-position: 0% 0%;
+      filter: drop-shadow(0 28px 24px rgba(0,0,0,.48));
+      opacity: 0;
+      transform: translateX(-50%) translateY(14px) scale(.985);
+      transition: opacity 360ms ease, transform 420ms cubic-bezier(.18,.84,.26,1), background-position 160ms step-end;
+      z-index: 4;
+    }
+    .character.show { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+    .character.left { left: 28%; right: auto; transform: translateX(-50%) translateY(14px) scale(.985); }
+    .character.left.show { transform: translateX(-50%) translateY(0) scale(1); }
+    .character.neutral { background-position: 0% 0%; }
+    .character.worried { background-position: 20% 0%; }
+    .character.relief { background-position: 40% 0%; }
+    .character.skeptical { background-position: 60% 0%; }
+    .character.thanks { background-position: 80% 0%; }
+    .character.shaken { background-position: 100% 0%; }
+
+    .focus-dim {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.14);
+      opacity: 0;
+      transition: opacity 260ms ease;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .focus-dim.on { opacity: 1; }
+
+    .thought {
+      position: absolute;
+      left: 26px;
+      right: 26px;
+      top: 17.5%;
+      z-index: 7;
+      padding: 16px 18px;
+      border-left: 3px solid rgba(129,236,255,.72);
+      background: linear-gradient(90deg, rgba(4,10,16,.68), rgba(4,10,16,.18));
+      color: rgba(247,251,255,.88);
+      font-size: clamp(16px, 4.2vw, 20px);
+      font-weight: 720;
+      line-height: 1.48;
+      text-shadow: 0 2px 10px rgba(0,0,0,.78);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 260ms ease, transform 260ms ease;
+      pointer-events: none;
+    }
+    .thought.show { opacity: 1; transform: translateY(0); }
+    .thought, .thought.show { display: none; }
+
+    .dialogue-box {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: calc(22px + env(safe-area-inset-bottom));
+      min-height: 132px;
+      padding: 15px 16px 15px;
+      border-radius: 22px;
+      background: linear-gradient(145deg, rgba(255,255,255,.18), rgba(255,255,255,.07) 42%, rgba(7,18,27,.38));
+      border: 1px solid rgba(255,255,255,.30);
+      box-shadow: 0 18px 36px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.18);
+      backdrop-filter: blur(18px) saturate(1.24);
+      z-index: 9;
+      cursor: pointer;
+    }
+    .name-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .speaker {
+      color: var(--cyan);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .02em;
+    }
+    .counter {
+      color: rgba(247,251,255,.44);
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .line {
+      min-height: 58px;
+      color: #f8fcff;
+      font-size: clamp(16px, 4.2vw, 20px);
+      font-weight: 690;
+      line-height: 1.48;
+      word-break: keep-all;
+      text-shadow: 0 2px 10px rgba(0,0,0,.72);
+    }
+    .line.muted { color: rgba(247,251,255,.84); font-style: italic; }
+    .next-mark {
+      position: absolute;
+      right: 20px;
+      bottom: 13px;
+      width: 10px;
+      height: 10px;
+      border-right: 2px solid rgba(129,236,255,.78);
+      border-bottom: 2px solid rgba(129,236,255,.78);
+      transform: rotate(45deg);
+      animation: bob 850ms ease-in-out infinite;
+    }
+
+    .choice-strip {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: calc(168px + env(safe-area-inset-bottom));
+      display: grid;
+      gap: 10px;
+      z-index: 10;
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: opacity 260ms ease, transform 260ms ease;
+    }
+    .choice-strip.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .choice {
+      width: 100%;
+      min-height: 52px;
+      border: 1px solid rgba(255,255,255,.24);
+      border-radius: 15px;
+      background: rgba(5, 14, 21, .68);
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 820;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 14px 28px rgba(0,0,0,.28);
+      cursor: pointer;
+    }
+
+    .fade {
+      position: absolute;
+      inset: 0;
+      background: #e8fbff;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 20;
+    }
+    .fade.play { animation: flash 720ms ease forwards; }
+
+    @keyframes bob {
+      0%,100% { translate: 0 0; opacity: .55; }
+      50% { translate: 0 4px; opacity: 1; }
+    }
+    @keyframes flash {
+      0%,100% { opacity: 0; }
+      45% { opacity: .72; }
+    }
+  </style>
+</head>
+<body>
+  <main class="phone" id="phone" aria-label="Episode 1 visual novel scene mockup">
+    <div class="bg"></div>
+    <div class="scene-vignette"></div>
+    <div class="focus-dim" id="focusDim"></div>
+    <div class="topbar">
+      <div class="chapter">EP.01 FIRST LOGIN</div>
+      <div class="small-actions">
+        <button class="ghost-button" id="autoBtn" type="button">AUTO</button>
+        <button class="ghost-button" id="skipBtn" type="button">SKIP</button>
+      </div>
+    </div>
+    <div class="thought" id="thought"></div>
+    <div class="character" id="minseo" aria-hidden="true"></div>
+    <div class="choice-strip" id="choiceStrip">
+      <button class="choice" type="button" data-choice="careful">아직 단정하지 말고 기록부터 확인한다</button>
+      <button class="choice" type="button" data-choice="hasty">누가 계정을 훔쳐봤을지도 모른다고 말한다</button>
+    </div>
+    <section class="dialogue-box" id="dialogueBox">
+      <div class="name-row">
+        <div class="speaker" id="speaker">강지호</div>
+        <div class="counter" id="counter">1 / 1</div>
+      </div>
+      <div class="line" id="line"></div>
+      <div class="next-mark"></div>
+    </section>
+    <div class="fade" id="fade"></div>
+  </main>
+
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({
+      bgm: '../../assets/audio/mobile/episode-01/bgm-lab-dialogue.mp3',
+      bgmVolume: 0.28,
+      sfx: { click: '../../assets/audio/mobile/common/sfx-click.mp3' }
+    });
+
+    const beats = [
+      { type: 'narration', speaker: ' ', text: '컴퓨터 실습실의 키보드 소리가 일정한 박자로 이어졌다.', char: 'hide' },
+      { type: 'thought', speaker: '강지호', text: '언젠가는 나도 진짜 사건을 분석하는 사람이 될 수 있을까.', thought: '언젠가는 나도 진짜 사건을 분석하는 사람이 될 수 있을까.', char: 'hide' },
+      { type: 'dialogue', speaker: '교수', text: '실습 끝나기 전에 LMS에 과제 제출 여부 확인하고 나가세요.', char: 'hide' },
+      { type: 'narration', speaker: ' ', text: 'LMS. 과제 제출. 출석 확인. 늘 같은 화면인데, 오늘은 옆자리 분위기가 조금 달랐다.', char: 'hide' },
+      { type: 'dialogue', speaker: '한민서', text: '지호야... 잠깐만 봐줄 수 있어?', char: 'show', expression: 'worried' },
+      { type: 'dialogue', speaker: '강지호', text: '왜? 과제 업로드가 안 돼?', char: 'show', expression: 'worried' },
+      { type: 'dialogue', speaker: '한민서', text: '그게 아니라, 내 계정 접속 기록이 이상해.', char: 'show', expression: 'shaken' },
+      { type: 'dialogue', speaker: '한민서', text: '어제 집에서는 안 들어갔는데, 오늘 보니까 뭔가 기록이 남아 있어.', char: 'show', expression: 'worried' },
+      { type: 'dialogue', speaker: '강지호', text: '누가 네 계정으로 로그인했다는 거야?', char: 'show', expression: 'worried' },
+      { type: 'dialogue', speaker: '한민서', text: '모르겠어. 비밀번호 변경 요청 같은 것도 보였어. 그래서 더 불안해.', char: 'show', expression: 'shaken' },
+      { type: 'choice' },
+      { type: 'thought', speaker: '강지호', text: '민서의 말만으로는 부족하다. 기억은 흔들리고, 불안은 흔적을 과장한다.', thought: '민서의 말만으로는 부족하다. 기억은 흔들리고, 불안은 흔적을 과장한다.', char: 'show', expression: 'worried' },
+      { type: 'dialogue', speaker: '강지호', text: '어제 마지막으로 LMS 쓴 곳이 어디였는지 기억나?', char: 'show', expression: 'worried' },
+      { type: 'dialogue', speaker: '한민서', text: '여기 실습실. 수업 끝나기 전에 과제 목록 확인했어.', char: 'show', expression: 'neutral' },
+      { type: 'dialogue', speaker: '강지호', text: '끝나고 로그아웃은 했어?', char: 'show', expression: 'neutral' },
+      { type: 'dialogue', speaker: '한민서', text: '했다고 생각했는데... 솔직히 확실하진 않아. 그때 교수님이 빨리 나가라고 해서.', char: 'show', expression: 'worried' },
+      { type: 'dialogue', speaker: '강지호', text: '네가 괜찮다면, LMS에 남은 기록부터 볼게.', char: 'show', expression: 'worried' },
+      { type: 'dialogue', speaker: '한민서', text: '응. 대신 이상한 거면 바로 말해줘.', char: 'show', expression: 'worried' },
+      { type: 'dialogue', speaker: '강지호', text: '알겠어. 아직은 아무 결론도 내리지 말자.', char: 'show', expression: 'neutral' },
+      { type: 'transition', speaker: ' ', text: 'LMS 기록 조회로 이동한다.', char: 'hide' }
+    ];
+
+    const minseo = document.getElementById('minseo');
+    const focusDim = document.getElementById('focusDim');
+    const thought = document.getElementById('thought');
+    const speaker = document.getElementById('speaker');
+    const line = document.getElementById('line');
+    const counter = document.getElementById('counter');
+    const dialogueBox = document.getElementById('dialogueBox');
+    const choiceStrip = document.getElementById('choiceStrip');
+    const fade = document.getElementById('fade');
+    const autoBtn = document.getElementById('autoBtn');
+    const skipBtn = document.getElementById('skipBtn');
+    let index = 0;
+    let auto = false;
+    let autoTimer = null;
+    let typeTimer = null;
+    let isTyping = false;
+    let currentText = '';
+
+    function stopTyping() {
+      if (typeTimer) clearInterval(typeTimer);
+      typeTimer = null;
+      isTyping = false;
+    }
+
+    function completeText() {
+      stopTyping();
+      line.textContent = currentText;
+    }
+
+    function typeText(text) {
+      stopTyping();
+      currentText = text;
+      line.textContent = '';
+      let i = 0;
+      const speed = 18;
+      isTyping = true;
+      typeTimer = setInterval(() => {
+        line.textContent += text[i] || '';
+        i += 1;
+        if (i > text.length) stopTyping();
+      }, speed);
+    }
+
+    function applyCharacter(beat) {
+      minseo.className = 'character';
+      if (beat.char === 'show') {
+        minseo.classList.add('show', beat.expression || 'neutral');
+        focusDim.classList.add('on');
+      } else {
+        focusDim.classList.remove('on');
+      }
+    }
+
+    function goInvestigation() {
+      window.location.href = '../episode-01-investigation-menu/index.html';
+    }
+
+    function showBeat() {
+      const beat = beats[index];
+      if (!beat) return;
+      clearTimeout(autoTimer);
+      stopTyping();
+
+      if (beat.type === 'choice') {
+        speaker.textContent = '강지호';
+        counter.textContent = `${index + 1} / ${beats.length}`;
+        line.textContent = '어떻게 말할까.';
+        line.classList.remove('muted');
+        choiceStrip.classList.add('show');
+        return;
+      }
+
+      choiceStrip.classList.remove('show');
+      applyCharacter(beat);
+      thought.classList.toggle('show', beat.type === 'thought');
+      thought.textContent = beat.thought || '';
+      speaker.textContent = beat.speaker || ' ';
+      counter.textContent = `${index + 1} / ${beats.length}`;
+      line.classList.toggle('muted', beat.type === 'narration' || beat.type === 'thought' || beat.type === 'transition');
+      typeText(beat.text);
+
+      if (beat.type === 'transition') {
+        fade.classList.remove('play');
+        void fade.offsetWidth;
+        fade.classList.add('play');
+        clearTimeout(autoTimer);
+        autoTimer = setTimeout(goInvestigation, 1450);
+      }
+
+      if (auto) autoTimer = setTimeout(next, Math.max(1500, beat.text.length * 85));
+    }
+
+    function next() {
+      if (choiceStrip.classList.contains('show')) return;
+      if (isTyping) {
+        completeText();
+        return;
+      }
+      if (index < beats.length - 1) {
+        index += 1;
+        showBeat();
+      }
+    }
+
+    dialogueBox.addEventListener('click', next);
+    document.getElementById('phone').addEventListener('click', e => {
+      if (e.target.closest('button') || e.target.closest('.dialogue-box')) return;
+      next();
+    });
+    choiceStrip.addEventListener('click', e => {
+      const btn = e.target.closest('.choice');
+      if (!btn) return;
+      choiceStrip.classList.remove('show');
+      index += 1;
+      showBeat();
+    });
+    autoBtn.addEventListener('click', () => {
+      auto = !auto;
+      autoBtn.textContent = auto ? 'AUTO ON' : 'AUTO';
+      if (auto) showBeat(); else clearTimeout(autoTimer);
+    });
+    skipBtn.addEventListener('click', () => {
+      stopTyping();
+      index = beats.length - 1;
+      showBeat();
+    });
+
+    showBeat();
+  </script>
+</body>
+</html>

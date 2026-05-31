@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 03 Conclusion</title>
+  <style>
+    :root { --phone-w:min(100vw,430px); --phone-h:min(100dvh,932px); --ink:#f7fbff; --cyan:#7eeaff; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif; }
+    * { box-sizing:border-box; } html,body { height:100%; }
+    body { margin:0; display:grid; place-items:center; overflow:hidden; color:var(--ink); background:radial-gradient(circle at 50% 8%, rgba(126,234,255,.14), transparent 34%), linear-gradient(160deg,#020409,#07131d 54%,#020409); }
+    .phone { position:relative; width:var(--phone-w); height:var(--phone-h); max-height:932px; aspect-ratio:9/16; overflow:hidden; background:#05080d; box-shadow:0 28px 80px rgba(0,0,0,.62); isolation:isolate; }
+    .bg { position:absolute; inset:0; background-image:linear-gradient(to bottom,rgba(0,0,0,.24),rgba(0,0,0,.74)),url("../../assets/images/mobile/backgrounds/mob-bg-club-room-night-v1.png"); background-size:cover; background-position:center; transform:scale(1.02); filter:saturate(.9) brightness(.72); }
+    .topbar { position:absolute; top:calc(14px + env(safe-area-inset-top)); left:16px; right:16px; display:flex; justify-content:space-between; z-index:5; }
+    .pill { padding:8px 12px; border-radius:999px; background:rgba(4,10,16,.48); border:1px solid rgba(255,255,255,.20); color:rgba(247,251,255,.80); backdrop-filter:blur(12px); font-size:12px; font-weight:850; letter-spacing:.05em; }
+    .content { position:absolute; inset:calc(68px + env(safe-area-inset-top)) 18px calc(20px + env(safe-area-inset-bottom)); z-index:3; display:flex; flex-direction:column; gap:12px; min-height:0; }
+    .kicker { color:var(--cyan); font-size:13px; font-weight:900; letter-spacing:.06em; margin-bottom:8px; }
+    h1 { margin:0; font-size:clamp(21px,5.6vw,28px); line-height:1.22; font-weight:900; word-break:keep-all; }
+    .summary { flex:0 0 auto; padding:14px; border-radius:22px; background:linear-gradient(145deg,rgba(255,255,255,.15),rgba(255,255,255,.055)),rgba(5,10,16,.76); border:1px solid rgba(255,255,255,.23); box-shadow:0 18px 38px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(18px) saturate(1.15); }
+    .summary-title { color:var(--cyan); font-size:13px; font-weight:900; margin-bottom:8px; }
+    .summary-text { color:rgba(247,251,255,.82); font-size:13px; font-weight:720; line-height:1.44; word-break:keep-all; }
+    .choices { flex:1 1 auto; display:grid; gap:9px; align-content:end; overflow:auto; padding-right:2px; }
+    .choice { min-height:54px; padding:0 14px; border:1px solid rgba(255,255,255,.20); border-radius:17px; background:linear-gradient(145deg,rgba(34,42,51,.92),rgba(18,25,32,.88)); color:var(--ink); text-align:left; box-shadow:0 12px 25px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.08); font-family:inherit; font-size:14px; font-weight:850; line-height:1.32; word-break:keep-all; cursor:pointer; }
+    .back { min-height:42px; border:1px solid rgba(255,255,255,.18); border-radius:15px; background:rgba(255,255,255,.06); color:rgba(247,251,255,.78); font-family:inherit; font-size:13px; font-weight:820; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="Episode 3 conclusion submission"><div class="bg"></div><div class="topbar"><div class="pill">EP.03 CLUBROOM GHOST TRACE</div><div class="pill">결론 제출</div></div>
+    <section class="content"><div><div class="kicker">증거 정리</div><h1>동아리 PC 이상 증상의 원인은 무엇일까?</h1></div><section class="summary"><div class="summary-title">확인한 흐름</div><div class="summary-text">확장 프로그램, 브라우저 설정, 자동 실행, 다운로드, 시스템 상태, 네트워크 기록을 비교해 직접 원인과 별도 관찰 흔적을 구분해야 한다.</div></section><div class="choices">
+      <button class="choice" type="button" data-conclusion="extension-autostart">수상한 확장 프로그램과 자동 실행 항목이 직접 원인이다. `blackkite` 재시도 흔적은 별도 관찰 메모로 남긴다.</button>
+      <button class="choice" type="button" data-conclusion="external-hack">`blackkite` 흔적이 있으니 외부 해커가 동아리 PC를 장악했다.</button>
+      <button class="choice" type="button" data-conclusion="statement-only">최태윤이 설치했다고 말했으니 진술만으로 원인은 확정된다.</button>
+      <button class="choice" type="button" data-conclusion="antivirus-safe">백신 경고가 없으니 보안 문제는 아니다.</button>
+      <button class="choice" type="button" data-conclusion="old-pc">CPU 사용률이 높으니 PC 노후화나 단순 성능 문제다.</button>
+      <button class="choice" type="button" data-conclusion="extension-only">확장 프로그램만 지우면 끝난다. 자동 실행 항목은 볼 필요 없다.</button>
+      <button class="back" type="button" id="backButton">다시 조사하기</button>
+    </div></section>
+  </main>
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({ bgm:'../../assets/audio/mobile/episode-03/bgm-episode-03.mp3', bgmVolume:0.27, sfx:{ click:'../../assets/audio/mobile/common/sfx-click.mp3' } });
+    document.querySelectorAll('.choice').forEach(button=>button.addEventListener('click',()=>{ sessionStorage.setItem('ep03Conclusion', button.dataset.conclusion); window.location.href='../episode-03-result/index.html'; }));
+    document.getElementById('backButton').addEventListener('click',()=>{ window.location.href='../episode-03-investigation-menu/index.html'; });
+  </script>
+</body>
+</html>

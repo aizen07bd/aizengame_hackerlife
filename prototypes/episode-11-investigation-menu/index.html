@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 11 Investigation</title>
+  <style>
+    :root { --phone-w:min(100vw,430px); --phone-h:min(100dvh,932px); --ink:#f7fbff; --cyan:#7eeaff; --green:#5fe2ad; --red:#ff8f9b; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif; }
+    * { box-sizing:border-box; } html,body { height:100%; }
+    body { margin:0; display:grid; place-items:center; overflow:hidden; color:var(--ink); background:radial-gradient(circle at 50% 8%, rgba(126,234,255,.14), transparent 34%), linear-gradient(160deg,#020409,#07131d 54%,#020409); }
+    .phone { position:relative; width:var(--phone-w); height:var(--phone-h); max-height:932px; aspect-ratio:9/16; overflow:hidden; background:#05080d; box-shadow:0 28px 80px rgba(0,0,0,.62); isolation:isolate; }
+    .topbar { position:absolute; top:calc(14px + env(safe-area-inset-top)); left:16px; right:16px; display:flex; align-items:center; justify-content:space-between; z-index:20; pointer-events:none; }
+    .pill { padding:8px 12px; border-radius:999px; background:rgba(4,10,16,.52); border:1px solid rgba(255,255,255,.20); backdrop-filter:blur(12px); color:rgba(247,251,255,.80); font-size:12px; font-weight:850; letter-spacing:.05em; }
+    .top-visual { position:absolute; top:calc(68px + env(safe-area-inset-top)); left:0; right:0; height:39%; overflow:hidden; background:#071018; }
+    .top-visual::before { content:""; position:absolute; inset:0; background-image:linear-gradient(to bottom,rgba(1,6,10,.02),rgba(1,6,10,.24)),url("../../assets/images/mobile/investigation/episode-11/photo-generated-direct-v1/ep11-web-vuln-waf-block-01-true.png"); background-size:cover; background-position:center; transform:scale(1.03); filter:saturate(.94) brightness(.84); }
+    .top-visual::after { content:""; position:absolute; inset:0; background:repeating-linear-gradient(0deg,rgba(255,255,255,.06) 0 1px,transparent 1px 5px),linear-gradient(to bottom,transparent,rgba(0,0,0,.24)); opacity:.16; mix-blend-mode:screen; pointer-events:none; }
+    .menu-panel { position:absolute; left:0; right:0; bottom:0; height:56%; padding:24px 20px calc(96px + env(safe-area-inset-bottom)); background:linear-gradient(to bottom,rgba(5,10,16,0),rgba(5,10,16,.70) 10%,rgba(4,9,14,.96) 35%,#04090e 100%); z-index:8; }
+    .kicker { color:var(--cyan); font-size:13px; font-weight:900; letter-spacing:.06em; margin-bottom:8px; }
+    h1 { margin:0 0 9px; max-width:330px; font-size:clamp(17px,4.7vw,21px); line-height:1.34; font-weight:820; word-break:keep-all; }
+    .prompt { margin:0 0 14px; color:rgba(247,251,255,.66); font-size:13px; font-weight:640; line-height:1.45; word-break:keep-all; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:8px 10px; }
+    .menu-card { min-height:54px; padding:0 13px; border:1px solid rgba(255,255,255,.20); border-radius:17px; background:linear-gradient(145deg,rgba(34,42,51,.92),rgba(18,25,32,.88)); color:var(--ink); box-shadow:0 12px 25px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.08); text-align:left; cursor:pointer; overflow:hidden; contain:paint; }
+    .menu-card:active { transform:translateY(1px) scale(.99); } .menu-card:hover { border-color:rgba(126,234,255,.42); }
+    .card-title { display:block; font-size:15px; font-weight:850; line-height:1.25; }
+    .investigation-footer { position:absolute; left:18px; right:18px; bottom:calc(12px + env(safe-area-inset-bottom)); display:grid; grid-template-columns:1fr 1fr; gap:9px; padding:9px; border-radius:22px; background:linear-gradient(145deg,rgba(255,255,255,.10),rgba(255,255,255,.035)),rgba(2,8,13,.74); border:1px solid rgba(126,234,255,.18); box-shadow:0 18px 40px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.10); backdrop-filter:blur(18px) saturate(1.15); opacity:0; transform:translateY(12px); pointer-events:none; transition:opacity 220ms ease, transform 220ms ease; z-index:12; }
+    .investigation-footer.show { opacity:1; transform:translateY(0); pointer-events:auto; }
+    .footer-action { min-height:42px; border:1px solid rgba(255,255,255,.18); border-radius:15px; background:rgba(255,255,255,.055); color:rgba(247,251,255,.88); font-family:inherit; font-size:13px; font-weight:850; cursor:pointer; }
+    .footer-action.primary { border-color:rgba(126,234,255,.42); background:rgba(126,234,255,.10); color:#e9fbff; }
+    .record-viewer { position:absolute; inset:0; z-index:18; background:radial-gradient(circle at 50% 7%,rgba(126,234,255,.10),transparent 34%),linear-gradient(180deg,#071019,#03070c 74%); opacity:0; pointer-events:none; transform:translateY(18px); transition:opacity 220ms ease, transform 260ms ease; }
+    .record-viewer.show { opacity:1; pointer-events:auto; transform:translateY(0); }
+    .record-header { position:absolute; top:calc(58px + env(safe-area-inset-top)); left:18px; right:18px; height:42px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .back-button,.judge-button,.side-tool { border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.08); color:var(--ink); border-radius:999px; backdrop-filter:blur(14px); font-family:inherit; font-weight:820; cursor:pointer; }
+    .back-button { width:42px; height:36px; font-size:18px; } .record-title { flex:1; min-width:0; font-size:14px; font-weight:900; color:rgba(247,251,255,.86); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:center; } .record-count { min-width:42px; text-align:right; color:rgba(247,251,255,.58); font-size:12px; font-weight:800; }
+    .record-status { position:absolute; right:18px; top:calc(104px + env(safe-area-inset-top)); z-index:30; display:inline-flex; align-items:center; min-height:28px; padding:0 10px; border-radius:999px; background:rgba(33,156,111,.20); border:1px solid rgba(95,226,173,.44); color:rgba(214,255,238,.96); box-shadow:0 10px 22px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(12px); font-size:12px; font-weight:900; opacity:0; transform:translateY(-4px); pointer-events:none; transition:opacity 160ms ease, transform 160ms ease; }
+    .record-status.show { opacity:1; transform:translateY(0); }
+    .side-tools { position:absolute; right:12px; top:calc(154px + env(safe-area-inset-top)); z-index:31; display:grid; gap:8px; } .side-tool { width:48px; height:44px; border-radius:15px; font-size:12px; background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.055)); box-shadow:0 12px 26px rgba(0,0,0,.28); }
+    .record-image-wrap { position:absolute; left:18px; right:18px; top:calc(112px + env(safe-area-inset-top)); bottom:calc(142px + env(safe-area-inset-bottom)); display:grid; place-items:center; }
+    .record-image { width:min(100%,390px); max-height:100%; object-fit:contain; border-radius:24px; box-shadow:0 24px 58px rgba(0,0,0,.46); background:#111923; cursor:zoom-in; }
+    .record-actions { position:absolute; left:18px; right:18px; bottom:calc(22px + env(safe-area-inset-bottom)); display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .judge-button { min-height:52px; border-radius:17px; font-size:15px; background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(255,255,255,.055)); box-shadow:0 12px 25px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.10); } .judge-button.primary { border-color:rgba(126,234,255,.34); } .judge-button.recorded { border-color:rgba(95,226,173,.46); color:rgba(214,255,238,.96); background:linear-gradient(145deg,rgba(95,226,173,.18),rgba(255,255,255,.055)); }
+    .evidence-drawer { position:absolute; inset:auto 18px calc(82px + env(safe-area-inset-bottom)); max-height:54%; z-index:34; padding:17px 15px 15px; border-radius:22px; background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.06)),rgba(5,10,16,.86); border:1px solid rgba(255,255,255,.24); box-shadow:0 22px 48px rgba(0,0,0,.42); backdrop-filter:blur(20px) saturate(1.2); opacity:0; transform:translateY(16px); pointer-events:none; transition:opacity 220ms ease, transform 220ms ease; }
+    .evidence-drawer.show { opacity:1; transform:translateY(0); pointer-events:auto; } .drawer-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; } .drawer-title { color:var(--cyan); font-size:14px; font-weight:900; } .drawer-close { width:34px; height:30px; border:1px solid rgba(255,255,255,.20); border-radius:999px; background:rgba(255,255,255,.08); color:var(--ink); font-size:16px; font-weight:900; cursor:pointer; }
+    .evidence-list { display:grid; gap:9px; max-height:320px; overflow:auto; padding-right:2px; } .evidence-item { padding:11px 12px; border-radius:14px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); } .evidence-source { color:rgba(247,251,255,.58); font-size:11px; font-weight:800; margin-bottom:5px; } .evidence-text { color:rgba(247,251,255,.90); font-size:13px; font-weight:760; line-height:1.42; word-break:keep-all; } .evidence-empty { color:rgba(247,251,255,.58); font-size:13px; font-weight:680; line-height:1.45; }
+    .zoom-viewer { position:absolute; inset:0; z-index:60; background:rgba(2,6,10,.94); opacity:0; pointer-events:none; transition:opacity 180ms ease; } .zoom-viewer.show { opacity:1; pointer-events:auto; } .zoom-stage { position:absolute; inset:calc(72px + env(safe-area-inset-top)) 0 calc(92px + env(safe-area-inset-bottom)); overflow:hidden; touch-action:none; cursor:grab; } .zoom-stage.dragging { cursor:grabbing; } .zoom-img { position:absolute; left:50%; top:50%; width:min(96vw,680px); height:auto; border-radius:18px; box-shadow:0 28px 80px rgba(0,0,0,.58); transform:translate(-50%,-50%) scale(1); transform-origin:center; will-change:transform; user-select:none; -webkit-user-drag:none; }
+    .zoom-head { position:absolute; top:calc(16px + env(safe-area-inset-top)); left:16px; right:16px; display:flex; align-items:center; justify-content:space-between; gap:10px; z-index:2; } .zoom-title { min-width:0; flex:1; color:rgba(247,251,255,.86); font-size:13px; font-weight:900; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .zoom-close,.zoom-button { border:1px solid rgba(255,255,255,.24); border-radius:999px; background:rgba(255,255,255,.09); color:var(--ink); backdrop-filter:blur(14px); font-family:inherit; font-weight:900; cursor:pointer; } .zoom-close { width:42px; height:38px; font-size:18px; } .zoom-controls { position:absolute; left:18px; right:18px; bottom:calc(20px + env(safe-area-inset-bottom)); display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px; z-index:2; } .zoom-button { min-height:46px; font-size:14px; }
+    .toast { position:absolute; left:18px; right:18px; bottom:calc(18px + env(safe-area-inset-bottom)); z-index:70; min-height:118px; padding:16px 16px 15px; border-radius:20px; background:rgba(4,10,16,.76); border:1px solid rgba(255,255,255,.24); box-shadow:0 20px 42px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.14); backdrop-filter:blur(18px) saturate(1.2); opacity:0; transform:translateY(18px); pointer-events:none; transition:opacity 240ms ease, transform 240ms ease; }
+    .toast.show { opacity:1; transform:translateY(0); pointer-events:auto; } .toast-name { color:var(--cyan); font-size:13px; font-weight:900; margin-bottom:8px; } .toast-line { min-height:54px; font-size:clamp(16px,4.35vw,20px); font-weight:740; line-height:1.46; word-break:keep-all; } .toast-next { position:absolute; right:18px; bottom:13px; width:10px; height:10px; border-right:2px solid rgba(126,234,255,.78); border-bottom:2px solid rgba(126,234,255,.78); transform:rotate(45deg); }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="Episode 11 web server investigation">
+    <div class="top-visual"></div>
+    <div class="topbar"><div class="pill">EP.11 WEB SERVER TRACE</div><div class="pill">조사 모드</div></div>
+    <section class="menu-panel"><div class="kicker">웹서버 분석 자료</div><h1>어디부터 확인해볼까?</h1><p class="prompt">공격 문자열보다 요청 흐름, 차단 근거, 현재 설정, 변경 기록이 서로 맞는지 확인하자.</p><div class="grid">
+      <button class="menu-card" type="button" data-target="webVuln"><span class="card-title">웹 취약점 확인</span></button>
+      <button class="menu-card" type="button" data-target="admin"><span class="card-title">관리자 접근 로그</span></button>
+      <button class="menu-card" type="button" data-target="config"><span class="card-title">웹서버 설정</span></button>
+      <button class="menu-card" type="button" data-target="integrity"><span class="card-title">파일 무결성</span></button>
+      <button class="menu-card" type="button" data-target="database"><span class="card-title">DB 접근 기록</span></button>
+    </div></section>
+    <div class="investigation-footer" id="investigationFooter"><button class="footer-action" type="button" id="evidenceOpen">증거 카드 보기</button><button class="footer-action primary" type="button" id="finishInvestigation">결론 제출</button></div>
+    <section class="evidence-drawer" id="evidenceDrawer"><div class="drawer-head"><div class="drawer-title">증거 카드</div><button class="drawer-close" type="button" id="evidenceClose">×</button></div><div class="evidence-list" id="evidenceList"></div></section>
+    <section class="record-viewer" id="recordViewer"><div class="record-header"><button class="back-button" type="button" id="recordBack">‹</button><div class="record-title" id="recordTitle">자료 확인</div><div class="record-count" id="recordCount">1/2</div></div><div class="record-status" id="recordStatus">기록됨</div><div class="side-tools"><button class="side-tool" type="button" id="sideEvidence">카드</button><button class="side-tool" type="button" id="sideHint">힌트</button></div><div class="record-image-wrap"><img class="record-image" id="recordImage" alt="에피소드11 분석 자료" /></div><div class="record-actions"><button class="judge-button primary" type="button" id="recordKeep">증거로 기록한다</button><button class="judge-button" type="button" id="recordSkip">관련 없어 보인다</button></div></section>
+    <section class="zoom-viewer" id="zoomViewer"><div class="zoom-head"><div class="zoom-title" id="zoomTitle">자료 확대</div><button class="zoom-close" id="zoomClose" type="button">×</button></div><div class="zoom-stage" id="zoomStage"><img class="zoom-img" id="zoomImage" alt="확대된 자료 화면" /></div><div class="zoom-controls"><button class="zoom-button" id="zoomOut" type="button">-</button><button class="zoom-button" id="zoomReset" type="button">초기화</button><button class="zoom-button" id="zoomIn" type="button">+</button></div></section>
+    <div class="toast" id="toast"><div class="toast-name" id="toastName">강지호</div><div class="toast-line" id="toastLine"></div><div class="toast-next"></div></div>
+  </main>
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({ bgm:'../../assets/audio/mobile/episode-01/bgm-investigation.mp3', bgmVolume:.18, sfx:{ click:'../../assets/audio/mobile/common/sfx-click.mp3', card:'../../assets/audio/mobile/common/sfx-card.mp3' } });
+    const base='../../assets/images/mobile/investigation/episode-11/photo-generated-direct-v1/';
+    const recordSets={
+      webVuln:[{title:'웹 취약점 확인',file:base+'ep11-web-vuln-waf-block-01-true.png'},{title:'웹 취약점 확인',file:base+'ep11-web-vuln-failed-only-02-trap.png'}],
+      admin:[{title:'관리자 접근 로그',file:base+'ep11-admin-access-internal-ip-01-true.png'},{title:'관리자 접근 로그',file:base+'ep11-admin-access-readonly-02-trap.png'}],
+      config:[{title:'웹서버 설정',file:base+'ep11-server-config-current-01-true.png'},{title:'웹서버 설정',file:base+'ep11-server-config-old-snapshot-02-trap.png'}],
+      integrity:[{title:'파일 무결성',file:base+'ep11-file-integrity-clean-01-true.png'},{title:'파일 무결성',file:base+'ep11-file-integrity-webshell-noise-02-trap.png'}]
+    };
+    const evidenceMeta={
+      'ep11-web-vuln-waf-block-01-true.png':{source:'웹 취약점 확인',text:'웹 취약점 공격 시도는 있었지만 WAF 차단 기록과 같은 요청 ID로 연결된다.'},
+      'ep11-admin-access-internal-ip-01-true.png':{source:'관리자 접근 로그',text:'관리자 쓰기 요청이 내부 IP 10.20.45.18에서 같은 세션으로 이어진다.'},
+      'ep11-server-config-current-01-true.png':{source:'웹서버 설정',text:'현재 설정은 업로드 실행과 외부 관리자 접근을 제한하며 승인 기준선과 일치한다.'},
+      'ep11-file-integrity-clean-01-true.png':{source:'파일 무결성',text:'웹 루트 변조나 웹셸 생성 없이 관리자 API를 통한 게시물 변경만 남아 있다.'},
+      'ep11-web-vuln-failed-only-02-trap.png':{source:'웹 취약점 확인',text:'공격 문자열은 보이지만 실패한 요청과 에러만 있어 침해 근거로 삼기엔 부족하다.'},
+      'ep11-admin-access-readonly-02-trap.png':{source:'관리자 접근 로그',text:'내부 관리자 로그인은 맞지만 읽기 전용 세션이라 게시물 변경과 연결되지 않는다.'},
+      'ep11-server-config-old-snapshot-02-trap.png':{source:'웹서버 설정',text:'위험해 보이는 설정이지만 오래된 백업 스냅샷이라 현재 서버 상태와 다르다.'},
+      'ep11-file-integrity-webshell-noise-02-trap.png':{source:'파일 무결성',text:'웹셸처럼 보이는 경로 요청은 모두 404이며 파일 생성 이벤트와 연결되지 않는다.'}
+    };
+    const investigationFooter=document.getElementById('investigationFooter'), evidenceDrawer=document.getElementById('evidenceDrawer'), evidenceList=document.getElementById('evidenceList'), toast=document.getElementById('toast'), toastName=document.getElementById('toastName'), toastLine=document.getElementById('toastLine');
+    const recordViewer=document.getElementById('recordViewer'), recordTitle=document.getElementById('recordTitle'), recordCount=document.getElementById('recordCount'), recordImage=document.getElementById('recordImage'), recordKeep=document.getElementById('recordKeep'), recordSkip=document.getElementById('recordSkip'), recordStatus=document.getElementById('recordStatus');
+    const zoomViewer=document.getElementById('zoomViewer'), zoomStage=document.getElementById('zoomStage'), zoomImage=document.getElementById('zoomImage'), zoomTitle=document.getElementById('zoomTitle');
+    let recordQueue=[], recordIndex=0, firstEvidenceMessageShown=false, toastLines=[], toastStep=0;
+    let zoomScale=1.6, zoomX=0, zoomY=0, dragging=false, dragStartX=0, dragStartY=0, originX=0, originY=0;
+    const collectedEvidence=new Map();
+    function idFromFile(file){ return file.split('/').pop(); }
+    function currentRecordId(){ return recordQueue[recordIndex] ? idFromFile(recordQueue[recordIndex].file) : ''; }
+    function saveEvidence(){ sessionStorage.setItem('ep11Evidence', JSON.stringify([...collectedEvidence.keys()])); }
+    function loadEvidence(){ JSON.parse(sessionStorage.getItem('ep11Evidence') || '[]').forEach(id=>{ if(evidenceMeta[id]) collectedEvidence.set(id,evidenceMeta[id]); }); if(collectedEvidence.size){ firstEvidenceMessageShown=true; investigationFooter.classList.add('show'); } renderEvidenceList(); }
+    function renderEvidenceList(){ evidenceList.innerHTML=''; if(!collectedEvidence.size){ const e=document.createElement('div'); e.className='evidence-empty'; e.textContent='아직 기록한 자료가 없다.'; evidenceList.appendChild(e); return; } collectedEvidence.forEach(item=>{ const n=document.createElement('div'); n.className='evidence-item'; n.innerHTML=`<div class="evidence-source">${item.source}</div><div class="evidence-text">${item.text}</div>`; evidenceList.appendChild(n); }); }
+    function showToast(name, lines){ toastName.textContent=name; toastLines=lines; toastStep=0; toastLine.textContent=toastLines[0]; toast.classList.add('show'); }
+    toast.addEventListener('click',()=>{ if(toastStep<toastLines.length-1){ toastStep++; toastLine.textContent=toastLines[toastStep]; return; } toast.classList.remove('show'); });
+    function renderRecord(){ const current=recordQueue[recordIndex]; if(!current) return; const id=idFromFile(current.file); const collected=collectedEvidence.has(id); recordTitle.textContent=current.title; recordCount.textContent=`${recordIndex+1}/${recordQueue.length}`; recordImage.src=current.file; recordStatus.classList.toggle('show', collected); recordKeep.classList.toggle('recorded', collected); recordKeep.textContent=collected?'기록됨':'증거로 기록한다'; recordSkip.textContent=collected?'증거에서 제외한다':'관련 없어 보인다'; }
+    function openRecordSet(key){ recordQueue=recordSets[key] || []; recordIndex=0; renderRecord(); recordViewer.classList.add('show'); }
+    function closeRecordSet(){ recordViewer.classList.remove('show'); recordQueue=[]; recordIndex=0; recordImage.removeAttribute('src'); }
+    function advanceRecord(){ if(recordIndex<recordQueue.length-1){ recordIndex++; renderRecord(); return; } closeRecordSet(); }
+    function collectCurrentRecord(){ const id=currentRecordId(); const meta=evidenceMeta[id]; if(meta) collectedEvidence.set(id,meta); saveEvidence(); investigationFooter.classList.add('show'); renderEvidenceList(); window.HLTAudio.play('card'); if(!firstEvidenceMessageShown){ firstEvidenceMessageShown=true; showToast('강지호',['증거 카드가 생성되었다. 보기 무서운 로그보다 서로 맞물리는 기록인지 확인해야 한다.']); } }
+    function applyZoom(){ zoomImage.style.transform=`translate(calc(-50% + ${zoomX}px), calc(-50% + ${zoomY}px)) scale(${zoomScale})`; }
+    function resetZoom(){ zoomScale=1.6; zoomX=0; zoomY=0; applyZoom(); }
+    function openZoom(){ if(!recordImage.src) return; zoomImage.src=recordImage.src; zoomTitle.textContent=recordTitle.textContent+' 확대'; resetZoom(); zoomViewer.classList.add('show'); }
+    function closeZoom(){ zoomViewer.classList.remove('show'); zoomStage.classList.remove('dragging'); dragging=false; }
+    let databaseWarnings=0;
+    document.querySelectorAll('.menu-card').forEach(button=>button.addEventListener('click',()=>{
+      if(button.dataset.target==='database'){
+        databaseWarnings += 1;
+        const line = databaseWarnings > 1
+          ? '방금 말했죠. DB 접근은 이번 지원 범위가 아니에요. 필요한 건 비식별 웹 로그로 확인해야 합니다.'
+          : '그건 안 됩니다. DB는 이번 지원 범위가 아니에요. 웹 로그와 점검 자료부터 확인해 주세요.';
+        showToast('이유나',[line]);
+        return;
+      }
+      openRecordSet(button.dataset.target);
+    }));
+    recordKeep.addEventListener('click',()=>{ if(!collectedEvidence.has(currentRecordId())) collectCurrentRecord(); advanceRecord(); });
+    recordSkip.addEventListener('click',()=>{ const id=currentRecordId(); if(collectedEvidence.has(id)){ collectedEvidence.delete(id); saveEvidence(); renderEvidenceList(); } advanceRecord(); });
+    document.getElementById('recordBack').addEventListener('click',closeRecordSet);
+    document.getElementById('evidenceOpen').addEventListener('click',()=>{ renderEvidenceList(); evidenceDrawer.classList.add('show'); });
+    document.getElementById('sideEvidence').addEventListener('click',()=>{ renderEvidenceList(); evidenceDrawer.classList.add('show'); });
+    document.getElementById('sideHint').addEventListener('click',()=>showToast('서해인',['공격 문자열만 보지 말고, 차단 근거와 관리자 쓰기 요청, 현재 설정, 파일 변경 기록이 서로 이어지는지 봐.']));
+    document.getElementById('evidenceClose').addEventListener('click',()=>evidenceDrawer.classList.remove('show'));
+    document.getElementById('finishInvestigation').addEventListener('click',()=>{ saveEvidence(); if(!collectedEvidence.size){ showToast('강지호',['아직 기록한 분석 자료가 없다. 결론을 내려면 차단 근거, 관리자 요청, 현재 설정, 파일 변경 흐름이 필요하다.']); return; } window.location.href='../episode-11-conclusion/index.html'; });
+    recordImage.addEventListener('click',openZoom);
+    document.getElementById('zoomClose').addEventListener('click',closeZoom);
+    document.getElementById('zoomIn').addEventListener('click',()=>{ zoomScale=Math.min(4, zoomScale+.35); applyZoom(); });
+    document.getElementById('zoomOut').addEventListener('click',()=>{ zoomScale=Math.max(1, zoomScale-.35); applyZoom(); });
+    document.getElementById('zoomReset').addEventListener('click',resetZoom);
+    zoomStage.addEventListener('pointerdown',event=>{ dragging=true; zoomStage.setPointerCapture(event.pointerId); zoomStage.classList.add('dragging'); dragStartX=event.clientX; dragStartY=event.clientY; originX=zoomX; originY=zoomY; });
+    zoomStage.addEventListener('pointermove',event=>{ if(!dragging) return; zoomX=originX + event.clientX - dragStartX; zoomY=originY + event.clientY - dragStartY; applyZoom(); });
+    zoomStage.addEventListener('pointerup',()=>{ dragging=false; zoomStage.classList.remove('dragging'); }); zoomStage.addEventListener('pointercancel',()=>{ dragging=false; zoomStage.classList.remove('dragging'); });
+    zoomViewer.addEventListener('click',event=>{ if(event.target===zoomViewer) closeZoom(); });
+    loadEvidence();
+  </script>
+</body>
+</html>

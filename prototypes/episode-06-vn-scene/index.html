@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 06 Call VN Scene</title>
+  <style>
+    :root { --phone-w:min(100vw,430px); --phone-h:min(100dvh,932px); --ink:#f7fbff; --cyan:#7eeaff; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif; }
+    * { box-sizing:border-box; } html,body { height:100%; }
+    body { margin:0; display:grid; place-items:center; overflow:hidden; color:var(--ink); background:radial-gradient(circle at 50% 8%, rgba(126,234,255,.12), transparent 34%), linear-gradient(160deg,#020409,#07131d 54%,#020409); }
+    .phone { position:relative; width:var(--phone-w); height:var(--phone-h); max-height:932px; aspect-ratio:9/16; overflow:hidden; background:#05080d; box-shadow:0 28px 80px rgba(0,0,0,.62); user-select:none; isolation:isolate; }
+    .bg { position:absolute; inset:0; background-image:linear-gradient(to bottom,rgba(0,0,0,.08),rgba(0,0,0,.28) 43%,rgba(0,0,0,.72)),url("../../assets/images/mobile/backgrounds/mob-bg-campus-cafe-v1.png"); background-size:cover; background-position:center; transform:scale(1.035); filter:saturate(.92) brightness(.82); }
+    .scene-vignette { position:absolute; inset:0; background:radial-gradient(circle at 50% 43%,transparent 0 29%,rgba(0,0,0,.25) 63%,rgba(0,0,0,.62) 100%),linear-gradient(to bottom,rgba(2,6,10,.10),transparent 28%,rgba(2,6,10,.42)); pointer-events:none; }
+    .topbar { position:absolute; top:calc(14px + env(safe-area-inset-top)); left:16px; right:16px; display:flex; justify-content:space-between; align-items:center; gap:10px; z-index:18; opacity:.95; }
+    .chapter,.ghost-button { border:1px solid rgba(255,255,255,.20); border-radius:999px; background:rgba(4,10,16,.40); color:rgba(247,251,255,.80); backdrop-filter:blur(10px); font-weight:850; }
+    .chapter { max-width:calc(100% - 176px); padding:8px 12px; font-size:12px; letter-spacing:.06em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .small-actions { display:flex; gap:6px; } .ghost-button { padding:8px 9px; font-size:11px; cursor:pointer; } .ghost-button.on { border-color:rgba(126,234,255,.44); background:rgba(126,234,255,.14); color:#e9fbff; }
+    .focus-dim { position:absolute; inset:0; background:rgba(0,0,0,.16); opacity:0; transition:opacity 260ms ease; pointer-events:none; z-index:3; } .focus-dim.on { opacity:1; }
+    .info-card { position:absolute; left:26px; right:26px; top:calc(106px + env(safe-area-inset-top)); padding:14px 15px; border-radius:20px; background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.055)),rgba(5,10,16,.76); border:1px solid rgba(255,255,255,.22); box-shadow:0 20px 40px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(18px) saturate(1.16); z-index:15; opacity:0; transform:translateY(-12px); transition:opacity 300ms ease, transform 300ms ease; pointer-events:none; }
+    .info-card.show { opacity:1; transform:translateY(0); } .info-title { color:var(--cyan); font-size:12px; font-weight:950; letter-spacing:.08em; margin-bottom:8px; } .info-lines { display:grid; gap:7px; } .info-line { padding:8px 9px; border-radius:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); color:rgba(247,251,255,.86); font-size:12px; font-weight:720; line-height:1.36; word-break:keep-all; }
+    .char { position:absolute; bottom:148px; width:min(48vw,210px); aspect-ratio:312/793; background-repeat:no-repeat; background-size:contain; background-position:center bottom; opacity:0; filter:drop-shadow(0 28px 24px rgba(0,0,0,.50)); transition:opacity 320ms ease, transform 420ms cubic-bezier(.18,.84,.26,1), background-image 140ms step-end; z-index:5; pointer-events:none; }
+    .char.left { left:27%; transform:translateX(-50%) translateY(16px) scale(.985); } .char.right { left:73%; transform:translateX(-50%) translateY(16px) scale(.985); } .char.center { left:50%; transform:translateX(-50%) translateY(16px) scale(.985); }
+    .char.show.left,.char.show.right,.char.show.center { opacity:1; transform:translateX(-50%) translateY(0) scale(1); } .char.off-left { left:-24%; transform:translateX(-50%) translateY(16px) scale(.985); }
+    .haein.expr-0 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-0.png"); } .haein.expr-1 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-1.png"); } .haein.expr-2 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-2.png"); } .haein.expr-3 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-3.png"); } .haein.expr-4 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-4.png"); } .haein.expr-5 { background-image:url("../../assets/images/characters/seo-haein/cutins/expr-5.png"); }
+    .call-overlay { position:absolute; left:34px; right:34px; top:calc(98px + env(safe-area-inset-top)); height:min(39vh,330px); z-index:11; opacity:0; transform:translateY(-14px) scale(.98); pointer-events:none; transition:opacity 280ms ease, transform 320ms cubic-bezier(.18,.84,.26,1); }
+    .call-overlay.show { opacity:1; transform:translateY(0) scale(1); }
+    .call-frame { position:absolute; inset:0; border-radius:28px; overflow:hidden; border:1px solid rgba(255,255,255,.30); background:rgba(4,10,16,.42); box-shadow:0 24px 54px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.18); backdrop-filter:blur(18px) saturate(1.15); }
+    .call-panel { position:absolute; inset:8px; border-radius:22px; overflow:hidden; background-image:linear-gradient(to bottom,rgba(3,7,12,.04),rgba(3,7,12,.54)),url("../../assets/images/mobile/episode-06/ep06-call-during-break-prologue-comic-v1.png"); background-size:165% auto; background-position:center 35%; filter:saturate(.9) brightness(.86); }
+    .call-ui { position:absolute; left:18px; right:18px; bottom:16px; padding:13px 14px; border-radius:18px; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.07)),rgba(4,10,16,.64); border:1px solid rgba(255,255,255,.24); box-shadow:0 14px 28px rgba(0,0,0,.32); backdrop-filter:blur(14px); }
+    .call-label { color:rgba(126,234,255,.92); font-size:11px; font-weight:950; letter-spacing:.10em; margin-bottom:5px; } .call-name { color:#f7fbff; font-size:21px; font-weight:930; letter-spacing:.01em; } .call-status { margin-top:4px; color:rgba(247,251,255,.68); font-size:12px; font-weight:750; }
+    .dialogue-box { position:absolute; left:22px; right:22px; bottom:calc(22px + env(safe-area-inset-bottom)); min-height:136px; padding:15px 16px; border-radius:22px; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.07) 42%,rgba(7,18,27,.38)); border:1px solid rgba(255,255,255,.30); box-shadow:0 18px 36px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.18); backdrop-filter:blur(18px) saturate(1.24); z-index:13; cursor:pointer; }
+    .name-row { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; } .speaker { color:var(--cyan); font-size:13px; font-weight:900; letter-spacing:.02em; } .counter { color:rgba(247,251,255,.44); font-size:12px; font-weight:800; }
+    .line { min-height:62px; color:#f8fcff; font-size:clamp(16px,4.2vw,20px); font-weight:690; line-height:1.48; word-break:keep-all; text-shadow:0 2px 10px rgba(0,0,0,.72); } .line.muted { color:rgba(247,251,255,.84); font-style:italic; }
+    .next-mark { position:absolute; right:20px; bottom:13px; width:10px; height:10px; border-right:2px solid rgba(126,234,255,.78); border-bottom:2px solid rgba(126,234,255,.78); transform:rotate(45deg); animation:bob 850ms ease-in-out infinite; }
+    .end-panel { position:absolute; inset:0; z-index:30; display:grid; place-items:end center; padding:0 22px calc(24px + env(safe-area-inset-bottom)); background:linear-gradient(to bottom,rgba(2,6,10,.10),rgba(2,6,10,.76)); opacity:0; pointer-events:none; transition:opacity 360ms ease; }
+    .end-panel.show { opacity:1; pointer-events:auto; } .end-card { width:100%; padding:20px 17px 17px; border-radius:24px; background:linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.065)),rgba(5,10,16,.82); border:1px solid rgba(255,255,255,.26); box-shadow:0 22px 48px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.12); backdrop-filter:blur(20px) saturate(1.18); }
+    .end-kicker { color:var(--cyan); font-size:13px; font-weight:950; letter-spacing:.08em; margin-bottom:8px; } .end-title { font-size:clamp(22px,5.8vw,29px); font-weight:940; line-height:1.22; margin-bottom:10px; word-break:keep-all; } .end-copy { color:rgba(247,251,255,.72); font-size:13px; font-weight:720; line-height:1.45; margin-bottom:14px; word-break:keep-all; }
+    .end-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; } .end-button { min-height:48px; border:1px solid rgba(255,255,255,.20); border-radius:15px; background:rgba(255,255,255,.07); color:var(--ink); font-family:inherit; font-size:13px; font-weight:850; cursor:pointer; } .end-button.primary { border-color:rgba(126,234,255,.42); background:rgba(126,234,255,.11); }
+    @keyframes bob { 0%,100% { translate:0 0; opacity:.55; } 50% { translate:0 4px; opacity:1; } }
+  </style>
+</head>
+<body>
+  <main class="phone" id="phone" aria-label="Episode 6 call visual novel scene">
+    <div class="bg"></div><div class="scene-vignette"></div><div class="focus-dim" id="focusDim"></div>
+    <div class="topbar"><div class="chapter">EP.06 A CALL DURING THE BREAK</div><div class="small-actions"><button class="ghost-button" id="autoBtn" type="button">AUTO</button><button class="ghost-button" id="hintBtn" type="button">HINT</button><button class="ghost-button" id="skipBtn" type="button">SKIP</button></div></div>
+    <section class="info-card" id="infoCard"><div class="info-title" id="infoTitle">CALL MEMO</div><div class="info-lines" id="infoLines"></div></section>
+    <div class="char haein off-left" id="haein"></div>
+    <section class="call-overlay" id="callOverlay" aria-label="윤도현 전화 오버레이"><div class="call-frame"><div class="call-panel"></div><div class="call-ui"><div class="call-label">VOICE CALL</div><div class="call-name">윤도현</div><div class="call-status">통화 중 · 취재 메모 확인</div></div></div></section>
+    <section class="dialogue-box" id="dialogueBox"><div class="name-row"><div class="speaker" id="speaker">강지호</div><div class="counter" id="counter">1 / 1</div></div><div class="line" id="line"></div><div class="next-mark"></div></section>
+    <section class="end-panel" id="endPanel"><div class="end-card"><div class="end-kicker">EP.06 READY</div><div class="end-title">제보는 질문이 되었다.</div><div class="end-copy">도현의 연락은 결론이 아니라 외부 맥락을 확인할 방향을 만들었다. 이제 어떤 자료를 증거 카드에 남길지 골라야 한다.</div><div class="end-actions"><button class="end-button" id="replayButton" type="button">다시 보기</button><button class="end-button primary" id="nextButton" type="button">맥락 조사</button></div></div></section>
+  </main>
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({ sfx:{ click:'../../assets/audio/mobile/common/sfx-click.mp3', card:'../../assets/audio/mobile/common/sfx-card.mp3' } });
+    const beats=[
+      { type:'narration', speaker:' ', text:'1차 분석을 마친 뒤, 지호는 노트북을 잠시 덮고 식은 커피를 바라봤다.', chars:{} },
+      { type:'narration', speaker:' ', text:'이상한 건 있었다. 하지만 이상하다는 말과 침해됐다는 말 사이에는 거리가 있었다.', chars:{}, info:{title:'EP.05 결론', lines:['이상 징후 있음','침해 확정 아님','2차 분석 필요']} },
+      { type:'dialogue', speaker:'강지호', text:'CloudNote Helper, 브라우저 설정, 문서 접근 시간... 방향은 보이는데 아직 부족해.', chars:{} },
+      { type:'narration', speaker:' ', text:'그때, 테이블 위에 둔 휴대폰 화면이 켜졌다.', chars:{}, call:true, info:{title:'INCOMING CALL', lines:['윤도현','컨퍼런스 이후 취재 메모','확정 전 제보']} },
+      { type:'dialogue', speaker:'윤도현 / 전화', text:'지호야, 잠깐 통화 가능해?', chars:{}, call:true },
+      { type:'dialogue', speaker:'강지호', text:'네. 무슨 일이에요?', chars:{}, call:true },
+      { type:'dialogue', speaker:'윤도현 / 전화', text:'네가 말했던 CloudNote Helper 말이야. 비슷한 이름이 다른 제보에도 보여.', chars:{}, call:true, info:{title:'취재 메모', lines:['CloudNote Helper 반복 언급','브라우저 시작 페이지 변경 제보','로그온 직후 짧은 콘솔 창 제보']} },
+      { type:'dialogue', speaker:'강지호', text:'CloudNote Helper요? 해인 선배 노트북에서 봤던 이름이랑 같습니다.', chars:{}, call:true, info:{title:'로컬 기록과 비교', lines:['EP.05 시작 항목','EP.05 이벤트 로그','EP.05 다운로드 기록']} },
+      { type:'dialogue', speaker:'윤도현 / 전화', text:'확정은 아니야. 기사로 쓸 단계도 아니고. 단지 비슷한 증상 묶음이 있어.', chars:{}, call:true },
+      { type:'dialogue', speaker:'윤도현 / 전화', text:'몇몇 글은 note-sync 계열 주소를 언급해. 그리고 로그인 직후 뭔가 실행된다는 말도 반복돼.', chars:{}, call:true, info:{title:'검증 전 단서', lines:['note-sync 계열 주소','로그온 직후 실행','증상 반복: 단정 금지']} },
+      { type:'dialogue', speaker:'강지호', text:'해인 선배 PC에도 다운로드 기록과 브라우저 변경 흔적이 있었어요. 하지만 외부 전송 근거는 아직 없습니다.', chars:{}, call:true },
+      { type:'dialogue', speaker:'윤도현 / 전화', text:'그래서 너한테 먼저 말하는 거야. 이걸 결론으로 쓰면 안 되고, 다시 확인할 방향으로만 써야 할 것 같아서.', chars:{}, call:true },
+      { type:'dialogue', speaker:'강지호', text:'알겠습니다. 제보 내용은 기록 옆에 두고, 실제 노트북 로그와 다시 맞춰 볼게요.', chars:{}, call:true },
+      { type:'dialogue', speaker:'윤도현 / 전화', text:'응. 그리고 커뮤니티 글 중에는 과장도 섞여 있어. "무조건 해킹" 같은 말은 걸러야 해.', chars:{}, call:true, info:{title:'주의', lines:['커뮤니티 제보는 단서','과장 게시글 제외','로컬 기록으로 재검증']} },
+      { type:'narration', speaker:' ', text:'통화가 끊기자, 카페 소음이 다시 천천히 들려왔다.', chars:{}, call:false },
+      { type:'dialogue', speaker:'서해인', text:'표정이 바뀌었네. 뭔가 나왔어?', chars:{ haein:['center',1] } },
+      { type:'dialogue', speaker:'강지호', text:'윤도현 씨가 연락했어요. CloudNote Helper랑 note-sync 계열 주소가 다른 제보에도 나온다고 합니다.', chars:{ haein:['center',1] }, info:{title:'공유 내용', lines:['CloudNote Helper','note-sync 계열 주소','유사 증상 반복']} },
+      { type:'dialogue', speaker:'서해인', text:'좋아. 방향은 생겼어. 하지만 외부 제보가 내 노트북의 증거를 대신해 주진 않아.', chars:{ haein:['center',2] } },
+      { type:'dialogue', speaker:'강지호', text:'네. 제보는 지도처럼 쓰고, 결론은 제 노트북 기록으로 확인해야겠죠.', chars:{ haein:['center',1] } },
+      { type:'dialogue', speaker:'서해인', text:'맞아. 2차 분석은 CloudNote Helper가 실제로 무엇을 했는지 시간순으로 확인하자.', chars:{ haein:['center',4] }, info:{title:'2차 분석 방향', lines:['실행 흐름 확인','브라우저 변경 원인 확인','문서 접근과 외부 전송 분리']} },
+      { type:'dialogue', speaker:'강지호', text:'문서 접근 기록도 유출로 단정하지 않고, 외부 통신이나 전송 흔적이 있는지 따로 봐야겠네요.', chars:{ haein:['center',1] } },
+      { type:'dialogue', speaker:'서해인', text:'그게 분석이야. 의심은 질문이 되고, 질문은 기록으로 확인해야 해.', chars:{ haein:['center',4] } },
+      { type:'narration', speaker:' ', text:'처음엔 불안한 느낌이었다. 이제는 확인해야 할 질문이 됐다.', chars:{}, info:{title:'EP.06 핵심', lines:['제보는 증거가 아님','분석 방향 설정','2차 분석으로 연결']} },
+      { type:'narration', speaker:' ', text:'2차 분석의 방향을 정리한다.', chars:{}, end:true }
+    ];
+    const ids=['haein'];
+    const els=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]));
+    const focusDim=document.getElementById('focusDim'), speaker=document.getElementById('speaker'), line=document.getElementById('line'), counter=document.getElementById('counter'), dialogueBox=document.getElementById('dialogueBox'), autoBtn=document.getElementById('autoBtn'), hintBtn=document.getElementById('hintBtn'), skipBtn=document.getElementById('skipBtn'), infoCard=document.getElementById('infoCard'), infoTitle=document.getElementById('infoTitle'), infoLines=document.getElementById('infoLines'), endPanel=document.getElementById('endPanel'), callOverlay=document.getElementById('callOverlay');
+    let index=0, auto=false, hintOn=false, currentInfo=null, autoTimer=null, typeTimer=null, isTyping=false, currentText='';
+    function stopTyping(){ if(typeTimer) clearInterval(typeTimer); typeTimer=null; isTyping=false; }
+    function completeText(){ stopTyping(); line.textContent=currentText; }
+    function typeText(text){ stopTyping(); currentText=text; line.textContent=''; let i=0; isTyping=true; typeTimer=setInterval(()=>{ line.textContent += text[i] || ''; i += 1; if(i > text.length) stopTyping(); }, 18); }
+    function applyCharacters(chars){ let shown=false; ids.forEach(id=>{ const el=els[id]; el.className='char '+id+' off-left'; if(chars[id]){ const [slot,expr]=chars[id]; el.className='char '+id+' '+slot+' show expr-'+expr; shown=true; } }); focusDim.classList.toggle('on', shown || callOverlay.classList.contains('show')); }
+    function renderHint(){ infoLines.innerHTML=''; if(!hintOn || !currentInfo){ infoCard.classList.remove('show'); return; } infoTitle.textContent=currentInfo.title; currentInfo.lines.forEach(text=>{ const node=document.createElement('div'); node.className='info-line'; node.textContent=text; infoLines.appendChild(node); }); infoCard.classList.add('show'); }
+    function applyInfo(info){ currentInfo=info || null; renderHint(); }
+    function finish(){ endPanel.classList.add('show'); }
+    function showBeat(){ const beat=beats[index]; if(!beat) return; clearTimeout(autoTimer); stopTyping(); callOverlay.classList.toggle('show', Boolean(beat.call)); applyCharacters(beat.chars || {}); applyInfo(beat.info); speaker.textContent=beat.speaker || ' '; counter.textContent=`${index+1} / ${beats.length}`; line.classList.toggle('muted', beat.type==='narration'); typeText(beat.text); if(beat.end) autoTimer=setTimeout(finish,1300); if(auto && !beat.end) autoTimer=setTimeout(next, Math.max(1500, beat.text.length * 85)); }
+    function next(){ if(isTyping){ completeText(); return; } if(index < beats.length - 1){ index += 1; showBeat(); return; } finish(); }
+    dialogueBox.addEventListener('click', next);
+    document.getElementById('phone').addEventListener('click', e=>{ if(e.target.closest('button') || e.target.closest('.dialogue-box')) return; next(); });
+    autoBtn.addEventListener('click',()=>{ auto=!auto; autoBtn.textContent=auto?'AUTO ON':'AUTO'; autoBtn.classList.toggle('on', auto); if(auto) showBeat(); else clearTimeout(autoTimer); });
+    hintBtn.addEventListener('click',()=>{ hintOn=!hintOn; hintBtn.textContent=hintOn?'HINT ON':'HINT'; hintBtn.classList.toggle('on', hintOn); renderHint(); });
+    skipBtn.addEventListener('click',()=>{ stopTyping(); index=beats.length-1; showBeat(); completeText(); });
+    document.getElementById('replayButton').addEventListener('click',()=>location.reload());
+    document.getElementById('nextButton').addEventListener('click',()=>window.location.href='../episode-06-investigation-menu/index.html');
+    showBeat();
+  </script>
+</body>
+</html>

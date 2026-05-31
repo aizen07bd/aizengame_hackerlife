@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hacker Life: Trace - Episode 02 VN Scene</title>
+  <style>
+    :root { --phone-w: min(100vw, 430px); --phone-h: min(100dvh, 932px); --ink:#f7fbff; --cyan:#81ecff; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif; }
+    * { box-sizing: border-box; } html, body { height: 100%; }
+    body { margin:0; display:grid; place-items:center; overflow:hidden; color:var(--ink); background:radial-gradient(circle at 50% 8%, rgba(129,236,255,.12), transparent 34%), linear-gradient(160deg,#020409,#07131d 54%,#020409); }
+    .phone { position:relative; width:var(--phone-w); height:var(--phone-h); max-height:932px; aspect-ratio:9/16; overflow:hidden; background:#05080d; box-shadow:0 28px 80px rgba(0,0,0,.62); user-select:none; isolation:isolate; }
+    .bg { position:absolute; inset:0; background-image:linear-gradient(to bottom, rgba(0,0,0,.10), rgba(0,0,0,.24) 44%, rgba(0,0,0,.62)), url("../../assets/images/mobile/backgrounds/mob-bg-home-living-room-v1.png"); background-size:cover; background-position:center; transform:scale(1.02); }
+    .scene-vignette { position:absolute; inset:0; background:radial-gradient(circle at 50% 45%, transparent 0 30%, rgba(0,0,0,.24) 62%, rgba(0,0,0,.55) 100%), linear-gradient(to bottom, rgba(2,6,10,.12), transparent 26%, rgba(2,6,10,.42)); pointer-events:none; }
+    .topbar { position:absolute; top:calc(14px + env(safe-area-inset-top)); left:16px; right:16px; display:flex; justify-content:space-between; align-items:center; gap:12px; z-index:8; opacity:.94; }
+    .chapter, .ghost-button { border:1px solid rgba(255,255,255,.20); border-radius:999px; background:rgba(4,10,16,.38); color:rgba(247,251,255,.78); backdrop-filter:blur(10px); font-weight:850; }
+    .chapter { padding:8px 12px; font-size:12px; letter-spacing:.06em; }
+    .small-actions { display:flex; gap:8px; }
+    .ghost-button { padding:8px 11px; font-size:11px; cursor:pointer; }
+    .parents { position:absolute; left:50%; bottom:156px; width:min(80vw, 350px); aspect-ratio:660 / 793; background-image:url("../../assets/images/characters/parents/expression-sheet-knee-up-transparent-v1.png"); background-repeat:no-repeat; background-size:300% 100%; background-position:0% 0%; filter:drop-shadow(0 28px 24px rgba(0,0,0,.50)); opacity:0; transform:translateX(-50%) translateY(14px) scale(.985); transition:opacity 360ms ease, transform 420ms cubic-bezier(.18,.84,.26,1), background-position 160ms step-end; z-index:4; }
+    .parents.show { opacity:1; transform:translateX(-50%) translateY(0) scale(1); }
+    .parents.worried { background-position:0% 0%; } .parents.tense { background-position:50% 0%; } .parents.relief { background-position:100% 0%; }
+    .focus-dim { position:absolute; inset:0; background:rgba(0,0,0,.16); opacity:0; transition:opacity 260ms ease; pointer-events:none; z-index:3; }
+    .focus-dim.on { opacity:1; }
+    .dialogue-box { position:absolute; left:22px; right:22px; bottom:calc(22px + env(safe-area-inset-bottom)); min-height:132px; padding:15px 16px; border-radius:22px; background:linear-gradient(145deg, rgba(255,255,255,.18), rgba(255,255,255,.07) 42%, rgba(7,18,27,.38)); border:1px solid rgba(255,255,255,.30); box-shadow:0 18px 36px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.18); backdrop-filter:blur(18px) saturate(1.24); z-index:9; cursor:pointer; }
+    .name-row { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; }
+    .speaker { color:var(--cyan); font-size:13px; font-weight:900; letter-spacing:.02em; }
+    .counter { color:rgba(247,251,255,.44); font-size:12px; font-weight:800; }
+    .line { min-height:58px; color:#f8fcff; font-size:clamp(16px,4.2vw,20px); font-weight:690; line-height:1.48; word-break:keep-all; text-shadow:0 2px 10px rgba(0,0,0,.72); }
+    .line.muted { color:rgba(247,251,255,.84); font-style:italic; }
+    .next-mark { position:absolute; right:20px; bottom:13px; width:10px; height:10px; border-right:2px solid rgba(129,236,255,.78); border-bottom:2px solid rgba(129,236,255,.78); transform:rotate(45deg); animation:bob 850ms ease-in-out infinite; }
+    .choice-strip { position:absolute; left:18px; right:18px; bottom:calc(168px + env(safe-area-inset-bottom)); display:grid; gap:10px; z-index:10; opacity:0; transform:translateY(12px); pointer-events:none; transition:opacity 260ms ease, transform 260ms ease; }
+    .choice-strip.show { opacity:1; transform:translateY(0); pointer-events:auto; }
+    .choice { width:100%; min-height:52px; border:1px solid rgba(255,255,255,.24); border-radius:15px; background:rgba(5,14,21,.68); color:var(--ink); font-size:15px; font-weight:820; backdrop-filter:blur(12px); box-shadow:0 14px 28px rgba(0,0,0,.28); cursor:pointer; }
+    .fade { position:absolute; inset:0; background:#e8fbff; opacity:0; pointer-events:none; z-index:20; }
+    .fade.play { animation:flash 720ms ease forwards; }
+    @keyframes bob { 0%,100% { translate:0 0; opacity:.55; } 50% { translate:0 4px; opacity:1; } }
+    @keyframes flash { 0%,100% { opacity:0; } 45% { opacity:.72; } }
+  </style>
+</head>
+<body>
+  <main class="phone" id="phone" aria-label="Episode 2 visual novel scene">
+    <div class="bg"></div><div class="scene-vignette"></div><div class="focus-dim" id="focusDim"></div>
+    <div class="topbar"><div class="chapter">EP.02 THE LINK AT HOME</div><div class="small-actions"><button class="ghost-button" id="autoBtn" type="button">AUTO</button><button class="ghost-button" id="skipBtn" type="button">SKIP</button></div></div>
+    <div class="parents" id="parents" aria-hidden="true"></div>
+    <div class="choice-strip" id="choiceStrip"><button class="choice" type="button">일단 휴대폰이 해킹됐다고 말한다</button><button class="choice" type="button">접속, 입력, 설치, 결제 여부를 나눠 확인한다</button></div>
+    <section class="dialogue-box" id="dialogueBox"><div class="name-row"><div class="speaker" id="speaker">강지호</div><div class="counter" id="counter">1 / 1</div></div><div class="line" id="line"></div><div class="next-mark"></div></section>
+    <div class="fade" id="fade"></div>
+  </main>
+  <script src="../shared-audio.js"></script>
+  <script>
+    window.HLTAudio.init({ bgm:'../../assets/audio/mobile/episode-02/bgm-episode-02.mp3', bgmVolume:0.27, sfx:{ click:'../../assets/audio/mobile/common/sfx-click.mp3' } });
+    const beats = [
+      { type:'narration', speaker:' ', text:'실습이 끝난 뒤 집에 돌아오자, 거실의 공기가 평소보다 무거웠다.', char:'hide' },
+      { type:'dialogue', speaker:'어머니', text:'지호야, 이것 좀 봐줄래? 택배 주소가 잘못됐다고 문자가 왔는데...', char:'show', expression:'worried' },
+      { type:'dialogue', speaker:'아버지', text:'링크를 눌렀다는데, 이거 카드 털린 거 아니냐?', char:'show', expression:'tense' },
+      { type:'dialogue', speaker:'강지호', text:'잠깐만. 아직 피해가 생겼다고 단정하면 안 돼.', char:'show', expression:'worried' },
+      { type:'dialogue', speaker:'어머니', text:'화면에 카드 번호를 넣으라는 칸이 보였어. 무서워서 바로 닫긴 했는데...', char:'show', expression:'tense' },
+      { type:'dialogue', speaker:'강지호', text:'카드번호나 인증번호를 실제로 입력했는지부터 확인해야 해.', char:'show', expression:'worried' },
+      { type:'dialogue', speaker:'아버지', text:'그럼 휴대폰 전체를 다 뒤져봐야 하는 거 아니냐?', char:'show', expression:'tense' },
+      { type:'choice' },
+      { type:'dialogue', speaker:'강지호', text:'먼저 허락받은 범위 안에서만 볼게. 문자, 링크, 방문 기록, 결제 알림, 앱 설치 여부 정도면 충분해.', char:'show', expression:'worried' },
+      { type:'dialogue', speaker:'어머니', text:'응. 그 정도는 괜찮아. 진짜 돈이 빠져나간 건지만 알고 싶어.', char:'show', expression:'worried' },
+      { type:'dialogue', speaker:'강지호', text:'확인할 건 네 가지야. 눌렀는지, 입력했는지, 설치됐는지, 결제가 있었는지.', char:'show', expression:'worried' },
+      { type:'transition', speaker:' ', text:'피싱 피해 범위 확인으로 이동한다.', char:'hide' }
+    ];
+    const parents = document.getElementById('parents');
+    const focusDim = document.getElementById('focusDim');
+    const speaker = document.getElementById('speaker');
+    const line = document.getElementById('line');
+    const counter = document.getElementById('counter');
+    const dialogueBox = document.getElementById('dialogueBox');
+    const choiceStrip = document.getElementById('choiceStrip');
+    const fade = document.getElementById('fade');
+    const autoBtn = document.getElementById('autoBtn');
+    const skipBtn = document.getElementById('skipBtn');
+    let index = 0, auto = false, autoTimer = null, typeTimer = null, isTyping = false, currentText = '';
+    function stopTyping(){ if(typeTimer) clearInterval(typeTimer); typeTimer=null; isTyping=false; }
+    function completeText(){ stopTyping(); line.textContent=currentText; }
+    function typeText(text){ stopTyping(); currentText=text; line.textContent=''; let i=0; isTyping=true; typeTimer=setInterval(()=>{ line.textContent += text[i] || ''; i += 1; if(i > text.length) stopTyping(); }, 18); }
+    function applyCharacter(beat){ parents.className='parents'; if(beat.char==='show'){ parents.classList.add('show', beat.expression || 'worried'); focusDim.classList.add('on'); } else { focusDim.classList.remove('on'); } }
+    function goInvestigation(){ window.location.href='../episode-02-investigation-menu/index.html'; }
+    function showBeat(){ const beat=beats[index]; if(!beat) return; clearTimeout(autoTimer); stopTyping(); if(beat.type==='choice'){ speaker.textContent='강지호'; counter.textContent=`${index+1} / ${beats.length}`; line.textContent='어떻게 말할까.'; line.classList.remove('muted'); choiceStrip.classList.add('show'); return; } choiceStrip.classList.remove('show'); applyCharacter(beat); speaker.textContent=beat.speaker || ' '; counter.textContent=`${index+1} / ${beats.length}`; line.classList.toggle('muted', beat.type==='narration' || beat.type==='transition'); typeText(beat.text); if(beat.type==='transition'){ fade.classList.remove('play'); void fade.offsetWidth; fade.classList.add('play'); autoTimer=setTimeout(goInvestigation, 1450); } if(auto) autoTimer=setTimeout(next, Math.max(1500, beat.text.length * 85)); }
+    function next(){ if(choiceStrip.classList.contains('show')) return; if(isTyping){ completeText(); return; } if(index < beats.length - 1){ index += 1; showBeat(); } }
+    dialogueBox.addEventListener('click', next);
+    document.getElementById('phone').addEventListener('click', e => { if(e.target.closest('button') || e.target.closest('.dialogue-box')) return; next(); });
+    choiceStrip.addEventListener('click', e => { if(!e.target.closest('.choice')) return; choiceStrip.classList.remove('show'); index += 1; showBeat(); });
+    autoBtn.addEventListener('click', () => { auto=!auto; autoBtn.textContent=auto ? 'AUTO ON' : 'AUTO'; if(auto) showBeat(); else clearTimeout(autoTimer); });
+    skipBtn.addEventListener('click', () => { stopTyping(); index=beats.length-1; showBeat(); });
+    showBeat();
+  </script>
+</body>
+</html>
