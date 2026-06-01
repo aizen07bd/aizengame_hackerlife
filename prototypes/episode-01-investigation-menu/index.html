@@ -702,41 +702,56 @@
 
     const recordSets = {
       'pc-info': [
-        { title: 'PC 정보', file: '../../assets/images/mobile/investigation/episode-01/log-screens/ep01-pc-info-cmd-v1.svg' }
+        { title: 'PC 정보', file: '../../assets/images/mobile/investigation/episode-01/photo-evidence-v1/ep01-pc-info-cmd-v2.png' }
       ],
       'homepage-access': [
-        { title: '홈페이지 접속 기록', file: '../../assets/images/mobile/investigation/episode-01/log-screens/ep01-homepage-access-01-v1.svg' },
-        { title: '홈페이지 접속 기록', file: '../../assets/images/mobile/investigation/episode-01/log-screens/ep01-homepage-access-02-v1.svg' }
+        { title: '홈페이지 접속 기록', file: '../../assets/images/mobile/investigation/episode-01/photo-evidence-v1/ep01-homepage-access-01-v2.png' },
+        { title: '홈페이지 접속 기록', file: '../../assets/images/mobile/investigation/episode-01/photo-evidence-v1/ep01-homepage-access-02-v2.png' }
       ],
       'homepage-activity': [
-        { title: '홈페이지 활동 기록', file: '../../assets/images/mobile/investigation/episode-01/log-screens/ep01-homepage-activity-01-v1.svg' },
-        { title: '홈페이지 활동 기록', file: '../../assets/images/mobile/investigation/episode-01/log-screens/ep01-homepage-activity-02-v1.svg' }
+        { title: '홈페이지 활동 기록', file: '../../assets/images/mobile/investigation/episode-01/photo-evidence-v1/ep01-homepage-activity-01-v2.png' },
+        { title: '홈페이지 활동 기록', file: '../../assets/images/mobile/investigation/episode-01/photo-evidence-v1/ep01-homepage-activity-02-v2.png' }
       ],
       'browser-history': [
-        { title: '브라우저 기록', file: '../../assets/images/mobile/investigation/episode-01/log-screens/ep01-browser-history-01-v1.svg' },
-        { title: '브라우저 기록', file: '../../assets/images/mobile/investigation/episode-01/log-screens/ep01-browser-history-02-v1.svg' }
+        { title: '브라우저 기록', file: '../../assets/images/mobile/investigation/episode-01/photo-evidence-v1/ep01-browser-history-01-v2.png' },
+        { title: '브라우저 기록', file: '../../assets/images/mobile/investigation/episode-01/photo-evidence-v1/ep01-browser-history-02-v2.png' }
       ]
     };
 
     const evidenceMeta = {
-      'ep01-pc-info-cmd-v1.svg': { source: 'PC 정보', text: '현재 실습실 PC의 호스트명이 LAB-PC-14로 확인된다.' },
-      'ep01-homepage-access-01-v1.svg': { source: '홈페이지 접속 기록', text: '최근 접속 구간에 로그인 실패와 로그인 페이지 접근 기록이 보인다.' },
-      'ep01-homepage-access-02-v1.svg': { source: '홈페이지 접속 기록', text: '전날 LAB-PC-14에서 민서 계정 사용 후 명확한 로그아웃 기록이 없다.' },
-      'ep01-homepage-activity-01-v1.svg': { source: '홈페이지 활동 기록', text: '일반 공지와 강의 페이지 조회 기록이 이어진다.' },
-      'ep01-homepage-activity-02-v1.svg': { source: '홈페이지 활동 기록', text: '계정 설정과 비밀번호 변경 요청 관련 활동이 남아 있다.' },
-      'ep01-browser-history-01-v1.svg': { source: '브라우저 기록', text: '오늘 오전 LMS 로그인 페이지와 도움말 페이지 방문 기록이 있다.' },
-      'ep01-browser-history-02-v1.svg': { source: '브라우저 기록', text: '브라우저 복원으로 민서 계정 세션이 다시 열린 기록이 있다.' }
+      'ep01-pc-info-cmd-v2.png': { source: 'PC 정보', text: '현재 실습실 PC의 호스트명이 LAB-PC-14로 확인된다.' },
+      'ep01-homepage-access-01-v2.png': { source: '홈페이지 접속 기록', text: '최근 접속 구간에 로그인 실패와 로그인 페이지 접근 기록이 보인다.' },
+      'ep01-homepage-access-02-v2.png': { source: '홈페이지 접속 기록', text: '전날 LAB-PC-14에서 민서 계정 사용 후 명확한 로그아웃 기록이 없다.' },
+      'ep01-homepage-activity-01-v2.png': { source: '홈페이지 활동 기록', text: '일반 공지와 강의 페이지 조회 기록이 이어진다.' },
+      'ep01-homepage-activity-02-v2.png': { source: '홈페이지 활동 기록', text: '계정 설정과 비밀번호 변경 요청 관련 활동이 남아 있다.' },
+      'ep01-browser-history-01-v2.png': { source: '브라우저 기록', text: '오늘 오전 LMS 로그인 페이지와 도움말 페이지 방문 기록이 있다.' },
+      'ep01-browser-history-02-v2.png': { source: '브라우저 기록', text: '브라우저 복원으로 민서 계정 세션이 다시 열린 기록이 있다.' }
     };
+
+    const legacyEvidenceIds = {
+      'ep01-pc-info-cmd-v1.svg': 'ep01-pc-info-cmd-v2.png',
+      'ep01-homepage-access-01-v1.svg': 'ep01-homepage-access-01-v2.png',
+      'ep01-homepage-access-02-v1.svg': 'ep01-homepage-access-02-v2.png',
+      'ep01-homepage-activity-01-v1.svg': 'ep01-homepage-activity-01-v2.png',
+      'ep01-homepage-activity-02-v1.svg': 'ep01-homepage-activity-02-v2.png',
+      'ep01-browser-history-01-v1.svg': 'ep01-browser-history-01-v2.png',
+      'ep01-browser-history-02-v1.svg': 'ep01-browser-history-02-v2.png'
+    };
+
+    function normalizeEvidenceId(id) {
+      return legacyEvidenceIds[id] || id;
+    }
 
     function saveEvidenceState() {
       sessionStorage.setItem('ep01Evidence', JSON.stringify([...collectedEvidence.keys()]));
     }
 
     function loadEvidenceState() {
-      const saved = JSON.parse(sessionStorage.getItem('ep01Evidence') || '[]');
+      const saved = JSON.parse(sessionStorage.getItem('ep01Evidence') || '[]').map(normalizeEvidenceId);
       saved.forEach(id => {
         if (evidenceMeta[id]) collectedEvidence.set(id, evidenceMeta[id]);
       });
+      sessionStorage.setItem('ep01Evidence', JSON.stringify([...collectedEvidence.keys()]));
       if (collectedEvidence.size) {
         firstEvidenceMessageShown = true;
         showInvestigationFooter();
