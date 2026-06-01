@@ -10,6 +10,7 @@
       --phone-h: min(100dvh, 932px);
       --ink: #f7fbff;
       --cyan: #7eeaff;
+      --panel: rgba(8, 16, 24, .42);
       font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
     }
 
@@ -47,47 +48,142 @@
       transform: scale(1.01);
     }
 
-    .start-hit {
+    .menu-panel {
       position: absolute;
-      left: 50%;
-      bottom: calc(54px + env(safe-area-inset-bottom));
-      width: min(72%, 292px);
-      height: 62px;
-      transform: translateX(-50%);
+      left: 28px;
+      right: 28px;
+      bottom: calc(34px + env(safe-area-inset-bottom));
+      z-index: 3;
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 26px;
+      background: linear-gradient(145deg, rgba(255,255,255,.16), rgba(255,255,255,.06)), rgba(4,10,16,.34);
+      box-shadow: 0 22px 52px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.12);
+      backdrop-filter: blur(18px) saturate(1.2);
+    }
+
+    .main-action, .sub-action {
+      width: 100%;
+      min-height: 48px;
       border: 1px solid rgba(255,255,255,.24);
       border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      color: transparent;
-      cursor: pointer;
-      backdrop-filter: blur(6px);
-      opacity: .02;
-    }
-    .start-hit:focus-visible {
-      opacity: 1;
-      color: #eafcff;
-      background: rgba(6,18,27,.62);
-      outline: 2px solid var(--cyan);
-      outline-offset: 3px;
-      font-size: 18px;
+      color: var(--ink);
+      font-family: inherit;
       font-weight: 900;
+      cursor: pointer;
+      background: rgba(255,255,255,.08);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
+    }
+    .main-action {
+      min-height: 54px;
+      border-color: rgba(126,234,255,.48);
+      background: linear-gradient(135deg, rgba(126,234,255,.26), rgba(255,255,255,.09));
+      font-size: 18px;
+    }
+    .sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .sub-action { font-size: 14px; }
+    .sub-action:disabled { opacity: .42; cursor: default; }
+    .save-note {
+      color: rgba(247,251,255,.64);
+      font-size: 11px;
+      font-weight: 760;
+      text-align: center;
+      line-height: 1.35;
+      word-break: keep-all;
     }
 
     .fade {
       position: absolute;
       inset: 0;
-      z-index: 4;
+      z-index: 12;
       background: #020409;
       opacity: 0;
       pointer-events: none;
       transition: opacity 520ms ease;
     }
     .fade.show { opacity: 1; }
+
+    .episode-modal {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      display: none;
+      padding: calc(28px + env(safe-area-inset-top)) 18px calc(18px + env(safe-area-inset-bottom));
+      background: rgba(1,5,9,.72);
+      backdrop-filter: blur(16px);
+    }
+    .episode-modal.show { display: grid; grid-template-rows: auto 1fr; gap: 14px; }
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border: 1px solid rgba(255,255,255,.20);
+      border-radius: 22px;
+      background: rgba(8,16,24,.58);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.10);
+    }
+    .modal-title { font-size: 18px; font-weight: 950; letter-spacing: .02em; }
+    .modal-close {
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      color: var(--ink);
+      font-size: 22px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .episode-list {
+      min-height: 0;
+      overflow-y: auto;
+      display: grid;
+      gap: 10px;
+      padding-right: 2px;
+      overscroll-behavior: contain;
+    }
+    .episode-item {
+      min-height: 72px;
+      padding: 12px 13px;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      background: linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.05)), rgba(9,18,27,.70);
+      color: var(--ink);
+      text-align: left;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .episode-item.locked { opacity: .42; cursor: default; }
+    .episode-title { display: block; font-size: 14px; font-weight: 950; letter-spacing: .02em; }
+    .episode-subtitle { display: block; margin-top: 5px; color: rgba(247,251,255,.64); font-size: 12px; font-weight: 760; }
+    .episode-state { display: inline-block; margin-top: 8px; color: var(--cyan); font-size: 11px; font-weight: 900; }
   </style>
 </head>
 <body>
   <main class="phone" aria-label="Hacker Life: Trace mobile start page">
     <div class="poster" aria-hidden="true"></div>
-    <button class="start-hit" id="startButton" type="button">시작</button>
+
+    <section class="menu-panel" aria-label="시작 메뉴">
+      <button class="main-action" id="startButton" type="button">새로 시작</button>
+      <div class="sub-grid">
+        <button class="sub-action" id="continueButton" type="button">이어하기</button>
+        <button class="sub-action" id="episodeButton" type="button">에피소드 선택</button>
+      </div>
+      <div class="save-note" id="saveNote">진행 상황은 이 브라우저에 자동 저장됩니다.</div>
+    </section>
+
+    <section class="episode-modal" id="episodeModal" aria-label="에피소드 선택">
+      <div class="modal-head">
+        <div class="modal-title">에피소드 선택</div>
+        <button class="modal-close" id="episodeClose" type="button" aria-label="닫기">×</button>
+      </div>
+      <div class="episode-list" id="episodeList"></div>
+    </section>
+
     <div class="fade" id="fade"></div>
   </main>
 
@@ -103,45 +199,87 @@
     });
 
     const startButton = document.getElementById('startButton');
+    const continueButton = document.getElementById('continueButton');
+    const episodeButton = document.getElementById('episodeButton');
+    const episodeModal = document.getElementById('episodeModal');
+    const episodeClose = document.getElementById('episodeClose');
+    const episodeList = document.getElementById('episodeList');
+    const saveNote = document.getElementById('saveNote');
     const fade = document.getElementById('fade');
-    function startGame() {
+
+    function transitionTo(rootPath) {
       window.HLTAudio.enable();
       window.HLTAudio.play('start');
-      sessionStorage.removeItem('ep01Evidence');
-      sessionStorage.removeItem('ep01Conclusion');
-      sessionStorage.removeItem('ep02Evidence');
-      sessionStorage.removeItem('ep02Conclusion');
-      sessionStorage.removeItem('ep03Evidence');
-      sessionStorage.removeItem('ep03Conclusion');
-      sessionStorage.removeItem('ep04Evidence');
-      sessionStorage.removeItem('ep04Conclusion');
-      sessionStorage.removeItem('ep05Evidence');
-      sessionStorage.removeItem('ep05Conclusion');
-      sessionStorage.removeItem('ep06Evidence');
-      sessionStorage.removeItem('ep06Conclusion');
-      sessionStorage.removeItem('ep07Evidence');
-      sessionStorage.removeItem('ep07Conclusion');
-      sessionStorage.removeItem('ep08Evidence');
-      sessionStorage.removeItem('ep08Conclusion');
-      sessionStorage.removeItem('ep09Evidence');
-      sessionStorage.removeItem('ep09Conclusion');
-      sessionStorage.removeItem('ep10Evidence');
-      sessionStorage.removeItem('ep10Conclusion');
-      sessionStorage.removeItem('ep11Evidence');
-      sessionStorage.removeItem('ep11Conclusion');
-      sessionStorage.removeItem('ep12Evidence');
-      sessionStorage.removeItem('ep12Conclusion');
-      sessionStorage.removeItem('ep13Evidence');
-      sessionStorage.removeItem('ep13Conclusion');
       fade.classList.add('show');
       window.setTimeout(() => {
-        window.location.href = '../prologue-comic-animation/index-inline-text.html';
+        window.location.href = window.HLTProgress.href(rootPath);
       }, 540);
     }
+
+    function startGame() {
+      window.HLTProgress.clearRunState();
+      window.HLTProgress.write({
+        lastPath: 'prototypes/prologue-comic-animation/index-inline-text.html',
+        lastEpisode: 'ep01',
+        unlocked: window.HLTProgress.unlockThrough('ep01')
+      });
+      transitionTo('prototypes/prologue-comic-animation/index-inline-text.html');
+    }
+
+    function continueGame() {
+      const progress = window.HLTProgress.read();
+      if (!progress.lastPath) {
+        startGame();
+        return;
+      }
+      transitionTo(progress.lastPath);
+    }
+
+    function renderEpisodeList() {
+      const progress = window.HLTProgress.read();
+      const unlocked = new Set(progress.unlocked || ['ep01']);
+      episodeList.innerHTML = '';
+      window.HLTProgress.episodes.forEach(ep => {
+        const isUnlocked = unlocked.has(ep.id);
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'episode-item' + (isUnlocked ? '' : ' locked');
+        button.disabled = !isUnlocked;
+        button.innerHTML = `<span class="episode-title">${ep.title}</span><span class="episode-subtitle">${ep.subtitle}</span><span class="episode-state">${isUnlocked ? 'PLAY' : 'LOCKED'}</span>`;
+        button.addEventListener('click', () => {
+          window.HLTProgress.clearEpisodeState(ep.id);
+          window.HLTProgress.write({ lastPath: ep.path, lastEpisode: ep.id, unlocked: window.HLTProgress.unlockThrough(ep.id) });
+          transitionTo(ep.path);
+        });
+        episodeList.appendChild(button);
+      });
+    }
+
+    function refreshMenu() {
+      const progress = window.HLTProgress.read();
+      continueButton.disabled = !progress.lastPath;
+      const last = window.HLTProgress.episodes.find(ep => ep.id === progress.lastEpisode);
+      saveNote.textContent = progress.lastPath && last
+        ? `최근 진행: ${last.title} · 이 브라우저에 자동 저장됨`
+        : '진행 상황은 이 브라우저에 자동 저장됩니다.';
+    }
+
     startButton.addEventListener('click', startGame);
-    window.addEventListener('keydown', event => {
-      if (event.key === 'Enter' || event.key === ' ') startGame();
+    continueButton.addEventListener('click', continueGame);
+    episodeButton.addEventListener('click', () => {
+      renderEpisodeList();
+      episodeModal.classList.add('show');
     });
+    episodeClose.addEventListener('click', () => episodeModal.classList.remove('show'));
+    episodeModal.addEventListener('click', event => {
+      if (event.target === episodeModal) episodeModal.classList.remove('show');
+    });
+    window.addEventListener('keydown', event => {
+      if (event.key === 'Escape') episodeModal.classList.remove('show');
+      if ((event.key === 'Enter' || event.key === ' ') && !episodeModal.classList.contains('show')) startGame();
+    });
+
+    refreshMenu();
   </script>
 </body>
 </html>
