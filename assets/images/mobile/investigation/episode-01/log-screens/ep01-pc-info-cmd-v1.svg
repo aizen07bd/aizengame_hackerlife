@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="560" viewBox="0 0 390 560">
+<rect width="390" height="560" rx="26" fill="#101820"/>
+<rect x="18" y="22" width="354" height="516" rx="16" fill="#0c1117" stroke="#2f3b49"/>
+<rect x="18" y="22" width="354" height="36" rx="16" fill="#263240"/>
+<rect x="18" y="42" width="354" height="16" fill="#263240"/>
+<text x="38" y="46" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#d9e2ed">명령 프롬프트</text>
+<rect x="34" y="78" width="322" height="338" rx="8" fill="#05080d" stroke="#1c2733"/>
+<text x="48" y="101" font-family="Menlo, Consolas, monospace" font-size="10.5" fill="#dce8f4">Microsoft Windows [Version 10.0.19045.4170]</text>
+<text x="48" y="125" font-family="Menlo, Consolas, monospace" font-size="10.5" fill="#dce8f4">(c) Microsoft Corporation. All rights reserved.</text>
+<text x="48" y="149" font-family="Menlo, Consolas, monospace" font-size="10.5" fill="#dce8f4"></text>
+<text x="48" y="173" font-family="Menlo, Consolas, monospace" font-size="10.5" fill="#dce8f4">C:\Users\student&gt;whoami</text>
+<text x="48" y="197" font-family="Menlo, Consolas, monospace" font-size="10.5" fill="#dce8f4">LAB-PC-14\student</text>
+<text x="48" y="221" font-family="Menlo, Consolas, monospace" font-size="10.5" fill="#dce8f4"></text>
+<text x="48" y="245" font-family="Menlo, Consolas, monospace" font-size="10.5" fill="#dce8f4">C:\Users\student&gt;hostname</text>
+<text x="48" y="269" font-family="Menlo, Consolas, monospace" font-size="10.5" fill="#dce8f4">LAB-PC-14</text>
+<text x="48" y="293" font-family="Menlo, Consolas, monospace" font-size="10.5" fill="#dce8f4"></text>
+<text x="48" y="317" font-family="Menlo, Consolas, monospace" font-size="10.5" fill="#dce8f4">C:\Users\student&gt;_</text>
+<rect x="34" y="436" width="322" height="72" rx="10" fill="#151f2a" stroke="#293849"/>
+<text x="50" y="462" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#9fb1c4">PC 정보</text>
+<text x="50" y="486" font-family="Menlo, Consolas, monospace" font-size="12" fill="#dce8f4">hostname = LAB-PC-14</text>
+</svg>

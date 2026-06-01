@@ -1,0 +1,54 @@
+{
+  "episode": 1,
+  "title": "First Login",
+  "asset_type": "mobile investigation log screens",
+  "notes": [
+    "Neutral titles only; no answer labels, no evidence hints, no keyword coloring.",
+    "Each non-PC investigation has two record screens. The player must judge each screen as evidence or unrelated.",
+    "PC information is a command prompt screen that reveals hostname LAB-PC-14."
+  ],
+  "screens": [
+    {
+      "id": "pc-info",
+      "menu": "PC 정보",
+      "file": "ep01-pc-info-cmd-v1.svg",
+      "internal_role": "support_context"
+    },
+    {
+      "id": "homepage-access-01",
+      "menu": "홈페이지 접속 기록",
+      "file": "ep01-homepage-access-01-v1.svg",
+      "internal_role": "trap_login_failure"
+    },
+    {
+      "id": "homepage-access-02",
+      "menu": "홈페이지 접속 기록",
+      "file": "ep01-homepage-access-02-v1.svg",
+      "internal_role": "required_previous_day_context"
+    },
+    {
+      "id": "homepage-activity-01",
+      "menu": "홈페이지 활동 기록",
+      "file": "ep01-homepage-activity-01-v1.svg",
+      "internal_role": "noise_course_activity"
+    },
+    {
+      "id": "homepage-activity-02",
+      "menu": "홈페이지 활동 기록",
+      "file": "ep01-homepage-activity-02-v1.svg",
+      "internal_role": "required_account_activity"
+    },
+    {
+      "id": "browser-history-01",
+      "menu": "브라우저 기록",
+      "file": "ep01-browser-history-01-v1.svg",
+      "internal_role": "noise_browser_history"
+    },
+    {
+      "id": "browser-history-02",
+      "menu": "브라우저 기록",
+      "file": "ep01-browser-history-02-v1.svg",
+      "internal_role": "required_session_restore"
+    }
+  ]
+}
