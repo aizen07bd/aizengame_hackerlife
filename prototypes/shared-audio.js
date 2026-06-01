@@ -41,6 +41,7 @@
       lastPath: progress.lastPath || '',
       lastEpisode: progress.lastEpisode || 'ep01',
       unlocked,
+      completed: Array.isArray(progress.completed) ? progress.completed : [],
       updatedAt: progress.updatedAt || ''
     };
   }
@@ -48,6 +49,7 @@
   function writeProgress(progress) {
     const next = Object.assign({}, readProgress(), progress || {});
     next.unlocked = [...new Set(next.unlocked || ['ep01'])].sort((a, b) => Number(a.slice(2)) - Number(b.slice(2)));
+    next.completed = [...new Set(next.completed || [])].sort((a, b) => Number(a.slice(2)) - Number(b.slice(2)));
     next.updatedAt = new Date().toISOString();
     localStorage.setItem(progressKey, JSON.stringify(next));
     return next;
@@ -152,9 +154,14 @@
     const next = {
       lastPath: rootPath,
       lastEpisode: episodeId || progress.lastEpisode,
-      unlocked: episodeId ? unlockThrough(episodeId) : progress.unlocked
+      unlocked: episodeId ? unlockThrough(episodeId) : progress.unlocked,
+      completed: progress.completed
     };
+    const completed = new Set(progress.completed || []);
+    const clearMatch = rootPath.match(/prototypes\/episode-(\d{2})-(?:recap-animation|ending-comic-animation)\/index\.html$/);
+    if (clearMatch) completed.add(`ep${clearMatch[1]}`);
     if (rootPath === 'prototypes/game-credits/index.html') {
+      episodes.forEach(ep => completed.add(ep.id));
       next.unlocked = episodes.map(ep => ep.id);
       next.lastEpisode = 'ep15';
     }
@@ -162,6 +169,7 @@
       next.unlocked = unlockThrough('ep01');
       next.lastEpisode = 'ep01';
     }
+    next.completed = [...completed];
     writeProgress(next);
   }
 

@@ -83,6 +83,7 @@
       font-size: 18px;
     }
     .sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .sub-grid.locked { display: none; }
     .sub-action { font-size: 14px; }
     .sub-action:disabled { opacity: .42; cursor: default; }
     .save-note {
@@ -221,7 +222,8 @@
       window.HLTProgress.write({
         lastPath: 'prototypes/prologue-comic-animation/index-inline-text.html',
         lastEpisode: 'ep01',
-        unlocked: window.HLTProgress.unlockThrough('ep01')
+        unlocked: window.HLTProgress.unlockThrough('ep01'),
+        completed: []
       });
       transitionTo('prototypes/prologue-comic-animation/index-inline-text.html');
     }
@@ -237,10 +239,12 @@
 
     function renderEpisodeList() {
       const progress = window.HLTProgress.read();
-      const unlocked = new Set(progress.unlocked || ['ep01']);
+      const completed = new Set(progress.completed || []);
+      const episodeSelectEnabled = completed.has('ep01');
+      const unlocked = new Set(episodeSelectEnabled ? (progress.unlocked || ['ep01']) : []);
       episodeList.innerHTML = '';
       window.HLTProgress.episodes.forEach(ep => {
-        const isUnlocked = unlocked.has(ep.id);
+        const isUnlocked = episodeSelectEnabled && unlocked.has(ep.id);
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'episode-item' + (isUnlocked ? '' : ' locked');
@@ -257,8 +261,16 @@
 
     function refreshMenu() {
       const progress = window.HLTProgress.read();
-      continueButton.disabled = !progress.lastPath;
+      const completed = new Set(progress.completed || []);
+      const advancedMenuEnabled = completed.has('ep01');
+      document.querySelector('.sub-grid').classList.toggle('locked', !advancedMenuEnabled);
+      continueButton.disabled = !advancedMenuEnabled || !progress.lastPath;
+      episodeButton.disabled = !advancedMenuEnabled;
       const last = window.HLTProgress.episodes.find(ep => ep.id === progress.lastEpisode);
+      if (!advancedMenuEnabled) {
+        saveNote.textContent = 'EP.01 클리어 후 이어하기와 에피소드 선택이 열립니다.';
+        return;
+      }
       saveNote.textContent = progress.lastPath && last
         ? `최근 진행: ${last.title} · 이 브라우저에 자동 저장됨`
         : '진행 상황은 이 브라우저에 자동 저장됩니다.';
