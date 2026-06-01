@@ -20,3 +20,4 @@
 ## 플레이
 
 `index.html`에서 시작됩니다.
+https://hackerlife-beta.vercel.app/
